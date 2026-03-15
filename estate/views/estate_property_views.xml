@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Properties">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="state"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
@@ -26,6 +27,7 @@
                     <group>
                         <group string="Property Information">
                             <field name="name"/>
+                            <field name="property_type_id"/>
                             <field name="state"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -36,19 +38,33 @@
                             <field name="selling_price"/>
                         </group>
                     </group>
-                    <group>
-                        <group string="Details">
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                        </group>
-                        <group string="Garden">
-                            <field name="garden"/>
-                            <field name="garden_area" invisible="[('garden', '=', False)]"/>
-                            <field name="garden_orientation" invisible="[('garden', '=', False)]"/>
-                        </group>
-                    </group>
+                    <notebook>
+                        <page string="Details" name="details">
+                            <group>
+                                <group string="Property Details">
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                </group>
+                                <group string="Garden">
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="[('garden', '=', False)]"/>
+                                    <field name="garden_orientation" invisible="[('garden', '=', False)]"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Buyer &amp; Seller" name="buyer_seller">
+                            <group>
+                                <group string="Salesperson">
+                                    <field name="seller_id"/>
+                                </group>
+                                <group string="Buyer">
+                                    <field name="buyer_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -60,6 +76,7 @@
         <field name="arch" type="xml">
             <search string="Properties">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="description"/>
                 <filter string="Available" name="filter_available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
@@ -71,6 +88,7 @@
                 <filter string="Cancelled" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Property Type" name="group_property_type" context="{'group_by': 'property_type_id'}"/>
                     <filter string="Postcode" name="group_postcode" context="{'group_by': 'postcode'}"/>
                 </group>
             </search>

@@ -20,6 +20,9 @@ class EstateProperty(models.Model):
         default='new',
     )
     name = fields.Char(required=True)
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    seller_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user, copy=False)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
