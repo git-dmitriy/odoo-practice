@@ -62,6 +62,8 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="description"/>
+                <filter string="Available" name="filter_available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <separator/>
                 <filter string="New" name="filter_new" domain="[('state', '=', 'new')]"/>
                 <filter string="Offer Received" name="filter_offer_received" domain="[('state', '=', 'offer_received')]"/>
                 <filter string="Offer Accepted" name="filter_offer_accepted" domain="[('state', '=', 'offer_accepted')]"/>
@@ -69,6 +71,7 @@
                 <filter string="Cancelled" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Postcode" name="group_postcode" context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
         </field>
