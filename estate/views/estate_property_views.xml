@@ -54,6 +54,26 @@
         </field>
     </record>
 
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="description"/>
+                <filter string="New" name="filter_new" domain="[('state', '=', 'new')]"/>
+                <filter string="Offer Received" name="filter_offer_received" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Offer Accepted" name="filter_offer_accepted" domain="[('state', '=', 'offer_accepted')]"/>
+                <filter string="Sold" name="filter_sold" domain="[('state', '=', 'sold')]"/>
+                <filter string="Cancelled" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
