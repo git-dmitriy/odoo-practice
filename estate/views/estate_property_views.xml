@@ -17,6 +17,43 @@
         </field>
     </record>
 
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <group>
+                        <group string="Property Information">
+                            <field name="name"/>
+                            <field name="state"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                            <field name="description"/>
+                        </group>
+                        <group string="Sales">
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Details">
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                        </group>
+                        <group string="Garden">
+                            <field name="garden"/>
+                            <field name="garden_area" invisible="[('garden', '=', False)]"/>
+                            <field name="garden_orientation" invisible="[('garden', '=', False)]"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
