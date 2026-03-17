@@ -4,7 +4,7 @@
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <tree string="Offers">
+            <tree string="Offers" editable="bottom">
                 <button name="action_accept" type="object" icon="fa-check"
                         title="Accept" invisible="status in ('accepted','refused')"/>
                 <button name="action_refuse" type="object" icon="fa-times"

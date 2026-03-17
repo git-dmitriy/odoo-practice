@@ -10,7 +10,7 @@
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
                 <field name="postcode"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="best_price"/>
                 <field name="selling_price"/>
