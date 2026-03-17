@@ -4,6 +4,7 @@
     'depends': [
         'base'
     ],
+    # 'pre_init_hook': 'pre_init_hook',
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_type_views.xml',
