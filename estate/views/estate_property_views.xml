@@ -7,7 +7,7 @@
             <tree string="Properties">
                 <field name="name"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="state"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
@@ -27,7 +27,7 @@
             <form string="Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold" class="btn-primary"
-                            invisible="state in ('sold', 'cancelled')"/>
+                            invisible="state != 'offer_accepted'"/>
                     <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
                             invisible="state in ('sold', 'cancelled')"/>
                     <field name="state" widget="statusbar"
@@ -37,9 +37,8 @@
                     <group>
                         <group string="Property Information">
                             <field name="name"/>
-                            <field name="property_type_id"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="state"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="description"/>
