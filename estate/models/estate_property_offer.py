@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -46,6 +47,29 @@ class EstatePropertyOffer(models.Model):
             base = (record.create_date.date() if record.create_date else fields.Date.context_today(record))
             if record.date_deadline:
                 record.validity = (record.date_deadline - base).days
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if not property_id:
+                continue
+
+            prop = self.env['estate.property'].browse(property_id)
+            if prop.state in ('offer_accepted', 'sold', 'cancelled'):
+                raise UserError("You cannot create an offer for a property in this state.")
+
+            new_price = vals.get('price') or 0.0
+            if prop.offer_ids:
+                max_price = max(prop.offer_ids.mapped('price') or [0.0])
+                if float_compare(new_price, max_price, precision_digits=2) < 0:
+                    raise UserError("You cannot create an offer lower than an existing offer.")
+
+        offers = super().create(vals_list)
+        for offer in offers:
+            if offer.property_id.state == 'new':
+                offer.property_id.state = 'offer_received'
+        return offers
 
     def action_accept(self):
         for offer in self:
