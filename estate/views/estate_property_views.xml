@@ -123,6 +123,7 @@
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="description"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <filter string="Available" name="filter_available"
                         domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <separator/>
