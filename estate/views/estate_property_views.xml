@@ -12,6 +12,7 @@
                 <field name="postcode"/>
                 <field name="date_availability"/>
                 <field name="expected_price"/>
+                <field name="best_price"/>
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -76,6 +77,7 @@
                                                 <field name="price"/>
                                                 <field name="validity"/>
                                                 <field name="date_deadline"/>
+                                                <field name="date_deadline"/>
                                                 <field name="status"/>
                                             </group>
                                         </sheet>
@@ -108,16 +110,20 @@
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="description"/>
-                <filter string="Available" name="filter_available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter string="Available" name="filter_available"
+                        domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <separator/>
                 <filter string="New" name="filter_new" domain="[('state', '=', 'new')]"/>
-                <filter string="Offer Received" name="filter_offer_received" domain="[('state', '=', 'offer_received')]"/>
-                <filter string="Offer Accepted" name="filter_offer_accepted" domain="[('state', '=', 'offer_accepted')]"/>
+                <filter string="Offer Received" name="filter_offer_received"
+                        domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Offer Accepted" name="filter_offer_accepted"
+                        domain="[('state', '=', 'offer_accepted')]"/>
                 <filter string="Sold" name="filter_sold" domain="[('state', '=', 'sold')]"/>
                 <filter string="Cancelled" name="filter_cancelled" domain="[('state', '=', 'cancelled')]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="group_state" context="{'group_by': 'state'}"/>
-                    <filter string="Property Type" name="group_property_type" context="{'group_by': 'property_type_id'}"/>
+                    <filter string="Property Type" name="group_property_type"
+                            context="{'group_by': 'property_type_id'}"/>
                     <filter string="Postcode" name="group_postcode" context="{'group_by': 'postcode'}"/>
                 </group>
             </search>

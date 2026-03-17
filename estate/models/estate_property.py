@@ -36,6 +36,12 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
+    total_area = fields.Integer(
+        string='Total Area',
+        compute='_compute_total_area',
+        store=True,
+        readonly=True,
+    )
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
@@ -48,15 +54,19 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),]
     )
-    total_area = fields.Integer(compute='_compute_total_area', store=True)
-    best_price = fields.Float(compute='_compute_best_price', store=True)
+    best_price = fields.Float(
+        string='Best Offer',
+        compute='_compute_best_price',
+        store=True,
+        readonly=True,
+    )
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    @api.depends('offer_ids', 'offer_ids.price')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price') or [0])
@@ -64,8 +74,10 @@ class EstateProperty(models.Model):
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
+            if not self.garden_area:
+                self.garden_area = 10
+            if not self.garden_orientation:
+                self.garden_orientation = 'north'
         else:
-            self.garden_area = 0
+            self.garden_area = False
             self.garden_orientation = False
