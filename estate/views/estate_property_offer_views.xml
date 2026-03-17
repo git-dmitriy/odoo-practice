@@ -5,6 +5,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <tree string="Offers">
+                <button name="action_accept" type="object" icon="fa-check"
+                        title="Accept" invisible="status in ('accepted','refused')"/>
+                <button name="action_refuse" type="object" icon="fa-times"
+                        title="Refuse" invisible="status in ('accepted','refused')"/>
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
@@ -19,6 +23,12 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Offer">
+                <header>
+                    <button name="action_accept" type="object" string="Accept" class="btn-primary"
+                            invisible="status in ('accepted','refused')"/>
+                    <button name="action_refuse" type="object" string="Refuse" class="btn-secondary"
+                            invisible="status in ('accepted','refused')"/>
+                </header>
                 <sheet>
                     <group>
                         <group>

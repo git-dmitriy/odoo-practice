@@ -25,6 +25,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary"
+                            invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
+                            invisible="state in ('sold', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
                 <sheet>
                     <group>
                         <group string="Property Information">
@@ -60,9 +68,13 @@
                             </group>
                         </page>
                         <page string="Offers" name="offers">
-                            <group>
+                            <group col="1">
                                 <field name="offer_ids" nolabel="1">
                                     <tree string="Offers" create="1" delete="1">
+                                        <button name="action_accept" type="object" icon="fa-check"
+                                                title="Accept" invisible="status in ('accepted','refused')"/>
+                                        <button name="action_refuse" type="object" icon="fa-times"
+                                                title="Refuse" invisible="status in ('accepted','refused')"/>
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="validity"/>
@@ -76,7 +88,6 @@
                                                 <field name="partner_id"/>
                                                 <field name="price"/>
                                                 <field name="validity"/>
-                                                <field name="date_deadline"/>
                                                 <field name="date_deadline"/>
                                                 <field name="status"/>
                                             </group>
