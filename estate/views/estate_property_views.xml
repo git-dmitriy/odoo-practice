@@ -61,14 +61,15 @@
                                 </group>
                                 <group string="Garden">
                                     <field name="garden"/>
-                                    <field name="garden_area" invisible="[('garden', '=', False)]"/>
-                                    <field name="garden_orientation" invisible="[('garden', '=', False)]"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers" name="offers">
                             <group col="1">
-                                <field name="offer_ids" nolabel="1">
+                                <field name="offer_ids" nolabel="1"
+                                       readonly="state in ('offer_accepted', 'sold', 'cancelled')">
                                     <tree string="Offers" create="1" delete="1">
                                         <button name="action_accept" type="object" icon="fa-check"
                                                 title="Accept" invisible="status in ('accepted','refused')"/>
