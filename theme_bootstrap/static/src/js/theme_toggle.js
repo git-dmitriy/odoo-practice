@@ -3,6 +3,7 @@
 
     const STORAGE_KEY = "theme_bootstrap_mode";
     const root = document.documentElement;
+    const TOGGLE_BUTTON_ID = "theme_mode_toggle";
 
     function getSystemTheme() {
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -13,7 +14,7 @@
     }
 
     function setButtonLabel(theme, source) {
-        const button = document.getElementById("theme_mode_toggle");
+        const button = document.getElementById(TOGGLE_BUTTON_ID);
         if (!button) {
             return;
         }
@@ -22,8 +23,14 @@
     }
 
     function applyTheme(theme, source) {
-        root.setAttribute("data-theme", theme);
-        setButtonLabel(theme, source);
+        const normalizedTheme = theme === "dark" ? "dark" : "light";
+        // Keep both attributes in sync so Bootstrap and custom CSS can react.
+        root.setAttribute("data-bs-theme", normalizedTheme);
+        document.body.setAttribute("data-bs-theme", normalizedTheme);
+        root.classList.toggle("o_theme_dark", normalizedTheme === "dark");
+        root.classList.toggle("o_theme_light", normalizedTheme === "light");
+        root.setAttribute("data-theme", normalizedTheme);
+        setButtonLabel(normalizedTheme, source);
     }
 
     function initTheme() {
@@ -36,11 +43,19 @@
     }
 
     function bindToggle() {
-        const button = document.getElementById("theme_mode_toggle");
-        if (!button) {
+        if (document.body.dataset.themeToggleBound === "1") {
             return;
         }
-        button.addEventListener("click", function () {
+        document.body.dataset.themeToggleBound = "1";
+        document.addEventListener("click", function (event) {
+            const target = event.target;
+            if (!(target instanceof Element)) {
+                return;
+            }
+            const button = target.closest("#" + TOGGLE_BUTTON_ID);
+            if (!button) {
+                return;
+            }
             const currentTheme = root.getAttribute("data-theme") || getSystemTheme();
             const nextTheme = currentTheme === "dark" ? "light" : "dark";
             window.localStorage.setItem(STORAGE_KEY, nextTheme);
@@ -48,8 +63,16 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", function () {
+    function bootstrapThemeToggle() {
         initTheme();
         bindToggle();
-    });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bootstrapThemeToggle);
+    } else {
+        bootstrapThemeToggle();
+    }
+
+    window.addEventListener("pageshow", bootstrapThemeToggle);
 })();

@@ -1,9 +1,9 @@
 :root {
-    --theme-bg: #f8f9fa;
+    --theme-bg: #{$o-cc1-bg};
     --theme-surface: #ffffff;
-    --theme-text: #1f2937;
-    --theme-muted: #6b7280;
-    --theme-primary: #0d6efd;
+    --theme-text: #{$o-cc1-text};
+    --theme-muted: #{$o-color-2};
+    --theme-primary: #{$o-color-1};
 }
 
 :root[data-theme="dark"] {
