@@ -1,0 +1,35 @@
+:root {
+    --theme-bg: #f8f9fa;
+    --theme-surface: #ffffff;
+    --theme-text: #1f2937;
+    --theme-muted: #6b7280;
+    --theme-primary: #0d6efd;
+}
+
+:root[data-theme="dark"] {
+    --theme-bg: #0f172a;
+    --theme-surface: #1e293b;
+    --theme-text: #e5e7eb;
+    --theme-muted: #94a3b8;
+    --theme-primary: #60a5fa;
+}
+
+body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+    font-family: var(--font-family-base, "Inter", "Helvetica Neue", Arial, sans-serif);
+}
+
+#wrap {
+    background-color: var(--theme-bg);
+    color: var(--theme-text);
+}
+
+.text-muted {
+    color: var(--theme-muted) !important;
+}
+
+.btn-primary {
+    background-color: var(--theme-primary);
+    border-color: var(--theme-primary);
+}

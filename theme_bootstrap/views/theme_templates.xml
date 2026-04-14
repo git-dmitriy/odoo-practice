@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="theme_bootstrap_header_toggle" inherit_id="website.layout" name="Theme Toggle In Header">
+        <xpath expr="//header//nav" position="inside">
+            <button type="button" id="theme_mode_toggle" class="btn btn-outline-secondary btn-sm ms-3">
+                Theme: Auto
+            </button>
+        </xpath>
+    </template>
+
+    <template id="theme_bootstrap_homepage" inherit_id="website.homepage" name="Bootstrap Theme Homepage">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <section class="py-5 border-top">
+                <div class="container">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1 class="display-5 fw-bold mb-3">Bootstrap Theme Template</h1>
+                            <p class="lead text-muted mb-4">
+                                Minimal Odoo 17 website theme scaffold.
+                            </p>
+                            <a href="/contactus" class="btn btn-primary btn-lg">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </xpath>
+    </template>
+</odoo>
