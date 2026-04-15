@@ -3,8 +3,7 @@
     <template id="theme_bootstrap_header_toggle" inherit_id="website.layout" name="Theme Toggle In Header">
         <xpath expr="//header" position="inside">
             <div class="container py-2 text-end">
-                <button
-                        type="button" id="theme_mode_toggle" class="btn btn-outline-secondary btn-sm">
+                <button type="button" id="theme_mode_toggle" class="btn btn-outline-secondary btn-sm">
                     Theme: Auto
                 </button>
             </div>

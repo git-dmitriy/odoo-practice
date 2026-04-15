@@ -1,7 +1,8 @@
 :root {
     --theme-bg: #{$o-cc1-bg};
-    --theme-surface: #ffffff;
+    --theme-surface: #{$o-cc1-bg};
     --theme-text: #{$o-cc1-text};
+    --theme-headings: #{$o-cc1-headings};
     --theme-muted: #{$o-color-2};
     --theme-primary: #{$o-color-1};
 }
@@ -10,42 +11,28 @@
     --theme-bg: #0f172a;
     --theme-surface: #1e293b;
     --theme-text: #e5e7eb;
+    --theme-headings: #f8fafc;
     --theme-muted: #94a3b8;
     --theme-primary: #60a5fa;
-
-
-    .card {
-        background-color: var(--theme-surface);
-
-        .card-body {
-            background-color: var(--theme-surface) !important;
-
-            > * {
-                color: var(--theme-text);
-            }
-        }
-
-        .card-footer {
-            .text-muted {
-                color: var(--theme-muted);
-            }
-        }
-    }
-
-    .s_dynamic.s_blog_post_card .card .card-footer .text-muted {
-        color: var(--theme-muted) !important;
-    }
 }
 
 a {
     color: var(--theme-primary);
 }
 
+a:hover,
+a:focus {
+    color: var(--theme-primary);
+}
 
 body {
     background-color: var(--theme-bg);
     color: var(--theme-text);
     font-family: var(--font-family-base, "Inter", "Helvetica Neue", Arial, sans-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--theme-headings);
 }
 
 #wrap {
@@ -60,4 +47,24 @@ body {
 .btn-primary {
     background-color: var(--theme-primary);
     border-color: var(--theme-primary);
+}
+
+/* Keep website_blog cards readable in dark mode without replacing core layouts. */
+:root[data-theme="dark"] .o_wblog_post .card,
+:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card {
+    background-color: var(--theme-surface);
+
+    .card-body {
+        background-color: var(--theme-surface);
+    }
+}
+
+:root[data-theme="dark"] .o_wblog_post .card-body > *,
+:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-body > * {
+    color: var(--theme-text);
+}
+
+:root[data-theme="dark"] .o_wblog_post .card-footer .text-muted,
+:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-footer .text-muted {
+    color: var(--theme-muted) !important;
 }

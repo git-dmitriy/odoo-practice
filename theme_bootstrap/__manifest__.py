@@ -13,6 +13,9 @@
         "web._assets_primary_variables": [
             "theme_bootstrap/static/src/scss/primary_variables.scss",
         ],
+        "web._assets_secondary_variables": [
+            "theme_bootstrap/static/src/scss/secondary_variables.scss",
+        ],
         "web.assets_frontend": [
             "theme_bootstrap/static/src/scss/theme.scss",
             "theme_bootstrap/static/src/js/theme_toggle.js",
