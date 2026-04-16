@@ -1,3 +1,41 @@
+//$o-theme-font-configs: map-merge($o-theme-font-configs, (
+//        'Comfortaa': (
+//                'family': ('Comfortaa', sans-serif),
+//        ),
+//));
+
+//$o-theme-color-palettes: map-merge($o-theme-color-palettes, (
+//    'my_custom_theme': (
+//        'color-1': #0d6efd, // Primary / Brand
+//        'color-2': #6b7280, // Secondary
+//        'color-3': #198754, // Accent
+//        'color-4': #ffc107, // Background / Lightest
+//        'color-5': #dc3545, // Surface / Darkest
+//    ),
+//));
+//$o-color-palettes: map-merge($o-color-palettes,
+//        (
+//                'ds-website-theme': (
+//                        'o-color-1': #837a75,
+//                        'o-color-2': #b3b3b3,
+//                        'o-color-3': #c8c8c8,
+//                        'o-color-4': #f2fbe0,
+//                        'o-color-5': #605b56,
+//                ),
+//        )
+//);
+//
+//$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'ds-website-theme');
+//
+//$o-website-values-palettes: (
+//        (
+//                'color-palettes-name': 'ds-website-theme',
+//        ),
+//);
+
+
+
+
 $o-color-1: #0d6efd !default;
 $o-color-2: #6b7280 !default;
 $o-color-3: #198754 !default;

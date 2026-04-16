@@ -16,19 +16,19 @@
     --theme-primary: #60a5fa;
 }
 
-a {
-    color: var(--theme-primary);
-}
-
-a:hover,
-a:focus {
-    color: var(--theme-primary);
-}
+//a {
+//    color: var(--theme-primary);
+//}
+//
+//a:hover,
+//a:focus {
+//    color: var(--theme-primary);
+//}
 
 body {
     background-color: var(--theme-bg);
     color: var(--theme-text);
-    font-family: var(--font-family-base, "Inter", "Helvetica Neue", Arial, sans-serif);
+    //font-family: var(--font-family-base, "Inter", "Helvetica Neue", Arial, sans-serif);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -44,10 +44,11 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--theme-muted) !important;
 }
 
-.btn-primary {
-    background-color: var(--theme-primary);
-    border-color: var(--theme-primary);
-}
+//.btn-primary {
+//    background-color: var(--theme-primary);
+//    border-color: var(--theme-primary);
+//}
+
 
 /* Keep website_blog cards readable in dark mode without replacing core layouts. */
 :root[data-theme="dark"] .o_wblog_post .card,
@@ -55,12 +56,12 @@ h1, h2, h3, h4, h5, h6 {
     background-color: var(--theme-surface);
 
     .card-body {
-        background-color: var(--theme-surface);
+        background-color: var(--theme-surface) !important;
     }
 }
 
 :root[data-theme="dark"] .o_wblog_post .card-body > *,
-:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-body > * {
+:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-body > *:not(a) {
     color: var(--theme-text);
 }
 
