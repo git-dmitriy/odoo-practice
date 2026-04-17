@@ -1,4 +1,6 @@
 :root {
+    //--you-will-raise-an-error: #{$i-swear};
+
     --bg: #f8f9fa;
     --surface: #ffffff;
     --text: #1f2937;
@@ -87,6 +89,20 @@ a:focus {
 
 .text-muted {
     color: var(--muted) !important;
+}
+
+.btn-link {
+    color: var(--primary);
+
+    &:hover,
+    &:focus {
+        color: var(--primary-hover);
+    }
+
+    &:active,
+    &.active {
+        color: var(--primary-active);
+    }
 }
 
 $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
@@ -191,6 +207,67 @@ $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
         .dropdown-menu {
             background-color: var(--surface);
         }
+    }
+
+    /* Popups and overlays: keep background/text readable in dark mode. */
+    .modal-content,
+    .modal-header,
+    .modal-body,
+    .modal-footer,
+    .popover,
+    .dropdown-menu,
+    .o_technical_modal .modal-content {
+        background-color: var(--surface);
+        color: var(--text);
+        border-color: var(--border);
+    }
+
+    .modal-header .btn-close,
+    .modal-footer .btn-close {
+        filter: invert(1) grayscale(1) brightness(2);
+    }
+
+    .modal-title,
+    .popover-header {
+        color: var(--headings);
+    }
+
+    .popover-header {
+        background-color: rgba(255, 255, 255, 0.04);
+        border-bottom-color: var(--border);
+    }
+
+    .popover-body {
+        color: var(--text);
+    }
+
+    .tooltip .tooltip-inner {
+        background-color: #0b1220;
+        color: #ffffff;
+    }
+
+    .bs-tooltip-top .tooltip-arrow::before,
+    .bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before {
+        border-top-color: #0b1220;
+    }
+
+    .bs-tooltip-bottom .tooltip-arrow::before,
+    .bs-tooltip-auto[data-popper-placement^="bottom"] .tooltip-arrow::before {
+        border-bottom-color: #0b1220;
+    }
+
+    .bs-tooltip-start .tooltip-arrow::before,
+    .bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before {
+        border-left-color: #0b1220;
+    }
+
+    .bs-tooltip-end .tooltip-arrow::before,
+    .bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before {
+        border-right-color: #0b1220;
+    }
+
+    .o_notification_manager .o_notification {
+        background-color: var(--surface);
     }
 }
 
