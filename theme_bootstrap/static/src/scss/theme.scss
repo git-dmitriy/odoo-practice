@@ -134,7 +134,7 @@ $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
     .navbar-brand,
     .nav-link,
     .dropdown-item {
-        color: var(--text);
+        color: var(--text) !important;
     }
 
     .nav-link:hover,
@@ -170,7 +170,7 @@ $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
         .nav-link,
         .dropdown-item,
         .navbar-brand {
-            color: rgba(255, 255, 255, 0.78);
+            color: rgba(255, 255, 255, 0.78) !important;
         }
 
         .nav-link:hover,
@@ -182,12 +182,12 @@ $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
         .dropdown-item.active,
         .navbar-brand:hover,
         .navbar-brand:focus {
-            color: #ffffff;
+            color: #ffffff !important;
         }
 
         .dropdown-item:hover,
         .dropdown-item:focus {
-            background-color: rgba(255, 255, 255, 0.06);
+            background-color: rgba(255, 255, 255, 0.06) !important;
         }
     }
 
@@ -268,6 +268,19 @@ $btn-variants: primary, secondary, success, info, warning, danger, light, dark;
 
     .o_notification_manager .o_notification {
         background-color: var(--surface);
+    }
+
+    [data-bs-target="#o_search_modal"] {
+        background-color: var(--secondary);
+
+        &:hover,
+        &:focus-visible {
+            background-color: var(--secondary-hover);
+        }
+
+        .oi-search {
+            color: var(--text);
+        }
     }
 }
 
