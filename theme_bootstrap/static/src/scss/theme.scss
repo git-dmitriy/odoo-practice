@@ -1,4 +1,5 @@
 :root {
+    --navbar-bg: #{$o-cc1-bg};
     --theme-bg: #{$o-cc1-bg};
     --theme-surface: #{$o-cc1-bg};
     --theme-text: #{$o-cc1-text};
@@ -8,6 +9,7 @@
 }
 
 :root[data-theme="dark"] {
+    --navbar-bg: #1C2739;
     --theme-bg: #0f172a;
     --theme-surface: #1e293b;
     --theme-text: #e5e7eb;
@@ -63,22 +65,44 @@ h1, h2, h3, h4, h5, h6 {
 //}
 
 
-/* Keep website_blog cards readable in dark mode without replacing core layouts. */
-:root[data-theme="dark"] .o_wblog_post .card,
-:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card {
-    background-color: var(--theme-surface);
+:root[data-theme="dark"] {
+    .o_wblog_post .card,
+    .s_dynamic.s_blog_post_card .card {
+        background-color: var(--theme-surface);
 
-    .card-body {
-        background-color: var(--theme-surface) !important;
+        .card-body {
+            background-color: var(--theme-surface) !important;
+        }
     }
 }
 
-:root[data-theme="dark"] .o_wblog_post .card-body > *,
-:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-body > *:not(a) {
-    color: var(--theme-text);
+.navbar-light {
+    background-color: var(--navbar-bg);
 }
 
-:root[data-theme="dark"] .o_wblog_post .card-footer .text-muted,
-:root[data-theme="dark"] .s_dynamic.s_blog_post_card .card-footer .text-muted {
-    color: var(--theme-muted) !important;
+:root[data-theme="dark"] {
+    .o_wblog_post .card-body > *,
+    .s_dynamic.s_blog_post_card .card-body > *:not(a) {
+        color: var(--theme-text);
+    }
+
+    .o_wblog_post .card-footer .text-muted,
+    .s_dynamic.s_blog_post_card .card-footer .text-muted {
+        color: var(--theme-muted) !important;
+    }
+
+    .navbar-light .navbar-nav .nav-link {
+        color: var(--theme-muted);
+
+        &.active {
+            color: var(--theme-text);
+        }
+    }
 }
+
+:root:not([data-theme="dark"]) {
+    .website_blog .o_wblog_post_page_cover.o_record_has_cover .o_wblog_post_title h1 {
+        color: #f8fafc;
+    }
+}
+

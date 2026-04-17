@@ -4,15 +4,17 @@
 //        ),
 //));
 
-//$o-theme-color-palettes: map-merge($o-theme-color-palettes, (
-//    'my_custom_theme': (
-//        'color-1': #0d6efd, // Primary / Brand
-//        'color-2': #6b7280, // Secondary
-//        'color-3': #198754, // Accent
-//        'color-4': #ffc107, // Background / Lightest
-//        'color-5': #dc3545, // Surface / Darkest
-//    ),
-//));
+$o-theme-color-palettes: map-merge($o-theme-color-palettes, (
+    'my_custom_theme': (
+        'color-1': #1C4679, // Primary / Brand
+        'color-2': #ff0000, // Secondary
+        //'color-2': #E6E6E6, // Secondary
+        'color-3': #429DE4, // Accent
+        'color-4': #fafcfe, // Background / Lightest
+        'color-5': #1a1a18, // Surface / Darkest
+    ),
+));
+
 //$o-color-palettes: map-merge($o-color-palettes,
 //        (
 //                'ds-website-theme': (
@@ -39,7 +41,7 @@ $o-color-1: #1C4679;
 $o-color-2: #F2F2F2;
 $o-color-3: #429DE4;
 $o-color-4: #fafcfe;
-$o-color-5: #1A1A18;
+$o-color-5: #1a1a18;
 
 $o-cc1-bg: #f8f9fa !default;
 $o-cc1-text: #1f2937 !default;
