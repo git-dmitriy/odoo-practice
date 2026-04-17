@@ -18,7 +18,7 @@
         ],
         "web.assets_frontend": [
             "theme_bootstrap/static/src/scss/theme.scss",
-            "theme_bootstrap/static/src/components/theme_toggle/theme_toggle.js",
+            "theme_bootstrap/static/src/js/theme_toggle.js",
         ],
     },
     "installable": True,

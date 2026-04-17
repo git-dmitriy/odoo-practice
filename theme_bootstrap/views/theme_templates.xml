@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="theme_bootstrap_early_theme_init" inherit_id="website.layout" name="Theme Early Init Script">
+        <xpath expr="//head" position="inside">
+            <script type="text/javascript">
+                (function () {
+                    var STORAGE_KEY = "website_theme_mode";
+                    var root = document.documentElement;
+                    var storedTheme = null;
+                    try {
+                        storedTheme = window.localStorage.getItem(STORAGE_KEY);
+                    } catch (e) {
+                        storedTheme = null;
+                    }
+                    var theme = (storedTheme === "light" || storedTheme === "dark")
+                        ? storedTheme
+                        : (window.matchMedia &amp;&amp; window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+                    root.setAttribute("data-theme", theme);
+                    root.setAttribute("data-bs-theme", theme);
+                })();
+            </script>
+        </xpath>
+    </template>
+
     <template id="theme_bootstrap_header_toggle" inherit_id="website.layout" name="Theme Toggle">
-        <xpath expr="//header" position="inside">
-            <div id="theme_bootstrap_theme_toggle"/>
+        <xpath expr="//div[@id='wrapwrap']" position="inside">
+            <div class="container py-2 text-end">
+                <button
+                    type="button"
+                    id="theme_mode_toggle"
+                    class="btn btn-outline-secondary btn-sm"
+                    aria-label="Toggle color theme"
+                >
+                    Theme: light
+                </button>
+            </div>
         </xpath>
     </template>
 
