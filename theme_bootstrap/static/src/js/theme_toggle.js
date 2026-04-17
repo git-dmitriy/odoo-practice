@@ -45,7 +45,15 @@
         if (!button) {
             return;
         }
-        button.textContent = "Theme: " + theme + (source === "system" ? " (OS)" : "");
+        const sunIcon = button.querySelector(".theme-icon-sun");
+        const moonIcon = button.querySelector(".theme-icon-moon");
+        if (sunIcon && moonIcon) {
+            sunIcon.classList.toggle("d-none", theme !== "light");
+            moonIcon.classList.toggle("d-none", theme !== "dark");
+        }
+        const label = theme === "dark" ? "Switch to light theme" : "Switch to dark theme";
+        button.setAttribute("aria-label", label);
+        button.setAttribute("title", source === "system" ? label + " (OS default)" : label);
         button.setAttribute("aria-pressed", String(theme === "dark"));
     }
 
@@ -72,7 +80,19 @@
         });
     }
 
+    function moveToggleIntoNavbarIfPresent() {
+        const toggleContainer = document.querySelector(".theme-toggle-navbar");
+        const nav = document.querySelector("header nav");
+        if (!toggleContainer || !nav) {
+            return;
+        }
+        nav.appendChild(toggleContainer);
+        toggleContainer.classList.remove("container", "py-2");
+        toggleContainer.classList.add("ms-auto");
+    }
+
     function bootstrapThemeToggle() {
+        moveToggleIntoNavbarIfPresent();
         initTheme();
         bindToggle();
     }

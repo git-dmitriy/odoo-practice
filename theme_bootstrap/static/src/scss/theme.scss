@@ -52,6 +52,28 @@ a:focus {
     background-color: var(--navbar-bg);
 }
 
+.theme-toggle-navbar .nav-link {
+    color: var(--text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.theme-toggle-navbar .nav-link:hover,
+.theme-toggle-navbar .nav-link:focus {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.theme-toggle-navbar .theme-icon {
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 :root[data-theme="dark"] .o_wblog_post .card,
 :root[data-theme="dark"] .s_dynamic.s_blog_post_card .card {
     background-color: var(--surface);
