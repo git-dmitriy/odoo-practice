@@ -68,6 +68,43 @@
     --navbar-bg: #1c2739;
 }
 
+/* Fallback to system dark mode when theme is not explicitly set. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --text: #e5e7eb;
+        --muted: #94a3b8;
+        --border: #334155;
+        --primary: #60a5fa;
+        --primary-hover: #7db7fb;
+        --primary-active: #5d99e5;
+        --secondary: #7b8798;
+        --secondary-hover: #93a0b2;
+        --secondary-active: #6f7b8b;
+        --success: #34d399;
+        --success-hover: #52ddab;
+        --success-active: #2fbf8b;
+        --info: #67e8f9;
+        --info-hover: #86eefb;
+        --info-active: #52d9ea;
+        --warning: #fbbf24;
+        --warning-hover: #fccf57;
+        --warning-active: #e5ad20;
+        --danger: #f87171;
+        --danger-hover: #fb8c8c;
+        --danger-active: #df6666;
+        --light: #e2e8f0;
+        --light-hover: #cfd8e3;
+        --light-active: #bec9d6;
+        --dark: #0f172a;
+        --dark-hover: #1e293b;
+        --dark-active: #273449;
+        --headings: #f8fafc;
+        --navbar-bg: #1c2739;
+    }
+}
+
 body,
 #wrap {
     background-color: var(--bg);
