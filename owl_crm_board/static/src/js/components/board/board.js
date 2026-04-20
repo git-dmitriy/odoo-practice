@@ -73,15 +73,25 @@ export class Board extends Component {
         this.state.sortBy = filters.sortBy;
     }
 
+    notifyError(message, error) {
+        const details = error && error.message ? `: ${error.message}` : "";
+        this.notification.add(`${message}${details}`, {type: "danger"});
+    }
+
     openCreateDialog(stageId) {
         this.dialog.add(LeadFormDialog, {
             title: "Create lead",
             stages: this.state.stages,
             defaultStageId: stageId || (this.state.stages[0] && this.state.stages[0].id),
             onSave: async (values) => {
-                await this.api.createLead(values);
-                this.notification.add("Lead created", {type: "success"});
-                await this.loadData();
+                try {
+                    await this.api.createLead(values);
+                    this.notification.add("Lead created", {type: "success"});
+                    await this.loadData();
+                } catch (error) {
+                    this.notifyError("Failed to create lead", error);
+                    throw error;
+                }
             },
         });
     }
@@ -93,9 +103,14 @@ export class Board extends Component {
             lead,
             defaultStageId: lead.stage_id && lead.stage_id[0],
             onSave: async (values) => {
-                await this.api.updateLead(lead.id, values);
-                this.notification.add("Lead updated", {type: "success"});
-                await this.loadData();
+                try {
+                    await this.api.updateLead(lead.id, values);
+                    this.notification.add("Lead updated", {type: "success"});
+                    await this.loadData();
+                } catch (error) {
+                    this.notifyError("Failed to update lead", error);
+                    throw error;
+                }
             },
         });
     }
@@ -105,9 +120,13 @@ export class Board extends Component {
             body: `Archive "${lead.name}"?`,
             confirmLabel: "Archive",
             confirm: async () => {
-                await this.api.archiveLead(lead.id);
-                this.notification.add("Lead archived", {type: "success"});
-                await this.loadData();
+                try {
+                    await this.api.archiveLead(lead.id);
+                    this.notification.add("Lead archived", {type: "success"});
+                    await this.loadData();
+                } catch (error) {
+                    this.notifyError("Failed to archive lead", error);
+                }
             },
         });
     }
@@ -122,10 +141,14 @@ export class Board extends Component {
         lead.stage_id = [targetStageId, targetStage ? targetStage.name : ""];
         try {
             await this.api.moveLead(leadId, targetStageId);
+            this.notification.add(
+                `Lead moved to "${targetStage ? targetStage.name : "stage"}"`,
+                {type: "success"}
+            );
             await this.loadData();
-        } catch {
+        } catch (error) {
             this.state.leads = leadsSnapshot;
-            this.notification.add("Failed to move lead", {type: "danger"});
+            this.notifyError("Failed to move lead", error);
         }
     }
 }
