@@ -18,6 +18,7 @@ export class Board extends Component {
         this.dialog = useService("dialog");
         this.state = useState(makeInitialBoardState());
         this.api = new BoardApi(this.env);
+        this.loadRequestId = 0;
         this.loadData = this.loadData.bind(this);
         this.onFiltersChanged = this.onFiltersChanged.bind(this);
         this.openCreateDialog = this.openCreateDialog.bind(this);
@@ -43,15 +44,25 @@ export class Board extends Component {
     }
 
     async loadData() {
+        const requestId = ++this.loadRequestId;
         this.state.loading = true;
         this.state.error = "";
         try {
             const [stages, leads] = await Promise.all([this.api.loadStages(), this.api.loadLeads()]);
+            if (requestId !== this.loadRequestId) {
+                return;
+            }
             this.state.stages = stages;
             this.state.leads = leads;
         } catch (error) {
+            if (requestId !== this.loadRequestId) {
+                return;
+            }
             this.state.error = error.message || "Failed to load board.";
         } finally {
+            if (requestId !== this.loadRequestId) {
+                return;
+            }
             this.state.loading = false;
         }
     }
@@ -107,7 +118,8 @@ export class Board extends Component {
         if (!lead || !targetStageId) {
             return;
         }
-        lead.stage_id = [targetStageId, ""];
+        const targetStage = this.state.stages.find((stage) => stage.id === targetStageId);
+        lead.stage_id = [targetStageId, targetStage ? targetStage.name : ""];
         try {
             await this.api.moveLead(leadId, targetStageId);
             await this.loadData();
