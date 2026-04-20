@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_crm_board.LeadCard">
+        <article class="o_owl_crm_card" draggable="true" t-on-dragstart="onDragStart">
+            <div class="o_owl_crm_card_top">
+                <strong t-esc="props.lead.name"/>
+                <span class="o_priority" t-esc="props.lead.priority"/>
+            </div>
+            <div class="text-muted small" t-if="props.lead.partner_name" t-esc="props.lead.partner_name"/>
+            <div class="mt-1" t-if="props.lead.expected_revenue">
+                <span t-esc="props.lead.expected_revenue"/>
+                $
+            </div>
+            <div class="o_owl_crm_card_actions mt-2">
+                <button class="btn btn-link btn-sm p-0" t-on-click="() => props.onEdit(props.lead)">Edit</button>
+                <button class="btn btn-link btn-sm p-0 text-danger" t-on-click="() => props.onArchive(props.lead)">
+                    Archive
+                </button>
+            </div>
+        </article>
+    </t>
+</templates>

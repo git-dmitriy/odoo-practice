@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="owl_crm_board_client_action" model="ir.actions.client">
+        <field name="name">OWL CRM Board</field>
+        <field name="tag">owl_crm_board.client_action</field>
+    </record>
+
+    <menuitem id="owl_crm_board_root_menu" name="OWL CRM Board" sequence="20"/>
+    <menuitem
+            id="owl_crm_board_menu_board"
+            name="Board"
+            parent="owl_crm_board_root_menu"
+            action="owl_crm_board_client_action"
+            sequence="10"
+    />
+    <menuitem
+            id="owl_crm_board_menu_leads"
+            name="Leads"
+            parent="owl_crm_board_root_menu"
+            action="owl_crm_lead_action"
+            sequence="20"
+    />
+    <menuitem
+            id="owl_crm_board_menu_stages"
+            name="Stages"
+            parent="owl_crm_board_root_menu"
+            action="owl_crm_stage_action"
+            sequence="30"
+    />
+</odoo>
