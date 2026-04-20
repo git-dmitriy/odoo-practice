@@ -17,17 +17,18 @@ export class LeadFormDialog extends Component {
 
     setup() {
         const lead = this.props.lead || {};
+        const defaultStageId = (lead.stage_id && lead.stage_id[0]) || this.props.defaultStageId || false;
         this.form = useState({
             name: lead.name || "",
             partner_name: lead.partner_name || "",
             expected_revenue: lead.expected_revenue || 0,
             priority: lead.priority || "1",
             description: lead.description || "",
-            stage_id: (lead.stage_id && lead.stage_id[0]) || this.props.defaultStageId,
+            stage_id: defaultStageId,
         });
         this.state = useState({
             saving: false,
-            error: "",
+            error: defaultStageId ? "" : "Stage is required. Create a stage first.",
         });
     }
 
@@ -35,6 +36,10 @@ export class LeadFormDialog extends Component {
         event.preventDefault();
         if (!this.form.name.trim()) {
             this.state.error = "Name is required.";
+            return;
+        }
+        if (!this.form.stage_id) {
+            this.state.error = "Stage is required.";
             return;
         }
         this.state.saving = true;

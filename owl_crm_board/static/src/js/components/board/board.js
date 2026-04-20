@@ -78,7 +78,20 @@ export class Board extends Component {
         this.notification.add(`${message}${details}`, {type: "danger"});
     }
 
+    ensureStagesAvailable() {
+        if (this.state.stages.length) {
+            return true;
+        }
+        this.notification.add("Cannot continue: no stages available. Create at least one stage first.", {
+            type: "warning",
+        });
+        return false;
+    }
+
     openCreateDialog(stageId) {
+        if (!this.ensureStagesAvailable()) {
+            return;
+        }
         this.dialog.add(LeadFormDialog, {
             title: "Create lead",
             stages: this.state.stages,
@@ -97,6 +110,9 @@ export class Board extends Component {
     }
 
     openEditDialog(lead) {
+        if (!this.ensureStagesAvailable()) {
+            return;
+        }
         this.dialog.add(LeadFormDialog, {
             title: "Edit lead",
             stages: this.state.stages,

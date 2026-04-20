@@ -26,7 +26,7 @@
                 </div>
                 <div class="mb-2">
                     <label class="form-label">Stage</label>
-                    <select class="form-select" t-model="form.stage_id">
+                    <select class="form-select" t-model="form.stage_id" t-att-disabled="!props.stages.length">
                         <t t-foreach="props.stages" t-as="stage" t-key="stage.id">
                             <option t-att-value="stage.id" t-esc="stage.name"/>
                         </t>
@@ -39,7 +39,7 @@
                 <div t-if="state.error" class="text-danger small mb-2" t-esc="state.error"/>
                 <div class="d-flex justify-content-end gap-2">
                     <button type="button" class="btn btn-secondary" t-on-click="props.close">Cancel</button>
-                    <button type="submit" class="btn btn-primary" t-att-disabled="state.saving">
+                    <button type="submit" class="btn btn-primary" t-att-disabled="state.saving || !props.stages.length">
                         <t t-esc="state.saving ? 'Saving...' : 'Save'"/>
                     </button>
                 </div>
