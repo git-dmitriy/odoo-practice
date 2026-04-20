@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="owl_todo_task_tree" model="ir.ui.view">
+        <field name="name">owl_todo.task.tree</field>
+        <field name="model">owl_todo.task</field>
+        <field name="arch" type="xml">
+            <tree string="Tasks">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="is_done"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="owl_todo_task_form" model="ir.ui.view">
+        <field name="name">owl_todo.task.form</field>
+        <field name="model">owl_todo.task</field>
+        <field name="arch" type="xml">
+            <form string="Task">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="is_done"/>
+                        <field name="sequence"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="owl_todo_task_search" model="ir.ui.view">
+        <field name="name">owl_todo.task.search</field>
+        <field name="model">owl_todo.task</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter string="Open" name="open" domain="[('is_done', '=', False)]"/>
+                <filter string="Done" name="done" domain="[('is_done', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="owl_todo_task_action" model="ir.actions.act_window">
+        <field name="name">Tasks</field>
+        <field name="res_model">owl_todo.task</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

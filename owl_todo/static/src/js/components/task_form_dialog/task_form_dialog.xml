@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_todo.TaskFormDialog">
+        <Dialog title="props.title" size="'md'">
+            <div class="o_owl_todo_dialog">
+                <form class="o_owl_todo_dialog_form" t-on-submit="onSubmit">
+                    <div class="o_owl_todo_field">
+                        <label class="o_owl_todo_label" for="owl_todo_name">Title</label>
+                        <input id="owl_todo_name" class="o_owl_todo_input" type="text" t-model="form.name" required="1" placeholder="What needs doing?"/>
+                    </div>
+                    <label class="o_owl_todo_check">
+                        <input type="checkbox" t-model="form.is_done"/>
+                        <span class="o_owl_todo_check_ui" aria-hidden="true"/>
+                        <span class="o_owl_todo_check_text">Mark as completed</span>
+                    </label>
+                    <div class="o_owl_todo_field">
+                        <label class="o_owl_todo_label" for="owl_todo_desc">Notes</label>
+                        <textarea id="owl_todo_desc" class="o_owl_todo_textarea" rows="3" t-model="form.description" placeholder="Optional details…"/>
+                    </div>
+                    <div t-if="state.error" class="o_owl_todo_form_error" t-esc="state.error"/>
+                    <div class="o_owl_todo_dialog_actions">
+                        <button type="button" class="o_owl_todo_btn o_owl_todo_btn_secondary" t-on-click="props.close">Cancel</button>
+                        <button type="submit" class="o_owl_todo_btn o_owl_todo_btn_primary" t-att-disabled="state.saving">
+                            <t t-esc="state.saving ? 'Saving…' : 'Save'"/>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </Dialog>
+    </t>
+</templates>

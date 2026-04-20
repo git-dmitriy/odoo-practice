@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_todo.TodoBoard">
+        <div class="o_owl_todo_spa">
+            <header class="o_owl_todo_spa_header">
+                <h1 class="o_owl_todo_spa_title">Tasks</h1>
+                <p class="o_owl_todo_spa_subtitle">Classic TODO list app</p>
+            </header>
+            <TodoToolbar
+                    onFiltersChanged.bind="onFiltersChanged"
+                    onCreate.bind="openCreateDialog"
+                    onRefresh.bind="loadData"
+            />
+            <t t-if="state.loading">
+                <div class="o_owl_todo_spa_panel o_owl_todo_spa_state">
+                    <span class="o_owl_todo_spa_spinner" aria-hidden="true"/>
+                    <span>Loading…</span>
+                </div>
+            </t>
+            <t t-elif="state.error">
+                <div class="o_owl_todo_spa_panel o_owl_todo_spa_state o_owl_todo_spa_state_error">
+                    <span t-esc="state.error"/>
+                    <button type="button" class="o_owl_todo_btn o_owl_todo_btn_ghost" t-on-click="loadData">Try again</button>
+                </div>
+            </t>
+            <section t-else="" class="o_owl_todo_spa_panel o_owl_todo_spa_list">
+                <div class="o_owl_todo_spa_list_head">
+                    <span class="o_owl_todo_spa_list_label">Today</span>
+                    <span class="o_owl_todo_spa_count" t-esc="visibleTasks.length"/>
+                </div>
+                <div class="o_owl_todo_spa_list_body">
+                    <t t-if="!visibleTasks.length">
+                        <p class="o_owl_todo_spa_empty">Nothing here yet. Add a task to get started.</p>
+                    </t>
+                    <t t-foreach="visibleTasks" t-as="task" t-key="task.id">
+                        <TodoItem task="task" onEdit.bind="openEditDialog" onDelete.bind="askDeleteTask"/>
+                    </t>
+                </div>
+            </section>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_todo.TodoItem">
+        <div class="o_owl_todo_row" t-att-class="{'o_owl_todo_row_done': props.task.is_done}">
+            <div class="o_owl_todo_row_indicator" aria-hidden="true"/>
+            <div class="o_owl_todo_row_body">
+                <div class="o_owl_todo_row_title_row">
+                    <span class="o_owl_todo_row_title" t-esc="props.task.name"/>
+                    <span t-if="props.task.is_done" class="o_owl_todo_pill">Done</span>
+                </div>
+                <div class="o_owl_todo_row_desc" t-if="props.task.description" t-esc="props.task.description"/>
+                <div class="o_owl_todo_row_actions">
+                    <button type="button" class="o_owl_todo_btn o_owl_todo_btn_text" t-on-click="() => props.onEdit(props.task)">
+                        Edit
+                    </button>
+                    <button type="button" class="o_owl_todo_btn o_owl_todo_btn_text o_owl_todo_btn_danger" t-on-click="() => props.onDelete(props.task)">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

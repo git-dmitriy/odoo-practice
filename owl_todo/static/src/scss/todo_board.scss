@@ -1,0 +1,486 @@
+// ---------------------------------------------------------------------------
+// SPA todo look — scoped to .o_owl_todo_spa (main view). Dialog uses
+// .o_owl_todo_dialog (mounted in modal layer; class names are unique).
+// ---------------------------------------------------------------------------
+
+.o_owl_todo_spa {
+    --owl-bg0: #0f1117;
+    --owl-bg1: #161b26;
+    --owl-surface: rgba(255, 255, 255, 0.06);
+    --owl-surface2: rgba(255, 255, 255, 0.09);
+    --owl-border: rgba(255, 255, 255, 0.1);
+    --owl-text: #f0f2f7;
+    --owl-muted: #9aa3b5;
+    --owl-accent: #7c5cff;
+    --owl-accent2: #5ce0e6;
+    --owl-danger: #ff6b7a;
+    --owl-radius: 16px;
+    --owl-radius-sm: 10px;
+    --owl-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        sans-serif;
+    color: var(--owl-text);
+    min-height: 100%;
+    padding: 28px 24px 40px;
+    box-sizing: border-box;
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(124, 92, 255, 0.35), transparent 55%),
+        radial-gradient(900px 500px at 100% 0%, rgba(92, 224, 230, 0.2), transparent 50%),
+        linear-gradient(165deg, var(--owl-bg0), var(--owl-bg1));
+    background-attachment: local;
+}
+
+.o_owl_todo_spa_header {
+    max-width: 520px;
+    margin: 0 auto 20px;
+    text-align: center;
+}
+
+.o_owl_todo_spa_title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    background: linear-gradient(120deg, #fff 0%, #c4c8d4 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.o_owl_todo_spa_subtitle {
+    margin: 8px 0 0;
+    font-size: 0.9rem;
+    color: var(--owl-muted);
+    font-weight: 400;
+}
+
+.o_owl_todo_spa_toolbar {
+    max-width: 520px;
+    margin: 0 auto 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.o_owl_todo_spa_toolbar_right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-left: auto;
+}
+
+.o_owl_todo_spa_panel {
+    max-width: 520px;
+    margin: 0 auto;
+    border-radius: var(--owl-radius);
+    border: 1px solid var(--owl-border);
+    background: var(--owl-surface);
+    backdrop-filter: blur(12px);
+    box-shadow: var(--owl-shadow);
+}
+
+.o_owl_todo_spa_list_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--owl-border);
+}
+
+.o_owl_todo_spa_list_label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--owl-muted);
+}
+
+.o_owl_todo_spa_count {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--owl-muted);
+    min-width: 1.5rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    text-align: center;
+    border-radius: 999px;
+    background: var(--owl-surface2);
+    padding: 0 8px;
+}
+
+.o_owl_todo_spa_list_body {
+    padding: 8px 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.o_owl_todo_spa_empty {
+    margin: 0;
+    padding: 28px 16px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--owl-muted);
+}
+
+.o_owl_todo_spa_state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 20px;
+    font-size: 0.95rem;
+    color: var(--owl-muted);
+}
+
+.o_owl_todo_spa_state_error {
+    flex-direction: column;
+    text-align: center;
+    color: #ffb4bc;
+}
+
+.o_owl_todo_spa_spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--owl-border);
+    border-top-color: var(--owl-accent2);
+    border-radius: 50%;
+    animation: o_owl_todo_spin 0.7s linear infinite;
+}
+
+@keyframes o_owl_todo_spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// --- Rows ------------------------------------------------------------------
+
+.o_owl_todo_row {
+    display: flex;
+    gap: 12px;
+    padding: 12px 12px;
+    border-radius: var(--owl-radius-sm);
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.o_owl_todo_row:hover {
+    border-color: var(--owl-border);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.o_owl_todo_row_done {
+    opacity: 0.72;
+}
+
+.o_owl_todo_row_done .o_owl_todo_row_title {
+    text-decoration: line-through;
+    color: var(--owl-muted);
+}
+
+.o_owl_todo_row_indicator {
+    width: 4px;
+    min-height: 40px;
+    border-radius: 4px;
+    margin-top: 2px;
+    background: linear-gradient(180deg, var(--owl-accent), var(--owl-accent2));
+    flex-shrink: 0;
+}
+
+.o_owl_todo_row_done .o_owl_todo_row_indicator {
+    background: var(--owl-muted);
+    opacity: 0.5;
+}
+
+.o_owl_todo_row_body {
+    flex: 1;
+    min-width: 0;
+}
+
+.o_owl_todo_row_title_row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.o_owl_todo_row_title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+
+.o_owl_todo_pill {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(92, 224, 230, 0.15);
+    color: var(--owl-accent2);
+    border: 1px solid rgba(92, 224, 230, 0.35);
+}
+
+.o_owl_todo_row_desc {
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: var(--owl-muted);
+    line-height: 1.45;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.o_owl_todo_row_actions {
+    display: flex;
+    gap: 4px;
+    margin-top: 10px;
+}
+
+// --- Controls (shared) -----------------------------------------------------
+
+.o_owl_todo_input,
+.o_owl_todo_select,
+.o_owl_todo_textarea {
+    font: inherit;
+    color: var(--owl-text);
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--owl-border);
+    border-radius: var(--owl-radius-sm);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.o_owl_todo_input:focus,
+.o_owl_todo_select:focus,
+.o_owl_todo_textarea:focus {
+    border-color: rgba(124, 92, 255, 0.55);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2);
+}
+
+.o_owl_todo_input_search {
+    flex: 1 1 160px;
+    min-width: 0;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+}
+
+.o_owl_todo_select_wrap {
+    position: relative;
+}
+
+.o_owl_todo_select {
+    appearance: none;
+    padding: 10px 36px 10px 14px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    background-image: linear-gradient(45deg, transparent 50%, var(--owl-muted) 50%),
+        linear-gradient(135deg, var(--owl-muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) calc(50% + 3px), calc(100% - 13px) calc(50% + 3px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+}
+
+.o_owl_todo_btn {
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--owl-radius-sm);
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease, background 0.15s ease;
+}
+
+.o_owl_todo_btn:active:not(:disabled) {
+    transform: scale(0.97);
+}
+
+.o_owl_todo_btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.o_owl_todo_btn_primary {
+    padding: 10px 18px;
+    color: #0a0c10;
+    background: linear-gradient(135deg, #c4b5ff, #7c5cff);
+    box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+}
+
+.o_owl_todo_btn_primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+}
+
+.o_owl_todo_btn_secondary {
+    padding: 10px 18px;
+    color: var(--owl-text);
+    background: var(--owl-surface2);
+    border: 1px solid var(--owl-border);
+}
+
+.o_owl_todo_btn_secondary:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.o_owl_todo_btn_ghost {
+    padding: 8px 14px;
+    color: var(--owl-accent2);
+    background: transparent;
+    border: 1px solid rgba(92, 224, 230, 0.4);
+}
+
+.o_owl_todo_btn_ghost:hover:not(:disabled) {
+    background: rgba(92, 224, 230, 0.08);
+}
+
+.o_owl_todo_btn_icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--owl-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--owl-border);
+}
+
+.o_owl_todo_btn_icon:hover:not(:disabled) {
+    color: var(--owl-text);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.o_owl_todo_icon_refresh {
+    display: block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    border-right-color: transparent;
+    transform: rotate(-35deg);
+}
+
+.o_owl_todo_btn_text {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--owl-muted);
+    background: transparent;
+}
+
+.o_owl_todo_btn_text:hover:not(:disabled) {
+    color: var(--owl-text);
+}
+
+.o_owl_todo_btn_danger:hover:not(:disabled) {
+    color: var(--owl-danger);
+}
+
+// --- Dialog form (modal host is Odoo; we skin our subtree) ---------------
+
+.o_owl_todo_dialog {
+    margin-top: 4px;
+    padding: 16px;
+    border-radius: 14px;
+    background: linear-gradient(165deg, #161b26, #0f1218);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        sans-serif;
+}
+
+.o_owl_todo_dialog_form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.o_owl_todo_field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.o_owl_todo_label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8b93a7;
+}
+
+.o_owl_todo_dialog .o_owl_todo_input,
+.o_owl_todo_dialog .o_owl_todo_textarea {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #e8eaef;
+    background: #1a1f2e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.o_owl_todo_dialog .o_owl_todo_input:focus,
+.o_owl_todo_dialog .o_owl_todo_textarea:focus {
+    border-color: rgba(124, 92, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.2);
+}
+
+.o_owl_todo_dialog .o_owl_todo_textarea {
+    resize: vertical;
+    min-height: 72px;
+}
+
+.o_owl_todo_check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.o_owl_todo_check input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.o_owl_todo_check_ui {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    background: #1a1f2e;
+    flex-shrink: 0;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.o_owl_todo_check input:checked + .o_owl_todo_check_ui {
+    background: linear-gradient(135deg, #7c5cff, #5ce0e6);
+    border-color: transparent;
+    box-shadow: inset 0 0 0 2px #1a1f2e;
+}
+
+.o_owl_todo_check_text {
+    font-size: 0.9rem;
+    color: #c8ceda;
+}
+
+.o_owl_todo_form_error {
+    font-size: 0.85rem;
+    color: #ff8a95;
+}
+
+.o_owl_todo_dialog_actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.o_owl_todo_dialog .o_owl_todo_btn_primary {
+    color: #0a0c10;
+}
