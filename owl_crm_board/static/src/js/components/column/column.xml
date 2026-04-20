@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_crm_board.BoardColumn">
+        <section class="o_owl_crm_column" t-on-dragover="onDragOver" t-on-drop="onDrop">
+            <header class="o_owl_crm_column_header">
+                <h4>
+                    <span t-esc="props.stage.name"/>
+                    <span class="badge rounded-pill text-bg-secondary ms-2" t-esc="props.leads.length"/>
+                </h4>
+                <button class="btn btn-sm btn-outline-primary" t-on-click="() => props.onCreate(props.stage.id)">
+                    +
+                </button>
+            </header>
+            <div class="o_owl_crm_column_body">
+                <t t-if="!props.leads.length">
+                    <p class="text-muted small m-0">Drop leads here</p>
+                </t>
+                <t t-foreach="props.leads" t-as="lead" t-key="lead.id">
+                    <LeadCard lead="lead" onEdit.bind="props.onEdit" onArchive.bind="props.onArchive"/>
+                </t>
+            </div>
+        </section>
+    </t>
+</templates>

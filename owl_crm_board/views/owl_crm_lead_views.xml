@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="owl_crm_lead_tree" model="ir.ui.view">
+        <field name="name">owl.crm.lead.tree</field>
+        <field name="model">owl.crm.lead</field>
+        <field name="arch" type="xml">
+            <tree string="Leads">
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="priority"/>
+                <field name="expected_revenue"/>
+                <field name="stage_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="owl_crm_lead_form" model="ir.ui.view">
+        <field name="name">owl.crm.lead.form</field>
+        <field name="model">owl.crm.lead</field>
+        <field name="arch" type="xml">
+            <form string="Lead">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="partner_name"/>
+                        <field name="priority"/>
+                        <field name="expected_revenue"/>
+                        <field name="stage_id"/>
+                        <field name="active"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="owl_crm_lead_search" model="ir.ui.view">
+        <field name="name">owl.crm.lead.search</field>
+        <field name="model">owl.crm.lead</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="partner_name"/>
+                <field name="priority"/>
+                <field name="stage_id"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Stage" name="group_stage" context="{'group_by': 'stage_id'}"/>
+                    <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="owl_crm_lead_action" model="ir.actions.act_window">
+        <field name="name">Leads</field>
+        <field name="res_model">owl.crm.lead</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

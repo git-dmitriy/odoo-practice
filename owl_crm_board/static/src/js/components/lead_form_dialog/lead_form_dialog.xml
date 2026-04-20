@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_crm_board.LeadFormDialog">
+        <Dialog title="props.title" size="'md'">
+            <form t-on-submit="onSubmit">
+                <div class="mb-2">
+                    <label class="form-label">Name</label>
+                    <input class="form-control" t-model="form.name" required="1"/>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Customer</label>
+                    <input class="form-control" t-model="form.partner_name"/>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Expected revenue</label>
+                    <input class="form-control" type="number" t-model="form.expected_revenue"/>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" t-model="form.priority">
+                        <option value="0">Low</option>
+                        <option value="1">Normal</option>
+                        <option value="2">High</option>
+                        <option value="3">Very high</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Stage</label>
+                    <select class="form-select" t-model="form.stage_id">
+                        <t t-foreach="props.stages" t-as="stage" t-key="stage.id">
+                            <option t-att-value="stage.id" t-esc="stage.name"/>
+                        </t>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" rows="3" t-model="form.description"/>
+                </div>
+                <div t-if="state.error" class="text-danger small mb-2" t-esc="state.error"/>
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="button" class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+                    <button type="submit" class="btn btn-primary" t-att-disabled="state.saving">
+                        <t t-esc="state.saving ? 'Saving...' : 'Save'"/>
+                    </button>
+                </div>
+            </form>
+        </Dialog>
+    </t>
+</templates>

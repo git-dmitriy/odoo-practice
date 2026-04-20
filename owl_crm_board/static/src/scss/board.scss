@@ -1,0 +1,69 @@
+.o_owl_crm_board {
+    padding: 16px;
+}
+
+.o_owl_crm_toolbar {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.o_owl_crm_columns {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+    gap: 12px;
+    align-items: start;
+}
+
+.o_owl_crm_column {
+    border: 1px solid #d8dadd;
+    border-radius: 8px;
+    background: #f6f7f9;
+    min-height: 240px;
+}
+
+.o_owl_crm_column_header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #d8dadd;
+}
+
+.o_owl_crm_column_body {
+    padding: 10px;
+    display: grid;
+    gap: 8px;
+}
+
+.o_owl_crm_card {
+    border: 1px solid #e3e5e8;
+    border-radius: 8px;
+    background: #fff;
+    padding: 8px;
+    cursor: grab;
+}
+
+.o_owl_crm_card_top {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.o_owl_crm_card_actions {
+    display: flex;
+    gap: 8px;
+}
+
+.o_owl_crm_state {
+    border: 1px dashed #c6c9cd;
+    border-radius: 8px;
+    padding: 20px;
+    background: #fff;
+}
+
+.o_owl_crm_state.o_error {
+    border-color: #f1b0b7;
+    color: #a61b2b;
+}

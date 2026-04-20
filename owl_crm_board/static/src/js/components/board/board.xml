@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_crm_board.Board">
+        <div class="o_owl_crm_board">
+            <BoardToolbar
+                onFiltersChanged.bind="onFiltersChanged"
+                onCreate.bind="openCreateDialog"
+            />
+            <t t-if="state.loading">
+                <div class="o_owl_crm_state">Loading board...</div>
+            </t>
+            <t t-elif="state.error">
+                <div class="o_owl_crm_state o_error">
+                    <span t-esc="state.error"/>
+                    <button class="btn btn-link p-0 ms-2" t-on-click="loadData">Retry</button>
+                </div>
+            </t>
+            <t t-elif="!hasLeads">
+                <div class="o_owl_crm_state">
+                    No leads yet.
+                    <button class="btn btn-primary ms-2" t-on-click="() => openCreateDialog()">
+                        Create first lead
+                    </button>
+                </div>
+            </t>
+            <div t-else="" class="o_owl_crm_columns">
+                <t t-foreach="state.stages" t-as="stage" t-key="stage.id">
+                    <BoardColumn
+                        stage="stage"
+                        leads="groupedLeads[stage.id] || []"
+                        onCreate.bind="openCreateDialog"
+                        onEdit.bind="openEditDialog"
+                        onArchive.bind="askArchiveLead"
+                        onMove.bind="onMoveLead"
+                    />
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
