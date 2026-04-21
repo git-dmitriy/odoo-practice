@@ -47,7 +47,11 @@ export class TodoToolbar extends Component {
     }
 
     saveFilters() {
-        localStorage.setItem(FILTERS_KEY, JSON.stringify(this.filters));
+        try {
+            localStorage.setItem(FILTERS_KEY, JSON.stringify(this.filters));
+        } catch {
+            // Ignore storage failures (private mode, quota, blocked storage).
+        }
     }
 
     emitWithDebounce() {
