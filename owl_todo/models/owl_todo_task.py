@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class OwlTodoTask(models.Model):
@@ -10,3 +11,9 @@ class OwlTodoTask(models.Model):
     description = fields.Text()
     is_done = fields.Boolean(default=False)
     sequence = fields.Integer(default=10)
+
+    @api.constrains("name")
+    def _check_name_not_blank(self):
+        for task in self:
+            if not (task.name or "").strip():
+                raise ValidationError(_("Task title cannot be empty."))
