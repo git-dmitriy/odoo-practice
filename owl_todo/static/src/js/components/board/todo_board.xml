@@ -20,7 +20,8 @@
             <t t-elif="state.error">
                 <div class="o_owl_todo_spa_panel o_owl_todo_spa_state o_owl_todo_spa_state_error">
                     <span t-esc="state.error"/>
-                    <button type="button" class="o_owl_todo_btn o_owl_todo_btn_ghost" t-on-click="loadData">Try again</button>
+                    <button type="button" class="o_owl_todo_btn o_owl_todo_btn_ghost"
+                            t-on-click="loadData">Try again</button>
                 </div>
             </t>
             <section t-else="" class="o_owl_todo_spa_panel o_owl_todo_spa_list">
@@ -33,7 +34,18 @@
                         <p class="o_owl_todo_spa_empty">Nothing here yet. Add a task to get started.</p>
                     </t>
                     <t t-foreach="visibleTasks" t-as="task" t-key="task.id">
-                        <TodoItem task="task" onEdit.bind="openEditDialog" onDelete.bind="askDeleteTask" onToggleDone.bind="toggleTaskDone"/>
+                        <TodoItem
+                                task="task"
+                                isDragging="drag.draggingTaskId === task.id"
+                                isDragOver="drag.dragOverTaskId === task.id"
+                                onEdit.bind="openEditDialog"
+                                onDelete.bind="askDeleteTask"
+                                onToggleDone.bind="toggleTaskDone"
+                                onDragStart.bind="onTaskDragStart"
+                                onDragOver.bind="onTaskDragOver"
+                                onDrop.bind="onTaskDrop"
+                                onDragEnd.bind="onTaskDragEnd"
+                        />
                     </t>
                 </div>
             </section>
