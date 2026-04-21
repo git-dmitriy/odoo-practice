@@ -2,11 +2,20 @@
 <templates xml:space="preserve">
     <t t-name="owl_todo.TodoItem">
         <div class="o_owl_todo_row" t-att-class="{'o_owl_todo_row_done': props.task.is_done}">
-            <div class="o_owl_todo_row_indicator" aria-hidden="true"/>
+            <button
+                    type="button"
+                    class="o_owl_todo_row_check"
+                    role="checkbox"
+                    t-att-aria-checked="props.task.is_done ? 'true' : 'false'"
+                    t-att-aria-label="props.task.is_done ? 'Mark as not done' : 'Mark as done'"
+                    t-att-title="props.task.is_done ? 'Mark as active' : 'Mark as done'"
+                    t-on-click="() => props.onToggleDone(props.task)"
+            >
+                <span class="o_owl_todo_row_check_mark" aria-hidden="true"/>
+            </button>
             <div class="o_owl_todo_row_body">
                 <div class="o_owl_todo_row_title_row">
                     <span class="o_owl_todo_row_title" t-esc="props.task.name"/>
-                    <span t-if="props.task.is_done" class="o_owl_todo_pill">Done</span>
                 </div>
                 <div class="o_owl_todo_row_desc" t-if="props.task.description" t-esc="props.task.description"/>
                 <div class="o_owl_todo_row_actions">

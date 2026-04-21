@@ -33,7 +33,7 @@
                         <p class="o_owl_todo_spa_empty">Nothing here yet. Add a task to get started.</p>
                     </t>
                     <t t-foreach="visibleTasks" t-as="task" t-key="task.id">
-                        <TodoItem task="task" onEdit.bind="openEditDialog" onDelete.bind="askDeleteTask"/>
+                        <TodoItem task="task" onEdit.bind="openEditDialog" onDelete.bind="askDeleteTask" onToggleDone.bind="toggleTaskDone"/>
                     </t>
                 </div>
             </section>

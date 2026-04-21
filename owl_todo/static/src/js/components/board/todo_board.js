@@ -24,6 +24,7 @@ export class TodoBoard extends Component {
         this.openCreateDialog = this.openCreateDialog.bind(this);
         this.openEditDialog = this.openEditDialog.bind(this);
         this.askDeleteTask = this.askDeleteTask.bind(this);
+        this.toggleTaskDone = this.toggleTaskDone.bind(this);
 
         onWillStart(async () => {
             await this.loadData();
@@ -107,6 +108,18 @@ export class TodoBoard extends Component {
                 }
             },
         });
+    }
+
+    async toggleTaskDone(task) {
+        const next = !task.is_done;
+        const snapshot = this.state.tasks.map((t) => ({...t}));
+        this.state.tasks = this.state.tasks.map((t) => (t.id === task.id ? {...t, is_done: next} : t));
+        try {
+            await this.api.updateTask(task.id, {is_done: next});
+        } catch (error) {
+            this.state.tasks = snapshot;
+            this.notifyError("Failed to update task", error);
+        }
     }
 
     askDeleteTask(task) {

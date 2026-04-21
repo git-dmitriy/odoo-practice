@@ -8,5 +8,6 @@ export class TodoItem extends Component {
         task: Object,
         onEdit: Function,
         onDelete: Function,
+        onToggleDone: Function,
     };
 }

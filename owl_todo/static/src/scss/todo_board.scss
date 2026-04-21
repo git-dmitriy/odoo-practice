@@ -21,17 +21,19 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
         sans-serif;
     color: var(--owl-text);
-    min-height: 100%;
-    padding: 28px 24px 40px;
+    padding: 20px 40px;
     box-sizing: border-box;
     background: radial-gradient(1200px 600px at 10% -10%, rgba(124, 92, 255, 0.35), transparent 55%),
         radial-gradient(900px 500px at 100% 0%, rgba(92, 224, 230, 0.2), transparent 50%),
         linear-gradient(165deg, var(--owl-bg0), var(--owl-bg1));
     background-attachment: local;
+    block-size: 100%;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
 }
 
 .o_owl_todo_spa_header {
-    max-width: 520px;
+    inline-size: 520px;
     margin: 0 auto 20px;
     text-align: center;
 }
@@ -55,7 +57,7 @@
 }
 
 .o_owl_todo_spa_toolbar {
-    max-width: 520px;
+    inline-size: 520px;
     margin: 0 auto 16px;
     display: flex;
     flex-wrap: wrap;
@@ -72,7 +74,10 @@
 }
 
 .o_owl_todo_spa_panel {
-    max-width: 520px;
+    overflow: auto;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    inline-size: 520px;
     margin: 0 auto;
     border-radius: var(--owl-radius);
     border: 1px solid var(--owl-border);
@@ -102,7 +107,7 @@
     font-weight: 600;
     color: var(--owl-muted);
     min-width: 1.5rem;
-    height: 1.5rem;
+    block-size: 1.5rem;
     line-height: 1.5rem;
     text-align: center;
     border-radius: 999px;
@@ -111,6 +116,7 @@
 }
 
 .o_owl_todo_spa_list_body {
+    overflow: auto;
     padding: 8px 10px 12px;
     display: flex;
     flex-direction: column;
@@ -143,7 +149,7 @@
 
 .o_owl_todo_spa_spinner {
     width: 18px;
-    height: 18px;
+    block-size: 18px;
     border: 2px solid var(--owl-border);
     border-top-color: var(--owl-accent2);
     border-radius: 50%;
@@ -182,18 +188,53 @@
     color: var(--owl-muted);
 }
 
-.o_owl_todo_row_indicator {
-    width: 4px;
-    min-height: 40px;
-    border-radius: 4px;
-    margin-top: 2px;
-    background: linear-gradient(180deg, var(--owl-accent), var(--owl-accent2));
+.o_owl_todo_row_check {
+    width: 24px;
+    block-size: 24px;
+    margin-top: 1px;
+    padding: 0;
     flex-shrink: 0;
+    align-self: flex-start;
+    border-radius: 7px;
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
-.o_owl_todo_row_done .o_owl_todo_row_indicator {
-    background: var(--owl-muted);
-    opacity: 0.5;
+.o_owl_todo_row_check:hover {
+    border-color: rgba(124, 92, 255, 0.65);
+    box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
+}
+
+.o_owl_todo_row_check:focus-visible {
+    outline: none;
+    border-color: rgba(92, 224, 230, 0.8);
+    box-shadow: 0 0 0 3px rgba(92, 224, 230, 0.2);
+}
+
+.o_owl_todo_row_done .o_owl_todo_row_check {
+    border-color: transparent;
+    background: linear-gradient(135deg, rgba(124, 92, 255, 0.95), rgba(92, 224, 230, 0.85));
+}
+
+.o_owl_todo_row_check_mark {
+    display: block;
+    width: 6px;
+    block-size: 10px;
+    margin-bottom: 2px;
+    border: solid rgba(10, 12, 16, 0.92);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.12s ease;
+}
+
+.o_owl_todo_row_done .o_owl_todo_row_check_mark {
+    opacity: 1;
 }
 
 .o_owl_todo_row_body {
@@ -212,18 +253,6 @@
     font-weight: 600;
     font-size: 0.95rem;
     letter-spacing: -0.01em;
-}
-
-.o_owl_todo_pill {
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: rgba(92, 224, 230, 0.15);
-    color: var(--owl-accent2);
-    border: 1px solid rgba(92, 224, 230, 0.35);
 }
 
 .o_owl_todo_row_desc {
@@ -340,7 +369,7 @@
 
 .o_owl_todo_btn_icon {
     width: 40px;
-    height: 40px;
+    block-size: 40px;
     padding: 0;
     display: inline-flex;
     align-items: center;
@@ -358,7 +387,7 @@
 .o_owl_todo_icon_refresh {
     display: block;
     width: 16px;
-    height: 16px;
+    block-size: 16px;
     border: 2px solid currentColor;
     border-radius: 50%;
     border-right-color: transparent;
@@ -445,12 +474,12 @@
     position: absolute;
     opacity: 0;
     width: 0;
-    height: 0;
+    block-size: 0;
 }
 
 .o_owl_todo_check_ui {
     width: 20px;
-    height: 20px;
+    block-size: 20px;
     border-radius: 6px;
     border: 2px solid rgba(255, 255, 255, 0.25);
     background: #1a1f2e;
