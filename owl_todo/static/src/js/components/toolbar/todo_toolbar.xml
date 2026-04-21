@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="owl_todo.TodoToolbar">
+        <div class="o_owl_todo_spa_toolbar">
+            <input
+                    type="search"
+                    class="o_owl_todo_input o_owl_todo_input_search"
+                    placeholder="Search…"
+                    autocomplete="off"
+                    t-att-value="filters.query"
+                    t-on-input="onSearchInput"
+            />
+            <div class="o_owl_todo_spa_toolbar_right">
+                <div class="o_owl_todo_select_wrap">
+                    <select class="o_owl_todo_select" t-on-change="onDoneChanged">
+                        <option value="all" t-att-selected="filters.done === 'all'">All</option>
+                        <option value="open" t-att-selected="filters.done === 'open'">Active</option>
+                        <option value="done" t-att-selected="filters.done === 'done'">Completed</option>
+                    </select>
+                </div>
+                <button type="button" class="o_owl_todo_btn o_owl_todo_btn_icon" title="Refresh" t-on-click="() => props.onRefresh()">
+                    <span class="o_owl_todo_icon_refresh" aria-hidden="true"/>
+                </button>
+                <button type="button" class="o_owl_todo_btn o_owl_todo_btn_primary" t-on-click="() => props.onCreate()">
+                    Add task
+                </button>
+            </div>
+        </div>
+    </t>
+</templates>
