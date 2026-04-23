@@ -9,6 +9,7 @@
     "data": [
         "data/image_library.xml",
         "views/snippets/s_popup.xml",
+        "views/snippets/s_button.xml",
         "views/snippets/snippets.xml",
     ],
     "assets": {

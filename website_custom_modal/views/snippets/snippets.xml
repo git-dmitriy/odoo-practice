@@ -5,6 +5,11 @@
     <xpath expr="//t[@t-snippet='website.s_popup']" position="after">
         <t t-snippet="website_custom_modal.s_popup_custom_modal" string="Popup (Custom Modal)" t-thumbnail="/website/static/src/img/snippets_thumbs/s_popup.svg"/>
     </xpath>
+    <xpath expr="//div[@id='snippet_content']/div[hasclass('o_panel_body')]" position="inside">
+        <t t-snippet="website_custom_modal.s_button_custom_modal" string="Button (Custom Modal)" t-thumbnail="/website/static/src/img/snippets_thumbs/s_button.svg">
+            <keywords>button, action</keywords>
+        </t>
+    </xpath>
 </template>
 
 </odoo>

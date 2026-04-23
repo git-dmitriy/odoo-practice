@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_button_custom_modal" name="Button (Custom Modal)">
+    <a class="btn btn-primary o_snippet_drop_in_only" href="#">Button</a>
+</template>
+
+</odoo>
