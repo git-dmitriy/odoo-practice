@@ -5,6 +5,7 @@ import { cookie } from "@web/core/browser/cookie";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { utils as uiUtils, SIZES } from "@web/core/ui/ui_service";
 
+//noinspection JSVoidFunctionReturnValueUsed
 const SharedPopupWidget = publicWidget.Widget.extend({
     selector: ".s_popup_custom_modal",
     disabledInEditableMode: false,
@@ -13,6 +14,7 @@ const SharedPopupWidget = publicWidget.Widget.extend({
         "hidden.bs.modal": "_onModalHidden",
     },
 
+    // Reset wrapper visibility when the widget is destroyed.
     destroy() {
         this._super(...arguments);
         if (!this.editableMode) {
@@ -20,9 +22,11 @@ const SharedPopupWidget = publicWidget.Widget.extend({
         }
     },
 
+    // Keep the outer popup wrapper visible while modal is shown.
     _onModalShow() {
         this.el.classList.remove("d-none");
     },
+    // Hide wrapper after modal closes and refresh scroll-dependent widgets.
     _onModalHidden() {
         if (this.el.querySelector(".s_popup_no_backdrop")) {
             $().getScrollingElement()[0].dispatchEvent(new Event("scroll"));
@@ -31,8 +35,10 @@ const SharedPopupWidget = publicWidget.Widget.extend({
     },
 });
 
+
 publicWidget.registry.SharedPopupCustomModal = SharedPopupWidget;
 
+//noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
     selector: ".s_popup_custom_modal",
     events: {
@@ -43,6 +49,7 @@ const PopupWidget = publicWidget.Widget.extend({
     },
     cookieValue: true,
 
+    // Initialize trigger mode and bind the appropriate popup behavior.
     start() {
         this.modalShownOnClickEl = this.el.querySelector(".modal[data-display='onClick']");
         if (this.modalShownOnClickEl) {
@@ -65,6 +72,8 @@ const PopupWidget = publicWidget.Widget.extend({
         }
         return this._super(...arguments);
     },
+
+    // Remove listeners/timeouts and close modal on widget teardown.
     destroy() {
         this._super(...arguments);
         $(document).off("mouseleave.open_popup_custom_modal");
@@ -75,6 +84,7 @@ const PopupWidget = publicWidget.Widget.extend({
         }
     },
 
+    // Attach delay or mouse-exit trigger based on popup settings.
     _bindPopup() {
         const $main = this.$el.find(".modal");
         let display = $main.data("display");
@@ -91,18 +101,22 @@ const PopupWidget = publicWidget.Widget.extend({
             $(document).on("mouseleave.open_popup_custom_modal", () => this._showPopup());
         }
     },
+    // Hook for feature-specific show conditions.
     _canShowPopup() {
         return true;
     },
+    // Hide the Bootstrap modal instance.
     _hidePopup() {
         this.$el.find(".modal").modal("hide");
     },
+    // Show popup if allowed and not already displayed.
     _showPopup() {
         if (this._popupAlreadyShown || !this._canShowPopup()) {
             return;
         }
         this.$el.find(".modal").modal("show");
     },
+    // Open popup when current URL hash matches modal ID.
     _showPopupOnClick() {
         const hash = window.location.hash;
         if (hash && hash.substring(1) === this.modalShownOnClickEl.id) {
@@ -111,6 +125,7 @@ const PopupWidget = publicWidget.Widget.extend({
             this._showPopup();
         }
     },
+    // Prevent auto-close when primary button is a form submit action.
     _canBtnPrimaryClosePopup(primaryBtnEl) {
         return !(
             primaryBtnEl.classList.contains("s_website_form_send") ||
@@ -118,14 +133,17 @@ const PopupWidget = publicWidget.Widget.extend({
         );
     },
 
+    // Close popup from dedicated close icon click.
     _onCloseClick() {
         this._hidePopup();
     },
+    // Close popup from primary button click when permitted.
     _onBtnPrimaryClick(ev) {
         if (this._canBtnPrimaryClosePopup(ev.target)) {
             this._hidePopup();
         }
     },
+    // Persist consent cookie and stop embedded videos on hide.
     _onHideModal() {
         const nbDays = this.$el.find(".modal").data("consentsDuration");
         cookie.set(this.el.id, this.cookieValue, nbDays * 24 * 60 * 60, "required");
@@ -135,12 +153,14 @@ const PopupWidget = publicWidget.Widget.extend({
             iframe.src = "";
         });
     },
+    // Restore embedded videos when popup becomes visible.
     _onShowModal() {
         this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
             const iframe = media.querySelector("iframe");
             iframe.src = media.dataset.oeExpression || media.dataset.src;
         });
     },
+    // Re-check hash-triggered popup when URL hash changes.
     _onHashChange() {
         this._showPopupOnClick();
     },
@@ -148,6 +168,7 @@ const PopupWidget = publicWidget.Widget.extend({
 
 publicWidget.registry.PopupCustomModal = PopupWidget;
 
+//noinspection JSVoidFunctionReturnValueUsed
 const noBackdropPopupWidget = publicWidget.Widget.extend({
     selector: ".s_popup_custom_modal .s_popup_no_backdrop",
     disabledInEditableMode: false,
@@ -156,6 +177,7 @@ const noBackdropPopupWidget = publicWidget.Widget.extend({
         "hide.bs.modal": "_onModalNoBackdropHide",
     },
 
+    // Prepare throttled scrollbar updates and attach edit-mode handlers.
     start() {
         this.throttledUpdateScrollbar = throttleForAnimation(() => this._updateScrollbar());
         if (this.editableMode && this.el.classList.contains("show")) {
@@ -164,12 +186,14 @@ const noBackdropPopupWidget = publicWidget.Widget.extend({
         }
         return this._super(...arguments);
     },
+    // Remove no-backdrop listeners and restore default scrollbar behavior.
     destroy() {
         this._super(...arguments);
         this._removeModalNoBackdropEvents();
         window.dispatchEvent(new Event("resize"));
     },
 
+    // Adjust page/modal scrollbar depending on modal content overflow.
     _updateScrollbar() {
         const modalContent = this.el.querySelector(".modal-content");
         const isOverflowing = $(modalContent).hasScrollableContent();
@@ -180,6 +204,7 @@ const noBackdropPopupWidget = publicWidget.Widget.extend({
             modalInstance._resetAdjustments();
         }
     },
+    // Start tracking layout changes that impact no-backdrop scrolling.
     _addModalNoBackdropEvents() {
         window.addEventListener("resize", this.throttledUpdateScrollbar);
         this.resizeObserver = new window.ResizeObserver(() => {
@@ -187,6 +212,7 @@ const noBackdropPopupWidget = publicWidget.Widget.extend({
         });
         this.resizeObserver.observe(this.el.querySelector(".modal-content"));
     },
+    // Stop tracking resize/content changes for no-backdrop mode.
     _removeModalNoBackdropEvents() {
         this.throttledUpdateScrollbar.cancel();
         window.removeEventListener("resize", this.throttledUpdateScrollbar);
@@ -196,10 +222,12 @@ const noBackdropPopupWidget = publicWidget.Widget.extend({
         }
     },
 
+    // Activate scrollbar management once no-backdrop modal is shown.
     _onModalNoBackdropShown() {
         this._updateScrollbar();
         this._addModalNoBackdropEvents();
     },
+    // Cleanup no-backdrop listeners before modal fully hides.
     _onModalNoBackdropHide() {
         this._removeModalNoBackdropEvents();
     },
