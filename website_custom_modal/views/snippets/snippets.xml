@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="snippets_custom_modal" inherit_id="website.snippets" priority="90">
+    <xpath expr="//t[@t-snippet='website.s_popup']" position="after">
+        <t t-snippet="website_custom_modal.s_popup_custom_modal" string="Popup (Custom Modal)" t-thumbnail="/website/static/src/img/snippets_thumbs/s_popup.svg"/>
+    </xpath>
+</template>
+
+</odoo>
