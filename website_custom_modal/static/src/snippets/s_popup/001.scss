@@ -62,3 +62,72 @@
         }
     }
 }
+
+.s_button_popup_custom_modal[data-vcss="001"] {
+    .s_button_popup_trigger {
+        display: inline-block;
+    }
+
+    .modal-dialog {
+        min-height: 100%;
+    }
+
+    .modal-content {
+        min-height: $font-size-lg * 2;
+        border: 0;
+        border-radius: 0;
+        box-shadow: $modal-content-box-shadow-sm-up;
+        max-height: 85vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .s_popup_close {
+        z-index: $zindex-modal;
+        @include o-position-absolute(0, 0);
+        width: $font-size-lg * 2;
+        height: $font-size-lg * 2;
+        line-height: $font-size-lg * 2;
+        @include o-bg-color(color-contrast(o-color("primary")), o-color("primary"), $with-extras: false);
+        box-shadow: $box-shadow-sm;
+        cursor: pointer;
+        @include font-size($font-size-lg);
+        text-align: center;
+    }
+
+    .scm_width_sm {
+        max-width: 360px;
+    }
+    .scm_width_md {
+        max-width: 560px;
+    }
+    .scm_width_lg {
+        max-width: 760px;
+    }
+    .scm_width_xl {
+        max-width: 960px;
+    }
+    .scm_width_full {
+        max-width: 100%;
+        padding: 0 !important;
+    }
+    .scm_width_custom {
+        max-width: none;
+    }
+
+    .scm_height_auto {
+        height: auto;
+    }
+    .scm_height_compact {
+        height: 320px;
+    }
+    .scm_height_medium {
+        height: 500px;
+    }
+    .scm_height_tall {
+        height: 680px;
+    }
+    .scm_height_custom {
+        height: auto;
+    }
+}

@@ -23,13 +23,16 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
             this._removeIframeSrc();
         });
         this._removeIframeSrc();
-        this.trigger_up("option_update", {
-            optionName: "anchor",
-            name: "modalAnchor",
-            data: {
-                buttonEl: this._requestUserValueWidgets("onclick_opt")[0].el,
-            },
-        });
+        const anchorWidget = this._requestUserValueWidgets("onclick_opt")[0];
+        if (anchorWidget) {
+            this.trigger_up("option_update", {
+                optionName: "anchor",
+                name: "modalAnchor",
+                data: {
+                    buttonEl: anchorWidget.el,
+                },
+            });
+        }
         return this._super(...arguments);
     },
     // Remove editor bindings and stop any playing iframe media.
@@ -71,7 +74,10 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
                 clearTimeout(timeoutID);
                 resolve();
             });
-            this.$target[0].closest(".s_popup_custom_modal").classList.add("d-none");
+            const rootPopupEl = this._getRootPopupEl();
+            if (rootPopupEl && rootPopupEl.classList.contains("s_popup_custom_modal")) {
+                rootPopupEl.classList.add("d-none");
+            }
             this.$bsTarget.modal("hide");
         });
     },
@@ -80,8 +86,10 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
     moveBlock(previewMode, widgetValue) {
         const selector = widgetValue === "allPages" ? "#o_shared_blocks" : "main .oe_structure:o_editable";
         const whereEl = $(this.$target[0].ownerDocument).find(selector)[0];
-        const popupEl = this.$target[0].closest(".s_popup_custom_modal");
-        whereEl.prepend(popupEl);
+        const popupEl = this._getRootPopupEl();
+        if (whereEl && popupEl) {
+            whereEl.prepend(popupEl);
+        }
     },
 
     // Toggle backdrop color according to the option checkbox value.
@@ -109,5 +117,83 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
         this.$target.find(".media_iframe_video iframe").each((i, iframe) => {
             iframe.src = "";
         });
+    },
+
+    // Resolve the root popup wrapper for both popup snippet variants.
+    _getRootPopupEl() {
+        return this.$target[0].closest(".s_popup_custom_modal, .s_button_popup_custom_modal");
+    },
+});
+
+//noinspection JSVoidFunctionReturnValueUsed
+options.registry.SnippetButtonPopupCustomModal = options.registry.SnippetPopupCustomModal.extend({
+    // Ensure initial editor state has synchronized IDs and sizing.
+    start() {
+        this._syncTriggerHref();
+        this._applySizingFromDataset();
+        return this._super(...arguments);
+    },
+
+    // Assign unique modal ID and link trigger button after insertion.
+    onBuilt() {
+        this._super(...arguments);
+        this._syncTriggerHref();
+        this._applySizingFromDataset();
+    },
+
+    // Rebuild IDs and trigger link when the snippet is cloned.
+    onClone() {
+        this._super(...arguments);
+        this._syncTriggerHref();
+        this._applySizingFromDataset();
+    },
+
+    // Generate a unique modal ID for button-triggered opening.
+    _assignUniqueID() {
+        const modalId = "sButtonPopupCustomModal" + Date.now();
+        this.$target.attr("id", modalId);
+        this._syncTriggerHref();
+    },
+
+    // Keep the trigger button hash target in sync with modal ID.
+    _syncTriggerHref() {
+        const rootEl = this.$target.closest(".s_button_popup_custom_modal");
+        const triggerEl = rootEl.find(".s_button_popup_trigger")[0];
+        const modalId = this.$target.attr("id");
+        if (triggerEl && modalId) {
+            triggerEl.setAttribute("href", `#${modalId}`);
+        }
+    },
+
+    // Store and apply custom modal width when "Custom" width is selected.
+    setModalWidth(previewMode, widgetValue) {
+        const value = (widgetValue || "").trim();
+        this.$target.attr("data-modal-width", value);
+        this._applySizingFromDataset();
+    },
+
+    // Store and apply custom modal height when "Custom" height is selected.
+    setModalHeight(previewMode, widgetValue) {
+        const value = (widgetValue || "").trim();
+        this.$target.attr("data-modal-height", value);
+        this._applySizingFromDataset();
+    },
+
+    // Apply custom width/height values from data attributes to modal nodes.
+    _applySizingFromDataset() {
+        const modalEl = this.$target[0];
+        if (!modalEl) {
+            return;
+        }
+        const dialogEl = modalEl.querySelector(".modal-dialog");
+        const contentEl = modalEl.querySelector(".modal-content");
+        const widthValue = modalEl.dataset.modalWidth || "";
+        const heightValue = modalEl.dataset.modalHeight || "";
+        if (dialogEl) {
+            dialogEl.style.maxWidth = widthValue;
+        }
+        if (contentEl) {
+            contentEl.style.height = heightValue;
+        }
     },
 });

@@ -40,10 +40,10 @@ publicWidget.registry.SharedPopupCustomModal = SharedPopupWidget;
 
 //noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
-    selector: ".s_popup_custom_modal",
+    selector: ".s_popup_custom_modal, .s_button_popup_custom_modal",
     events: {
         "click .js_close_popup": "_onCloseClick",
-        "click .btn-primary": "_onBtnPrimaryClick",
+        "click .modal .btn-primary": "_onBtnPrimaryClick",
         "hide.bs.modal": "_onHideModal",
         "show.bs.modal": "_onShowModal",
     },
@@ -51,6 +51,7 @@ const PopupWidget = publicWidget.Widget.extend({
 
     // Initialize trigger mode and bind the appropriate popup behavior.
     start() {
+        this._applyModalSizing();
         this.modalShownOnClickEl = this.el.querySelector(".modal[data-display='onClick']");
         if (this.modalShownOnClickEl) {
             this.__onHashChange = this._onHashChange.bind(this);
@@ -114,6 +115,7 @@ const PopupWidget = publicWidget.Widget.extend({
         if (this._popupAlreadyShown || !this._canShowPopup()) {
             return;
         }
+        this._applyModalSizing();
         this.$el.find(".modal").modal("show");
     },
     // Open popup when current URL hash matches modal ID.
@@ -155,6 +157,7 @@ const PopupWidget = publicWidget.Widget.extend({
     },
     // Restore embedded videos when popup becomes visible.
     _onShowModal() {
+        this._applyModalSizing();
         this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
             const iframe = media.querySelector("iframe");
             iframe.src = media.dataset.oeExpression || media.dataset.src;
@@ -164,13 +167,28 @@ const PopupWidget = publicWidget.Widget.extend({
     _onHashChange() {
         this._showPopupOnClick();
     },
+    // Apply custom width/height values saved on modal data attributes.
+    _applyModalSizing() {
+        const modalEl = this.el.querySelector(".modal");
+        if (!modalEl) {
+            return;
+        }
+        const dialogEl = modalEl.querySelector(".modal-dialog");
+        const contentEl = modalEl.querySelector(".modal-content");
+        if (dialogEl) {
+            dialogEl.style.maxWidth = modalEl.dataset.modalWidth || "";
+        }
+        if (contentEl) {
+            contentEl.style.height = modalEl.dataset.modalHeight || "";
+        }
+    },
 });
 
 publicWidget.registry.PopupCustomModal = PopupWidget;
 
 //noinspection JSVoidFunctionReturnValueUsed
 const noBackdropPopupWidget = publicWidget.Widget.extend({
-    selector: ".s_popup_custom_modal .s_popup_no_backdrop",
+    selector: ".s_popup_custom_modal .s_popup_no_backdrop, .s_button_popup_custom_modal .s_popup_no_backdrop",
     disabledInEditableMode: false,
     events: {
         "shown.bs.modal": "_onModalNoBackdropShown",

@@ -24,6 +24,29 @@
     </div>
 </template>
 
+<template id="s_button_popup_custom_modal" name="Button + Popup (Custom Modal)">
+    <div class="s_button_popup_custom_modal o_snippet_invisible" data-vcss="001">
+        <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only" href="#sButtonPopupCustomModalDefault">Open modal</a>
+        <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle" style="background-color: var(--black-50) !important;" data-display="onClick" data-show-after="5000" data-consents-duration="7" data-modal-width="" data-modal-height="" data-bs-focus="false" data-bs-backdrop="false" tabindex="-1" role="dialog" aria-label="Button Popup">
+            <div class="modal-dialog d-flex scm_width_md">
+                <div class="modal-content oe_structure scm_height_auto">
+                    <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">&#215;</div>
+                    <section class="s_banner oe_img_bg o_bg_img_center pt48 pb48" data-snippet="s_banner" style="background-image: url('/web/image/website_custom_modal.s_popup_default_image');">
+                        <div class="container">
+                            <div class="row s_nb_column_fixed">
+                                <div class="col-lg-10 offset-lg-1 text-center o_cc o_cc1 jumbotron pt32 pb32">
+                                    <h3 class="h2-fs">Custom modal content</h3>
+                                    <p class="lead">Drop any Odoo blocks here: form, text, images, and more.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
 <template id="s_popup_custom_modal_options" inherit_id="website.snippet_options">
     <xpath expr="." position="inside">
         <t t-set="base_popup_options_custom_modal">
@@ -59,12 +82,38 @@
                 <we-button data-move-block="allPages">All pages</we-button>
             </we-select>
         </t>
+        <t t-set="button_popup_size_options_custom_modal">
+            <we-select string="Modal Width" data-apply-to=".modal-dialog" data-name="scm_width_opt">
+                <we-button data-select-class="scm_width_sm">Small</we-button>
+                <we-button data-select-class="scm_width_md" data-name="scm_width_md">Medium</we-button>
+                <we-button data-select-class="scm_width_lg">Large</we-button>
+                <we-button data-select-class="scm_width_xl">Extra Large</we-button>
+                <we-button data-select-class="scm_width_full">Full</we-button>
+                <we-button data-select-class="scm_width_custom" data-name="scm_width_custom">Custom</we-button>
+            </we-select>
+            <we-input string="Custom Width" title="Examples: 640px, 75%, 48rem." data-set-modal-width="true" data-select-data-attribute="" data-attribute-name="modalWidth" data-dependencies="scm_width_custom"/>
+            <we-select string="Modal Height" data-apply-to=".modal-content" data-name="scm_height_opt">
+                <we-button data-select-class="scm_height_auto" data-name="scm_height_auto">Auto</we-button>
+                <we-button data-select-class="scm_height_compact">Compact</we-button>
+                <we-button data-select-class="scm_height_medium">Medium</we-button>
+                <we-button data-select-class="scm_height_tall">Tall</we-button>
+                <we-button data-select-class="scm_height_custom" data-name="scm_height_custom">Custom</we-button>
+            </we-select>
+            <we-input string="Custom Height" title="Examples: 420px, 70vh." data-set-modal-height="true" data-select-data-attribute="" data-attribute-name="modalHeight" data-dependencies="scm_height_custom"/>
+        </t>
         <div data-js="SnippetPopupCustomModal"
              data-selector=".s_popup_custom_modal"
              data-target=".modal"
              data-drop-in=":not(p).oe_structure:not(.oe_structure_solo):not([data-snippet] *), :not(.o_mega_menu):not(p)[data-oe-type=html]:not([data-snippet] *)">
             <t t-out="base_popup_options_custom_modal"/>
             <t t-out="extra_popup_options_custom_modal"/>
+        </div>
+        <div data-js="SnippetButtonPopupCustomModal"
+             data-selector=".s_button_popup_custom_modal"
+             data-target=".modal"
+             data-drop-in=":not(p).oe_structure:not(.oe_structure_solo):not([data-snippet] *), :not(.o_mega_menu):not(p)[data-oe-type=html]:not([data-snippet] *)">
+            <t t-out="base_popup_options_custom_modal"/>
+            <t t-out="button_popup_size_options_custom_modal"/>
         </div>
     </xpath>
 </template>
