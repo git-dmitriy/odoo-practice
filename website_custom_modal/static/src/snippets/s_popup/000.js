@@ -6,41 +6,8 @@ import { throttleForAnimation } from "@web/core/utils/timing";
 import { utils as uiUtils, SIZES } from "@web/core/ui/ui_service";
 
 //noinspection JSVoidFunctionReturnValueUsed
-const SharedPopupWidget = publicWidget.Widget.extend({
-    selector: ".s_popup_custom_modal",
-    disabledInEditableMode: false,
-    events: {
-        "show.bs.modal": "_onModalShow",
-        "hidden.bs.modal": "_onModalHidden",
-    },
-
-    // Reset wrapper visibility when the widget is destroyed.
-    destroy() {
-        this._super(...arguments);
-        if (!this.editableMode) {
-            this.el.classList.add("d-none");
-        }
-    },
-
-    // Keep the outer popup wrapper visible while modal is shown.
-    _onModalShow() {
-        this.el.classList.remove("d-none");
-    },
-    // Hide wrapper after modal closes and refresh scroll-dependent widgets.
-    _onModalHidden() {
-        if (this.el.querySelector(".s_popup_no_backdrop")) {
-            $().getScrollingElement()[0].dispatchEvent(new Event("scroll"));
-        }
-        this.el.classList.add("d-none");
-    },
-});
-
-
-publicWidget.registry.SharedPopupCustomModal = SharedPopupWidget;
-
-//noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
-    selector: ".s_popup_custom_modal, .s_button_popup_custom_modal",
+    selector: ".s_button_popup_custom_modal",
     events: {
         "click .js_close_popup": "_onCloseClick",
         "click .modal .btn-primary": "_onBtnPrimaryClick",
@@ -188,7 +155,7 @@ publicWidget.registry.PopupCustomModal = PopupWidget;
 
 //noinspection JSVoidFunctionReturnValueUsed
 const noBackdropPopupWidget = publicWidget.Widget.extend({
-    selector: ".s_popup_custom_modal .s_popup_no_backdrop, .s_button_popup_custom_modal .s_popup_no_backdrop",
+    selector: ".s_button_popup_custom_modal .s_popup_no_backdrop",
     disabledInEditableMode: false,
     events: {
         "shown.bs.modal": "_onModalNoBackdropShown",

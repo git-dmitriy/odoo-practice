@@ -3,22 +3,22 @@
 import options from "@web_editor/js/editor/snippets.options";
 
 //noinspection JSVoidFunctionReturnValueUsed
-options.registry.SnippetPopupCustomModal = options.Class.extend({
+options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     // Initialize editor bindings and sync popup option panel state.
     start() {
-        this.$bsTarget.on("click.SnippetPopupCustomModal", ".js_close_popup:not(a, .btn)", (ev) => {
+        this.$bsTarget.on("click.SnippetButtonPopupCustomModal", ".js_close_popup:not(a, .btn)", (ev) => {
             ev.stopPropagation();
             this.onTargetHide();
             this.trigger_up("snippet_option_visibility_update", {show: false});
         });
-        this.$bsTarget.on("shown.bs.modal.SnippetPopupCustomModal", () => {
+        this.$bsTarget.on("shown.bs.modal.SnippetButtonPopupCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: true});
             this.$target[0].querySelectorAll(".media_iframe_video").forEach((media) => {
                 const iframe = media.querySelector("iframe");
                 iframe.src = media.dataset.oeExpression || media.dataset.src;
             });
         });
-        this.$bsTarget.on("hide.bs.modal.SnippetPopupCustomModal", () => {
+        this.$bsTarget.on("hide.bs.modal.SnippetButtonPopupCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: false});
             this._removeIframeSrc();
         });
@@ -33,18 +33,21 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
                 },
             });
         }
+        this._syncTriggerHref();
+        this._applySizingFromDataset();
         return this._super(...arguments);
     },
     // Remove editor bindings and stop any playing iframe media.
     destroy() {
         this._super(...arguments);
         this._removeIframeSrc();
-        this.$bsTarget.off(".SnippetPopupCustomModal");
+        this.$bsTarget.off(".SnippetButtonPopupCustomModal");
     },
 
     // Assign a fresh ID when the snippet is first inserted.
     onBuilt() {
         this._assignUniqueID();
+        this._applySizingFromDataset();
         const popup = this.$target.closest(".s_popup_middle");
         if (popup && popup.attr("data-focus")) {
             popup.attr("data-bs-focus", popup.attr("data-focus"));
@@ -55,6 +58,7 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
     // Assign a fresh ID when the snippet is duplicated.
     onClone() {
         this._assignUniqueID();
+        this._applySizingFromDataset();
     },
 
     // Preview the popup by opening its Bootstrap modal in editor mode.
@@ -74,10 +78,6 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
                 clearTimeout(timeoutID);
                 resolve();
             });
-            const rootPopupEl = this._getRootPopupEl();
-            if (rootPopupEl && rootPopupEl.classList.contains("s_popup_custom_modal")) {
-                rootPopupEl.classList.add("d-none");
-            }
             this.$bsTarget.modal("hide");
         });
     },
@@ -100,7 +100,9 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
 
     // Generate a unique DOM ID used by onClick/hash popup mode.
     _assignUniqueID() {
-        this.$target.closest(".s_popup_custom_modal").attr("id", "sPopupCustomModal" + Date.now());
+        const modalId = "sButtonPopupCustomModal" + Date.now();
+        this.$target.attr("id", modalId);
+        this._syncTriggerHref();
     },
 
     // Return current option state for controls that require it.
@@ -121,38 +123,7 @@ options.registry.SnippetPopupCustomModal = options.Class.extend({
 
     // Resolve the root popup wrapper for both popup snippet variants.
     _getRootPopupEl() {
-        return this.$target[0].closest(".s_popup_custom_modal, .s_button_popup_custom_modal");
-    },
-});
-
-//noinspection JSVoidFunctionReturnValueUsed
-options.registry.SnippetButtonPopupCustomModal = options.registry.SnippetPopupCustomModal.extend({
-    // Ensure initial editor state has synchronized IDs and sizing.
-    start() {
-        this._syncTriggerHref();
-        this._applySizingFromDataset();
-        return this._super(...arguments);
-    },
-
-    // Assign unique modal ID and link trigger button after insertion.
-    onBuilt() {
-        this._super(...arguments);
-        this._syncTriggerHref();
-        this._applySizingFromDataset();
-    },
-
-    // Rebuild IDs and trigger link when the snippet is cloned.
-    onClone() {
-        this._super(...arguments);
-        this._syncTriggerHref();
-        this._applySizingFromDataset();
-    },
-
-    // Generate a unique modal ID for button-triggered opening.
-    _assignUniqueID() {
-        const modalId = "sButtonPopupCustomModal" + Date.now();
-        this.$target.attr("id", modalId);
-        this._syncTriggerHref();
+        return this.$target[0].closest(".s_button_popup_custom_modal");
     },
 
     // Keep the trigger button hash target in sync with modal ID.
