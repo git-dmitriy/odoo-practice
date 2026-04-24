@@ -2,7 +2,7 @@
 <odoo>
 
 <template id="s_button_popup_custom_modal" name="Button + Popup (Custom Modal)">
-    <div class="s_button_popup_custom_modal o_snippet_invisible" data-vcss="001">
+    <div class="s_button_popup_custom_modal o_snippet_invisible scm_trigger_align_left" data-vcss="001" data-trigger-mode="button">
         <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only" href="#sButtonPopupCustomModalDefault">Open modal</a>
         <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle" style="background-color: var(--black-50) !important;" data-display="onClick" data-show-after="5000" data-consents-duration="7" data-modal-width="" data-modal-height="" data-bs-focus="false" data-bs-backdrop="false" tabindex="-1" role="dialog" aria-label="Button Popup">
             <div class="modal-dialog d-flex scm_width_md">
@@ -78,6 +78,59 @@
             </we-select>
             <we-input string="Custom Height" title="Examples: 420px, 70vh." data-set-modal-height="true" data-select-data-attribute="" data-attribute-name="modalHeight" data-dependencies="scm_height_custom"/>
         </t>
+        <t t-set="button_popup_trigger_options_custom_modal">
+            <we-select string="Trigger Mode">
+                <we-button data-trigger-mode="button" data-name="trigger_mode_button">Button</we-button>
+                <we-button data-trigger-mode="link" data-name="trigger_mode_link">Link</we-button>
+            </we-select>
+            <we-select string="Button Variant" data-dependencies="trigger_mode_button">
+                <we-button data-trigger-variant="btn-primary" data-name="trigger_variant_primary">Primary</we-button>
+                <we-button data-trigger-variant="btn-secondary">Secondary</we-button>
+                <we-button data-trigger-variant="btn-success">Success</we-button>
+                <we-button data-trigger-variant="btn-warning">Warning</we-button>
+                <we-button data-trigger-variant="btn-danger">Danger</we-button>
+                <we-button data-trigger-variant="btn-info">Info</we-button>
+                <we-button data-trigger-variant="btn-light">Light</we-button>
+                <we-button data-trigger-variant="btn-dark">Dark</we-button>
+            </we-select>
+            <we-select string="Button Size" data-dependencies="trigger_mode_button">
+                <we-button data-trigger-size="default" data-name="trigger_size_default">Default</we-button>
+                <we-button data-trigger-size="btn-sm">Small</we-button>
+                <we-button data-trigger-size="btn-lg">Large</we-button>
+            </we-select>
+            <we-select string="Button Shape" data-dependencies="trigger_mode_button">
+                <we-button data-trigger-shape="default" data-name="trigger_shape_default">Default</we-button>
+                <we-button data-trigger-shape="rounded-0">Square</we-button>
+                <we-button data-trigger-shape="rounded">Rounded</we-button>
+                <we-button data-trigger-shape="rounded-pill">Pill</we-button>
+            </we-select>
+            <we-select string="Button Width" data-dependencies="trigger_mode_button">
+                <we-button data-trigger-width="auto" data-name="trigger_width_auto">Auto</we-button>
+                <we-button data-trigger-width="w-100">Full Width</we-button>
+            </we-select>
+            <we-colorpicker string="Link Color" data-select-style="true" data-css-property="color" data-color-prefix="text-" data-apply-to=".s_button_popup_trigger" data-dependencies="trigger_mode_link"/>
+            <we-select string="Link Underline" data-dependencies="trigger_mode_link">
+                <we-button data-trigger-underline="none" data-name="trigger_underline_none">None</we-button>
+                <we-button data-trigger-underline="always">Always</we-button>
+                <we-button data-trigger-underline="hover">On Hover</we-button>
+            </we-select>
+            <we-select string="Link Weight" data-dependencies="trigger_mode_link">
+                <we-button data-trigger-weight="fw-normal" data-name="trigger_weight_normal">Normal</we-button>
+                <we-button data-trigger-weight="fw-semibold">Semi Bold</we-button>
+                <we-button data-trigger-weight="fw-bold">Bold</we-button>
+            </we-select>
+            <we-select string="Link Size" data-dependencies="trigger_mode_link">
+                <we-button data-trigger-text-size="default" data-name="trigger_text_size_default">Default</we-button>
+                <we-button data-trigger-text-size="fs-6">Small</we-button>
+                <we-button data-trigger-text-size="fs-5">Medium</we-button>
+                <we-button data-trigger-text-size="fs-4">Large</we-button>
+            </we-select>
+            <we-select string="Trigger Align">
+                <we-button data-trigger-align="left" data-name="trigger_align_left">Left</we-button>
+                <we-button data-trigger-align="center">Center</we-button>
+                <we-button data-trigger-align="right">Right</we-button>
+            </we-select>
+        </t>
         <div data-js="SnippetButtonPopupCustomModal"
              data-selector=".s_button_popup_custom_modal"
              data-target=".modal"
@@ -85,6 +138,7 @@
             <t t-out="button_popup_base_options_custom_modal"/>
             <t t-out="button_popup_extra_options_custom_modal"/>
             <t t-out="button_popup_size_options_custom_modal"/>
+            <t t-out="button_popup_trigger_options_custom_modal"/>
         </div>
     </xpath>
 </template>

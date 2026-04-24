@@ -35,6 +35,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         }
         this._syncTriggerHref();
         this._applySizingFromDataset();
+        this._restoreTriggerState();
         return this._super(...arguments);
     },
     // Remove editor bindings and stop any playing iframe media.
@@ -48,6 +49,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     onBuilt() {
         this._assignUniqueID();
         this._applySizingFromDataset();
+        this._restoreTriggerState();
         const popup = this.$target.closest(".s_popup_middle");
         if (popup && popup.attr("data-focus")) {
             popup.attr("data-bs-focus", popup.attr("data-focus"));
@@ -59,6 +61,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     onClone() {
         this._assignUniqueID();
         this._applySizingFromDataset();
+        this._restoreTriggerState();
     },
 
     // Preview the popup by opening its Bootstrap modal in editor mode.
@@ -110,6 +113,24 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         switch (methodName) {
             case "moveBlock":
                 return this.$target[0].closest("#o_shared_blocks") ? "allPages" : "currentPage";
+            case "triggerMode":
+                return this._getRootPopupEl()?.dataset.triggerMode || "button";
+            case "triggerVariant":
+                return this._getRootPopupEl()?.dataset.triggerVariant || "btn-primary";
+            case "triggerSize":
+                return this._getRootPopupEl()?.dataset.triggerSize || "default";
+            case "triggerShape":
+                return this._getRootPopupEl()?.dataset.triggerShape || "default";
+            case "triggerWidth":
+                return this._getRootPopupEl()?.dataset.triggerWidth || "auto";
+            case "triggerUnderline":
+                return this._getRootPopupEl()?.dataset.triggerUnderline || "none";
+            case "triggerWeight":
+                return this._getRootPopupEl()?.dataset.triggerWeight || "fw-normal";
+            case "triggerTextSize":
+                return this._getRootPopupEl()?.dataset.triggerTextSize || "default";
+            case "triggerAlign":
+                return this._getRootPopupEl()?.dataset.triggerAlign || "left";
         }
         return this._super(...arguments);
     },
@@ -166,5 +187,172 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         if (contentEl) {
             contentEl.style.height = heightValue;
         }
+    },
+
+    // Toggle trigger rendering mode and keep classes consistent.
+    triggerMode(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        const mode = widgetValue === "link" ? "link" : "button";
+        rootEl.dataset.triggerMode = mode;
+        this._normalizeTriggerClasses();
+    },
+
+    // Update Bootstrap button variant.
+    triggerVariant(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerVariant = widgetValue || "btn-primary";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update trigger size (button mode only).
+    triggerSize(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerSize = widgetValue || "default";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update trigger shape (button mode only).
+    triggerShape(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerShape = widgetValue || "default";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update trigger width mode.
+    triggerWidth(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerWidth = widgetValue || "auto";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update text decoration mode for link view.
+    triggerUnderline(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerUnderline = widgetValue || "none";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update weight class for link view.
+    triggerWeight(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerWeight = widgetValue || "fw-normal";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update text size class for link view.
+    triggerTextSize(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerTextSize = widgetValue || "default";
+        this._normalizeTriggerClasses();
+    },
+
+    // Update alignment class on root wrapper.
+    triggerAlign(previewMode, widgetValue) {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerAlign = widgetValue || "left";
+        this._normalizeTriggerClasses();
+    },
+
+    // Restore defaults from persisted data attributes.
+    _restoreTriggerState() {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        rootEl.dataset.triggerMode = rootEl.dataset.triggerMode || "button";
+        rootEl.dataset.triggerVariant = rootEl.dataset.triggerVariant || "btn-primary";
+        rootEl.dataset.triggerSize = rootEl.dataset.triggerSize || "default";
+        rootEl.dataset.triggerShape = rootEl.dataset.triggerShape || "default";
+        rootEl.dataset.triggerWidth = rootEl.dataset.triggerWidth || "auto";
+        rootEl.dataset.triggerUnderline = rootEl.dataset.triggerUnderline || "none";
+        rootEl.dataset.triggerWeight = rootEl.dataset.triggerWeight || "fw-normal";
+        rootEl.dataset.triggerTextSize = rootEl.dataset.triggerTextSize || "default";
+        rootEl.dataset.triggerAlign = rootEl.dataset.triggerAlign || "left";
+        this._normalizeTriggerClasses();
+    },
+
+    // Apply mode-specific class sets while removing conflicts.
+    _normalizeTriggerClasses() {
+        const rootEl = this._getRootPopupEl();
+        if (!rootEl) {
+            return;
+        }
+        const triggerEl = rootEl.querySelector(".s_button_popup_trigger");
+        if (!triggerEl) {
+            return;
+        }
+        const mode = rootEl.dataset.triggerMode || "button";
+        const variant = rootEl.dataset.triggerVariant || "btn-primary";
+        const size = rootEl.dataset.triggerSize || "default";
+        const shape = rootEl.dataset.triggerShape || "default";
+        const width = rootEl.dataset.triggerWidth || "auto";
+        const underline = rootEl.dataset.triggerUnderline || "none";
+        const weight = rootEl.dataset.triggerWeight || "fw-normal";
+        const textSize = rootEl.dataset.triggerTextSize || "default";
+        const align = rootEl.dataset.triggerAlign || "left";
+
+        const buttonVariants = [
+            "btn-primary", "btn-secondary", "btn-success", "btn-warning", "btn-danger",
+            "btn-info", "btn-light", "btn-dark",
+        ];
+        const buttonSizes = ["btn-sm", "btn-lg"];
+        const buttonShapes = ["rounded-0", "rounded", "rounded-pill"];
+        const triggerWidths = ["w-100"];
+        const linkUnderlines = ["scm_link_underline_none", "scm_link_underline_always", "scm_link_underline_hover"];
+        const linkWeights = ["fw-normal", "fw-semibold", "fw-bold"];
+        const linkSizes = ["fs-6", "fs-5", "fs-4"];
+        const alignClasses = ["scm_trigger_align_left", "scm_trigger_align_center", "scm_trigger_align_right"];
+
+        triggerEl.classList.remove("btn", ...buttonVariants, ...buttonSizes, ...buttonShapes, ...triggerWidths, ...linkUnderlines, ...linkWeights, ...linkSizes);
+        rootEl.classList.remove(...alignClasses);
+
+        if (mode === "button") {
+            triggerEl.classList.add("btn", variant);
+            if (size !== "default") {
+                triggerEl.classList.add(size);
+            }
+            if (shape !== "default") {
+                triggerEl.classList.add(shape);
+            }
+            if (width === "w-100") {
+                triggerEl.classList.add("w-100");
+            }
+        } else {
+            triggerEl.classList.add("scm_link_underline_" + underline);
+            if (weight !== "default") {
+                triggerEl.classList.add(weight);
+            }
+            if (textSize !== "default") {
+                triggerEl.classList.add(textSize);
+            }
+        }
+        rootEl.classList.add("scm_trigger_align_" + align);
     },
 });

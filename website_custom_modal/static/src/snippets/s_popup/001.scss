@@ -3,11 +3,37 @@
         display: inline-block;
     }
 
+    &.scm_trigger_align_left {
+        text-align: left;
+    }
+    &.scm_trigger_align_center {
+        text-align: center;
+    }
+    &.scm_trigger_align_right {
+        text-align: right;
+    }
+
+    .scm_link_underline_none {
+        text-decoration: none;
+    }
+    .scm_link_underline_always {
+        text-decoration: underline;
+    }
+    .scm_link_underline_hover {
+        text-decoration: none;
+
+        &:hover,
+        &:focus {
+            text-decoration: underline;
+        }
+    }
+
     .modal-dialog {
         min-height: 100%;
     }
 
     .modal-content {
+        margin-block: auto;
         min-height: $font-size-lg * 2;
         border: 0;
         border-radius: 0;
