@@ -4,7 +4,7 @@
 <template id="s_button_popup_custom_modal" name="Button + Popup (Custom Modal)">
     <div class="s_button_popup_custom_modal o_snippet_invisible scm_trigger_align_left" data-vcss="001" data-trigger-mode="button">
         <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only" href="#sButtonPopupCustomModalDefault">Open modal</a>
-        <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle" style="background-color: var(--black-50) !important;" data-display="onClick" data-show-after="5000" data-consents-duration="7" data-modal-width="" data-modal-height="" data-bs-focus="false" data-bs-backdrop="false" tabindex="-1" role="dialog" aria-label="Button Popup">
+        <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle" style="background-color: var(--black-50) !important;" data-display="onClick" data-show-after="5000" data-consents-duration="7" data-modal-width="" data-modal-height="" data-bs-focus="false" tabindex="-1" role="dialog" aria-label="Button Popup">
             <div class="modal-dialog d-flex scm_width_md">
                 <div class="modal-content oe_structure scm_height_auto">
                     <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">&#215;</div>

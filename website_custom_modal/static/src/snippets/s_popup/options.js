@@ -95,10 +95,12 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         }
     },
 
-    // Toggle backdrop color according to the option checkbox value.
+    // Keep visual backdrop and Bootstrap close-on-backdrop behavior in sync.
     setBackdrop(previewMode, widgetValue) {
-        const color = widgetValue ? "var(--black-50)" : "";
+        const isBackdropEnabled = Boolean(widgetValue);
+        const color = isBackdropEnabled ? "var(--black-50)" : "";
         this.$target[0].style.setProperty("background-color", color, "important");
+        this.$target.attr("data-bs-backdrop", isBackdropEnabled ? "true" : "false");
     },
 
     // Generate a unique DOM ID used by onClick/hash popup mode.
