@@ -134,7 +134,7 @@ const PopupWidget = publicWidget.Widget.extend({
     _onHashChange() {
         this._showPopupOnClick();
     },
-    // Apply custom width/height values saved on modal data attributes.
+    // Apply saved sizing modes from data attributes (caps in SCSS).
     _applyModalSizing() {
         const modalEl = this.el.querySelector(".modal");
         if (!modalEl) {
@@ -142,11 +142,60 @@ const PopupWidget = publicWidget.Widget.extend({
         }
         const dialogEl = modalEl.querySelector(".modal-dialog");
         const contentEl = modalEl.querySelector(".modal-content");
+        const widthValue = (modalEl.dataset.modalWidth || "").trim();
+        const heightValue = (modalEl.dataset.modalHeight || "").trim();
+        const widthModeAttr = modalEl.getAttribute("data-modal-width-mode") || "";
+        const heightModeAttr = modalEl.getAttribute("data-modal-height-mode") || "";
+        const presetWidthClasses = [
+            "scm_width_sm",
+            "scm_width_md",
+            "scm_width_lg",
+            "scm_width_xl",
+            "scm_width_full",
+        ];
+        const hasDialogPresetWidth =
+            dialogEl && presetWidthClasses.some((cls) => dialogEl.classList.contains(cls));
+        const hasDialogCustomWidth = dialogEl && dialogEl.classList.contains("scm_width_custom");
+        const presetHeightClasses = [
+            "scm_height_auto",
+            "scm_height_compact",
+            "scm_height_medium",
+            "scm_height_tall",
+        ];
+        const hasDialogPresetHeight =
+            contentEl && presetHeightClasses.some((cls) => contentEl.classList.contains(cls));
+        const hasDialogCustomHeight = contentEl && contentEl.classList.contains("scm_height_custom");
         if (dialogEl) {
-            dialogEl.style.maxWidth = modalEl.dataset.modalWidth || "";
+            if (widthModeAttr === "custom" || hasDialogCustomWidth) {
+                dialogEl.style.width = widthValue;
+                dialogEl.style.maxWidth = "";
+            } else if (
+                widthModeAttr === "content" &&
+                !hasDialogPresetWidth &&
+                !hasDialogCustomWidth
+            ) {
+                dialogEl.style.width = "fit-content";
+                dialogEl.style.maxWidth = "";
+            } else {
+                dialogEl.style.width = "";
+                dialogEl.style.maxWidth = "";
+            }
         }
         if (contentEl) {
-            contentEl.style.height = modalEl.dataset.modalHeight || "";
+            if (heightModeAttr === "custom" || hasDialogCustomHeight) {
+                contentEl.style.height = heightValue;
+                contentEl.style.maxHeight = "";
+            } else if (
+                heightModeAttr === "content" &&
+                !hasDialogPresetHeight &&
+                !hasDialogCustomHeight
+            ) {
+                contentEl.style.height = "auto";
+                contentEl.style.maxHeight = "";
+            } else {
+                contentEl.style.height = "";
+                contentEl.style.maxHeight = "";
+            }
         }
     },
 });

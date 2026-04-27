@@ -6,9 +6,11 @@
     &.scm_trigger_align_left {
         text-align: left;
     }
+
     &.scm_trigger_align_center {
         text-align: center;
     }
+
     &.scm_trigger_align_right {
         text-align: right;
     }
@@ -16,9 +18,11 @@
     .scm_link_underline_none {
         text-decoration: none;
     }
+
     .scm_link_underline_always {
         text-decoration: underline;
     }
+
     .scm_link_underline_hover {
         text-decoration: none;
 
@@ -38,9 +42,13 @@
         border: 0;
         border-radius: 0;
         box-shadow: $modal-content-box-shadow-sm-up;
-        max-height: 85vh;
+        max-height: calc(100vh - 32px);
         overflow-y: auto;
         overflow-x: hidden;
+
+        @supports (height: 100dvh) {
+            max-height: calc(100dvh - 32px);
+        }
     }
 
     .s_popup_close {
@@ -56,22 +64,45 @@
         text-align: center;
     }
 
+    .scm_width_content {
+        width: fit-content;
+        max-width: calc(100vw - 32px);
+    }
+
+    .scm_height_content {
+        height: auto;
+        max-height: calc(100vh - 32px);
+        overflow-y: auto;
+
+        @supports (height: 100dvh) {
+            max-height: calc(100dvh - 32px);
+        }
+    }
+
     .scm_width_sm {
         max-width: 360px;
     }
+
     .scm_width_md {
         max-width: 560px;
     }
+
     .scm_width_lg {
         max-width: 760px;
     }
+
     .scm_width_xl {
         max-width: 960px;
     }
+
     .scm_width_full {
-        max-width: 100%;
+        max-width: none;
+        width: calc(100vw - 32px);
+        margin-left: auto;
+        margin-right: auto;
         padding: 0 !important;
     }
+
     .scm_width_custom {
         max-width: none;
     }
@@ -79,16 +110,36 @@
     .scm_height_auto {
         height: auto;
     }
+
     .scm_height_compact {
         height: 320px;
     }
+
     .scm_height_medium {
         height: 500px;
     }
+
     .scm_height_tall {
         height: 680px;
     }
+
     .scm_height_custom {
         height: auto;
+    }
+
+    .modal[data-modal-width-mode="content"] .modal-dialog {
+        width: fit-content;
+        max-width: calc(100vw - 32px);
+    }
+
+    .modal[data-modal-height-mode="content"] .modal-content {
+        height: auto;
+        max-height: calc(100vh - 3.5rem);
+
+        overflow-y: auto;
+
+        @supports (height: 100dvh) {
+            max-height: calc(100dvh - 3.5rem);
+        }
     }
 }
