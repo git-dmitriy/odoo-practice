@@ -1,6 +1,15 @@
 /** @odoo-module **/
 
 import options from "@web_editor/js/editor/snippets.options";
+import {
+    normalizeCssDimension,
+    readModalHeightValue,
+    readModalWidthValue,
+    syncModalSizingModesForApply,
+} from "./sizing_mode_sync";
+
+const CUSTOM_MODAL_WIDTH_CSS_VAR = "--scm-modal-w";
+const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--scm-modal-h";
 
 //noinspection JSVoidFunctionReturnValueUsed
 options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
@@ -34,9 +43,22 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
             });
         }
         this._syncTriggerHref();
+        syncModalSizingModesForApply(
+            this.$target[0],
+            this.$target[0]?.querySelector(".modal-dialog"),
+            this.$target[0]?.querySelector(".modal-content"),
+        );
         this._applySizingFromDataset();
         this._restoreTriggerState();
         return this._super(...arguments);
+    },
+    // Re-apply custom sizing after editor-triggered updates.
+    notify(name) {
+        const result = this._super(...arguments);
+        if (name === "option_update" || name === "cover_update" || name === "covers_update") {
+            this._applySizingFromDataset();
+        }
+        return result;
     },
     // Remove editor bindings and stop any playing iframe media.
     destroy() {
@@ -116,9 +138,9 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
             case "moveBlock":
                 return this.$target[0].closest("#o_shared_blocks") ? "allPages" : "currentPage";
             case "setModalWidthMode":
-                return this.$target[0].dataset.modalWidthMode || "content";
+                return this.$target[0].getAttribute("data-modal-width-mode") || "content";
             case "setModalHeightMode":
-                return this.$target[0].dataset.modalHeightMode || "content";
+                return this.$target[0].getAttribute("data-modal-height-mode") || "content";
             case "triggerMode":
                 return this._getRootPopupEl()?.dataset.triggerMode || "button";
             case "triggerVariant":
@@ -165,7 +187,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Store and apply custom modal width when "Custom" width is selected.
     setModalWidth(previewMode, widgetValue) {
-        const value = (widgetValue || "").trim();
+        const value = normalizeCssDimension((widgetValue || "").trim());
         this.$target.attr("data-modal-width", value);
         this.$target.attr("data-modal-width-mode", "custom");
         this._applySizingFromDataset();
@@ -173,25 +195,31 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Store and apply custom modal height when "Custom" height is selected.
     setModalHeight(previewMode, widgetValue) {
-        const value = (widgetValue || "").trim();
+        const value = normalizeCssDimension((widgetValue || "").trim());
         this.$target.attr("data-modal-height", value);
         this.$target.attr("data-modal-height-mode", "custom");
         this._applySizingFromDataset();
     },
 
-    // Persist current width sizing mode.
+    // Persist current width sizing mode (only when widget supplied a value).
     setModalWidthMode(previewMode, widgetValue) {
-        this.$target.attr("data-modal-width-mode", widgetValue || "content");
+        const value = (widgetValue || "").trim();
+        if (value) {
+            this.$target.attr("data-modal-width-mode", value);
+        }
         this._applySizingFromDataset();
     },
 
-    // Persist current height sizing mode.
+    // Persist current height sizing mode (only when widget supplied a value).
     setModalHeightMode(previewMode, widgetValue) {
-        this.$target.attr("data-modal-height-mode", widgetValue || "content");
+        const value = (widgetValue || "").trim();
+        if (value) {
+            this.$target.attr("data-modal-height-mode", value);
+        }
         this._applySizingFromDataset();
     },
 
-    // Apply width/height modes from data attributes to modal nodes (caps in SCSS).
+    // Apply custom width/height through CSS variables while mode stays in data attributes.
     _applySizingFromDataset() {
         const modalEl = this.$target[0];
         if (!modalEl) {
@@ -199,59 +227,36 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         }
         const dialogEl = modalEl.querySelector(".modal-dialog");
         const contentEl = modalEl.querySelector(".modal-content");
-        const widthValue = (modalEl.dataset.modalWidth || "").trim();
-        const heightValue = (modalEl.dataset.modalHeight || "").trim();
+        const widthValue = readModalWidthValue(modalEl, dialogEl);
+        const heightValue = readModalHeightValue(modalEl, contentEl);
+        if (widthValue) {
+            modalEl.setAttribute("data-modal-width", widthValue);
+        }
+        if (heightValue) {
+            modalEl.setAttribute("data-modal-height", heightValue);
+        }
         const widthModeAttr = modalEl.getAttribute("data-modal-width-mode") || "";
         const heightModeAttr = modalEl.getAttribute("data-modal-height-mode") || "";
-        const presetWidthClasses = [
-            "scm_width_sm",
-            "scm_width_md",
-            "scm_width_lg",
-            "scm_width_xl",
-            "scm_width_full",
-        ];
-        const hasDialogPresetWidth =
-            dialogEl && presetWidthClasses.some((cls) => dialogEl.classList.contains(cls));
-        const hasDialogCustomWidth = dialogEl && dialogEl.classList.contains("scm_width_custom");
-        const presetHeightClasses = [
-            "scm_height_auto",
-            "scm_height_compact",
-            "scm_height_medium",
-            "scm_height_tall",
-        ];
-        const hasDialogPresetHeight =
-            contentEl && presetHeightClasses.some((cls) => contentEl.classList.contains(cls));
-        const hasDialogCustomHeight = contentEl && contentEl.classList.contains("scm_height_custom");
         if (dialogEl) {
-            if (widthModeAttr === "custom" || hasDialogCustomWidth) {
-                dialogEl.style.width = widthValue;
-                dialogEl.style.maxWidth = "";
-            } else if (
-                widthModeAttr === "content" &&
-                !hasDialogPresetWidth &&
-                !hasDialogCustomWidth
-            ) {
-                dialogEl.style.width = "fit-content";
-                dialogEl.style.maxWidth = "";
+            if (widthModeAttr === "custom") {
+                if (widthValue) {
+                    dialogEl.style.setProperty(CUSTOM_MODAL_WIDTH_CSS_VAR, widthValue);
+                } else {
+                    dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
+                }
             } else {
-                dialogEl.style.width = "";
-                dialogEl.style.maxWidth = "";
+                dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
             }
         }
         if (contentEl) {
-            if (heightModeAttr === "custom" || hasDialogCustomHeight) {
-                contentEl.style.height = heightValue;
-                contentEl.style.maxHeight = "";
-            } else if (
-                heightModeAttr === "content" &&
-                !hasDialogPresetHeight &&
-                !hasDialogCustomHeight
-            ) {
-                contentEl.style.height = "auto";
-                contentEl.style.maxHeight = "";
+            if (heightModeAttr === "custom") {
+                if (heightValue) {
+                    contentEl.style.setProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR, heightValue);
+                } else {
+                    contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
+                }
             } else {
-                contentEl.style.height = "";
-                contentEl.style.maxHeight = "";
+                contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
             }
         }
     },

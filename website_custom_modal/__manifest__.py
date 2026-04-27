@@ -13,11 +13,13 @@
     ],
     "assets": {
         "web.assets_frontend": [
+            "website_custom_modal/static/src/snippets/s_popup/sizing_mode_sync.js",
             "website_custom_modal/static/src/snippets/s_popup/000.js",
             "website_custom_modal/static/src/snippets/s_popup/000.scss",
             "website_custom_modal/static/src/snippets/s_popup/001.scss",
         ],
         "website.assets_wysiwyg": [
+            "website_custom_modal/static/src/snippets/s_popup/sizing_mode_sync.js",
             "website_custom_modal/static/src/snippets/s_popup/options.js",
         ],
     },

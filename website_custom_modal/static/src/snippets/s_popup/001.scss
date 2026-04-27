@@ -104,7 +104,8 @@
     }
 
     .scm_width_custom {
-        max-width: none;
+        width: var(--scm-modal-w, auto);
+        max-width: calc(100vw - 3.5rem);
     }
 
     .scm_height_auto {
@@ -124,22 +125,6 @@
     }
 
     .scm_height_custom {
-        height: auto;
-    }
-
-    .modal[data-modal-width-mode="content"] .modal-dialog {
-        width: fit-content;
-        max-width: calc(100vw - 32px);
-    }
-
-    .modal[data-modal-height-mode="content"] .modal-content {
-        height: auto;
-        max-height: calc(100vh - 3.5rem);
-
-        overflow-y: auto;
-
-        @supports (height: 100dvh) {
-            max-height: calc(100dvh - 3.5rem);
-        }
+        height: var(--scm-modal-h, auto);
     }
 }
