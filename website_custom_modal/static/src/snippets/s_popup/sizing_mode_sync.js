@@ -4,6 +4,9 @@
 // Width classes live on .modal-dialog, height classes — on .modal-content.
 // Order matters: custom > preset_* > content (more specific wins on conflicts).
 
+const CUSTOM_MODAL_WIDTH_CSS_VAR = "--scm-modal-w";
+const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--scm-modal-h";
+
 const WIDTH_CLASS_TO_MODE = [
     ["scm_width_custom", "custom"],
     ["scm_width_sm", "preset_w_sm"],
@@ -142,5 +145,59 @@ export function syncModalSizingModesForApply(modalEl, dialogEl, contentEl) {
     if (heightMode !== "custom") {
         modalEl.removeAttribute("data-modal-height");
         contentEl?.removeAttribute("data-modal-height");
+    }
+}
+
+/**
+ * Apply current modal sizing according to:
+ * - sizing classes on .modal-dialog / .modal-content (preset modes)
+ * - data-modal-width / data-modal-height (custom values)
+ *
+ * This keeps the DOM dataset consistent (sync/cleanup) and applies custom values
+ * via CSS variables used in SCSS.
+ */
+export function applyModalSizing(modalEl) {
+    if (!modalEl) {
+        return;
+    }
+    const dialogEl = modalEl.querySelector(".modal-dialog");
+    const contentEl = modalEl.querySelector(".modal-content");
+
+    // Ensure mode + dimension attributes are consistent with sizing classes.
+    syncModalSizingModesForApply(modalEl, dialogEl, contentEl);
+
+    const widthValue = readModalWidthValue(modalEl, dialogEl);
+    const heightValue = readModalHeightValue(modalEl, contentEl);
+    if (widthValue) {
+        modalEl.setAttribute("data-modal-width", widthValue);
+    }
+    if (heightValue) {
+        modalEl.setAttribute("data-modal-height", heightValue);
+    }
+
+    const widthModeAttr = modalEl.getAttribute("data-modal-width-mode") || "";
+    const heightModeAttr = modalEl.getAttribute("data-modal-height-mode") || "";
+
+    if (dialogEl) {
+        if (widthModeAttr === "custom") {
+            if (widthValue) {
+                dialogEl.style.setProperty(CUSTOM_MODAL_WIDTH_CSS_VAR, widthValue);
+            } else {
+                dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
+            }
+        } else {
+            dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
+        }
+    }
+    if (contentEl) {
+        if (heightModeAttr === "custom") {
+            if (heightValue) {
+                contentEl.style.setProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR, heightValue);
+            } else {
+                contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
+            }
+        } else {
+            contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
+        }
     }
 }

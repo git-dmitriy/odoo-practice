@@ -4,14 +4,7 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 import { cookie } from "@web/core/browser/cookie";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { utils as uiUtils, SIZES } from "@web/core/ui/ui_service";
-import {
-    readModalHeightValue,
-    readModalWidthValue,
-    syncModalSizingModesForApply,
-} from "./sizing_mode_sync";
-
-const CUSTOM_MODAL_WIDTH_CSS_VAR = "--scm-modal-w";
-const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--scm-modal-h";
+import { applyModalSizing } from "./sizing_mode_sync";
 
 //noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
@@ -27,14 +20,7 @@ const PopupWidget = publicWidget.Widget.extend({
     // Initialize trigger mode and bind the appropriate popup behavior.
     start() {
         const modalEl = this.el.querySelector(".modal");
-        if (modalEl) {
-            syncModalSizingModesForApply(
-                modalEl,
-                modalEl.querySelector(".modal-dialog"),
-                modalEl.querySelector(".modal-content"),
-            );
-        }
-        this._applyModalSizing();
+        applyModalSizing(modalEl);
         this.modalShownOnClickEl = this.el.querySelector(".modal[data-display='onClick']");
         if (this.modalShownOnClickEl) {
             this.__onHashChange = this._onHashChange.bind(this);
@@ -98,7 +84,7 @@ const PopupWidget = publicWidget.Widget.extend({
         if (this._popupAlreadyShown || !this._canShowPopup()) {
             return;
         }
-        this._applyModalSizing();
+        applyModalSizing(this.el.querySelector(".modal"));
         this.$el.find(".modal").modal("show");
     },
     // Open popup when current URL hash matches modal ID.
@@ -140,7 +126,7 @@ const PopupWidget = publicWidget.Widget.extend({
     },
     // Restore embedded videos when popup becomes visible.
     _onShowModal() {
-        this._applyModalSizing();
+        applyModalSizing(this.el.querySelector(".modal"));
         this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
             const iframe = media.querySelector("iframe");
             iframe.src = media.dataset.oeExpression || media.dataset.src;
@@ -149,47 +135,6 @@ const PopupWidget = publicWidget.Widget.extend({
     // Re-check hash-triggered popup when URL hash changes.
     _onHashChange() {
         this._showPopupOnClick();
-    },
-    // Apply custom width/height through CSS variables while mode stays in data attributes.
-    _applyModalSizing() {
-        const modalEl = this.el.querySelector(".modal");
-        if (!modalEl) {
-            return;
-        }
-        const dialogEl = modalEl.querySelector(".modal-dialog");
-        const contentEl = modalEl.querySelector(".modal-content");
-        const widthValue = readModalWidthValue(modalEl, dialogEl);
-        const heightValue = readModalHeightValue(modalEl, contentEl);
-        if (widthValue) {
-            modalEl.setAttribute("data-modal-width", widthValue);
-        }
-        if (heightValue) {
-            modalEl.setAttribute("data-modal-height", heightValue);
-        }
-        const widthModeAttr = modalEl.getAttribute("data-modal-width-mode") || "";
-        const heightModeAttr = modalEl.getAttribute("data-modal-height-mode") || "";
-        if (dialogEl) {
-            if (widthModeAttr === "custom") {
-                if (widthValue) {
-                    dialogEl.style.setProperty(CUSTOM_MODAL_WIDTH_CSS_VAR, widthValue);
-                } else {
-                    dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
-                }
-            } else {
-                dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
-            }
-        }
-        if (contentEl) {
-            if (heightModeAttr === "custom") {
-                if (heightValue) {
-                    contentEl.style.setProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR, heightValue);
-                } else {
-                    contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
-                }
-            } else {
-                contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
-            }
-        }
     },
 });
 
