@@ -19,23 +19,16 @@ const PopupWidget = publicWidget.Widget.extend({
 
     // Initialize trigger mode and bind the appropriate popup behavior.
     start() {
-        const modalEl = this.el.querySelector(".modal");
-        applyModalSizing(modalEl);
+        applyModalSizing(this._getModalEl());
         this.modalShownOnClickEl = this.el.querySelector(".modal[data-display='onClick']");
         if (this.modalShownOnClickEl) {
             this.__onHashChange = this._onHashChange.bind(this);
             window.addEventListener("hashchange", this.__onHashChange);
             this._showPopupOnClick();
         } else {
-            this._popupAlreadyShown = !!cookie.get(this.$el.attr("id"));
+            this._popupAlreadyShown = Boolean(cookie.get(this._getWidgetCookieKey()));
             const isMobile = uiUtils.getSize() < SIZES.LG;
-            const emptyPopup = [...this.$el[0].querySelectorAll(".oe_structure > *:not(.s_popup_close)")].every((el) => {
-                const visibilitySelectors = el.dataset.visibilitySelectors;
-                const deviceInvisible = isMobile
-                    ? el.classList.contains("o_snippet_mobile_invisible")
-                    : el.classList.contains("o_snippet_desktop_invisible");
-                return (visibilitySelectors && el.matches(visibilitySelectors)) || deviceInvisible;
-            });
+            const emptyPopup = this._isPopupContentEmpty(isMobile);
             if (!this._popupAlreadyShown && !emptyPopup) {
                 this._bindPopup();
             }
@@ -52,6 +45,45 @@ const PopupWidget = publicWidget.Widget.extend({
         if (this.modalShownOnClickEl) {
             window.removeEventListener("hashchange", this.__onHashChange);
         }
+    },
+
+    _getModalEl() {
+        return this.el.querySelector(".modal");
+    },
+
+    _getWidgetCookieKey() {
+        return this.el.id;
+    },
+
+    _isPopupContentEmpty(isMobile) {
+        return [...this.$el[0].querySelectorAll(".oe_structure > *:not(.s_popup_close)")].every((el) => {
+            const visibilitySelectors = el.dataset.visibilitySelectors;
+            const hiddenByDevice = isMobile
+                ? el.classList.contains("o_snippet_mobile_invisible")
+                : el.classList.contains("o_snippet_desktop_invisible");
+            return (visibilitySelectors && el.matches(visibilitySelectors)) || hiddenByDevice;
+        });
+    },
+
+    _resetEmbeddedIframes() {
+        this.$el.find(".media_iframe_video iframe").each((i, iframe) => {
+            iframe.src = "";
+        });
+    },
+
+    _restoreEmbeddedIframes() {
+        this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
+            const iframe = media.querySelector("iframe");
+            iframe.src = media.dataset.oeExpression || media.dataset.src;
+        });
+    },
+
+    _getHashModalId() {
+        const hash = window.location.hash;
+        if (!hash) {
+            return "";
+        }
+        return hash.substring(1);
     },
 
     // Attach delay or mouse-exit trigger based on popup settings.
@@ -84,13 +116,13 @@ const PopupWidget = publicWidget.Widget.extend({
         if (this._popupAlreadyShown || !this._canShowPopup()) {
             return;
         }
-        applyModalSizing(this.el.querySelector(".modal"));
+        applyModalSizing(this._getModalEl());
         this.$el.find(".modal").modal("show");
     },
     // Open popup when current URL hash matches modal ID.
     _showPopupOnClick() {
         const hash = window.location.hash;
-        if (hash && hash.substring(1) === this.modalShownOnClickEl.id) {
+        if (this._getHashModalId() === this.modalShownOnClickEl.id) {
             const urlWithoutHash = window.location.href.replace(hash, "");
             window.history.replaceState(null, null, urlWithoutHash);
             this._showPopup();
@@ -117,20 +149,14 @@ const PopupWidget = publicWidget.Widget.extend({
     // Persist consent cookie and stop embedded videos on hide.
     _onHideModal() {
         const nbDays = this.$el.find(".modal").data("consentsDuration");
-        cookie.set(this.el.id, this.cookieValue, nbDays * 24 * 60 * 60, "required");
-        this._popupAlreadyShown = true && !this.modalShownOnClickEl;
-
-        this.$el.find(".media_iframe_video iframe").each((i, iframe) => {
-            iframe.src = "";
-        });
+        cookie.set(this._getWidgetCookieKey(), this.cookieValue, nbDays * 24 * 60 * 60, "required");
+        this._popupAlreadyShown = !this.modalShownOnClickEl;
+        this._resetEmbeddedIframes();
     },
     // Restore embedded videos when popup becomes visible.
     _onShowModal() {
-        applyModalSizing(this.el.querySelector(".modal"));
-        this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
-            const iframe = media.querySelector("iframe");
-            iframe.src = media.dataset.oeExpression || media.dataset.src;
-        });
+        applyModalSizing(this._getModalEl());
+        this._restoreEmbeddedIframes();
     },
     // Re-check hash-triggered popup when URL hash changes.
     _onHashChange() {

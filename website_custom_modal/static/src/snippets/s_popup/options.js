@@ -2,14 +2,102 @@
 
 import options from "@web_editor/js/editor/snippets.options";
 import {
+    applyModalSizing,
     normalizeCssDimension,
-    readModalHeightValue,
-    readModalWidthValue,
     syncModalSizingModesForApply,
 } from "./sizing_mode_sync";
 
-const CUSTOM_MODAL_WIDTH_CSS_VAR = "--scm-modal-w";
-const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--scm-modal-h";
+const TRIGGER_FIELDS = Object.freeze({
+    triggerMode: {
+        datasetKey: "triggerMode",
+        default: "button",
+        allowedValues: ["button", "link"],
+    },
+    triggerVariant: {
+        datasetKey: "triggerVariant",
+        default: "btn-primary",
+        allowedValues: ["btn-primary", "btn-secondary", "btn-success", "btn-warning", "btn-danger", "btn-info", "btn-light", "btn-dark"],
+    },
+    triggerSize: {
+        datasetKey: "triggerSize",
+        default: "default",
+        allowedValues: ["default", "btn-sm", "btn-lg"],
+    },
+    triggerShape: {
+        datasetKey: "triggerShape",
+        default: "default",
+        allowedValues: ["default", "rounded-0", "rounded", "rounded-pill"],
+    },
+    triggerWidth: {
+        datasetKey: "triggerWidth",
+        default: "auto",
+        allowedValues: ["auto", "w-100"],
+    },
+    triggerUnderline: {
+        datasetKey: "triggerUnderline",
+        default: "none",
+        allowedValues: ["none", "always", "hover"],
+    },
+    triggerWeight: {
+        datasetKey: "triggerWeight",
+        default: "fw-normal",
+        allowedValues: ["fw-normal", "fw-semibold", "fw-bold"],
+    },
+    triggerTextSize: {
+        datasetKey: "triggerTextSize",
+        default: "default",
+        allowedValues: ["default", "fs-6", "fs-5", "fs-4"],
+    },
+    triggerAlign: {
+        datasetKey: "triggerAlign",
+        default: "left",
+        allowedValues: ["left", "center", "right"],
+    },
+});
+
+const CLASS_GROUPS = Object.freeze({
+    trigger: [
+        "btn",
+        "btn-primary", "btn-secondary", "btn-success", "btn-warning", "btn-danger", "btn-info", "btn-light", "btn-dark",
+        "btn-sm", "btn-lg",
+        "rounded-0", "rounded", "rounded-pill",
+        "w-100",
+        "scm_link_underline_none", "scm_link_underline_always", "scm_link_underline_hover",
+        "fw-normal", "fw-semibold", "fw-bold",
+        "fs-6", "fs-5", "fs-4",
+    ],
+    rootAlign: ["scm_trigger_align_left", "scm_trigger_align_center", "scm_trigger_align_right"],
+});
+
+const MODE_RULES = Object.freeze({
+    button: (state) => {
+        const classes = ["btn", state.triggerVariant];
+        if (state.triggerSize !== "default") {
+            classes.push(state.triggerSize);
+        }
+        if (state.triggerShape !== "default") {
+            classes.push(state.triggerShape);
+        }
+        if (state.triggerWidth === "w-100") {
+            classes.push("w-100");
+        }
+        return classes;
+    },
+    link: (state) => {
+        const classes = [`scm_link_underline_${state.triggerUnderline}`];
+        if (state.triggerWeight !== "default") {
+            classes.push(state.triggerWeight);
+        }
+        if (state.triggerTextSize !== "default") {
+            classes.push(state.triggerTextSize);
+        }
+        return classes;
+    },
+});
+
+function getRootPopup$(instance) {
+    return instance.$target.closest(".s_button_popup_custom_modal");
+}
 
 //noinspection JSVoidFunctionReturnValueUsed
 options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
@@ -141,24 +229,9 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
                 return this.$target[0].getAttribute("data-modal-width-mode") || "content";
             case "setModalHeightMode":
                 return this.$target[0].getAttribute("data-modal-height-mode") || "content";
-            case "triggerMode":
-                return this._getRootPopupEl()?.dataset.triggerMode || "button";
-            case "triggerVariant":
-                return this._getRootPopupEl()?.dataset.triggerVariant || "btn-primary";
-            case "triggerSize":
-                return this._getRootPopupEl()?.dataset.triggerSize || "default";
-            case "triggerShape":
-                return this._getRootPopupEl()?.dataset.triggerShape || "default";
-            case "triggerWidth":
-                return this._getRootPopupEl()?.dataset.triggerWidth || "auto";
-            case "triggerUnderline":
-                return this._getRootPopupEl()?.dataset.triggerUnderline || "none";
-            case "triggerWeight":
-                return this._getRootPopupEl()?.dataset.triggerWeight || "fw-normal";
-            case "triggerTextSize":
-                return this._getRootPopupEl()?.dataset.triggerTextSize || "default";
-            case "triggerAlign":
-                return this._getRootPopupEl()?.dataset.triggerAlign || "left";
+        }
+        if (Object.prototype.hasOwnProperty.call(TRIGGER_FIELDS, methodName)) {
+            return this._readTriggerField(methodName);
         }
         return this._super(...arguments);
     },
@@ -172,13 +245,20 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Resolve the root popup wrapper for both popup snippet variants.
     _getRootPopupEl() {
-        return this.$target[0].closest(".s_button_popup_custom_modal");
+        return getRootPopup$(this)[0];
+    },
+
+    _getRootPopup$() {
+        return getRootPopup$(this);
+    },
+
+    _getTrigger$() {
+        return this._getRootPopup$().find(".s_button_popup_trigger").first();
     },
 
     // Keep the trigger button hash target in sync with modal ID.
     _syncTriggerHref() {
-        const rootEl = this.$target.closest(".s_button_popup_custom_modal");
-        const triggerEl = rootEl.find(".s_button_popup_trigger")[0];
+        const triggerEl = this._getTrigger$()[0];
         const modalId = this.$target.attr("id");
         if (triggerEl && modalId) {
             triggerEl.setAttribute("href", `#${modalId}`);
@@ -203,228 +283,157 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Persist current width sizing mode (only when widget supplied a value).
     setModalWidthMode(previewMode, widgetValue) {
-        const value = (widgetValue || "").trim();
-        if (value) {
-            this.$target.attr("data-modal-width-mode", value);
-        }
-        this._applySizingFromDataset();
+        this._setModalMode("data-modal-width-mode", widgetValue);
     },
 
     // Persist current height sizing mode (only when widget supplied a value).
     setModalHeightMode(previewMode, widgetValue) {
+        this._setModalMode("data-modal-height-mode", widgetValue);
+    },
+
+    _setModalMode(attrName, widgetValue) {
         const value = (widgetValue || "").trim();
         if (value) {
-            this.$target.attr("data-modal-height-mode", value);
+            this.$target.attr(attrName, value);
         }
         this._applySizingFromDataset();
     },
 
     // Apply custom width/height through CSS variables while mode stays in data attributes.
     _applySizingFromDataset() {
-        const modalEl = this.$target[0];
-        if (!modalEl) {
-            return;
-        }
-        const dialogEl = modalEl.querySelector(".modal-dialog");
-        const contentEl = modalEl.querySelector(".modal-content");
-        const widthValue = readModalWidthValue(modalEl, dialogEl);
-        const heightValue = readModalHeightValue(modalEl, contentEl);
-        if (widthValue) {
-            modalEl.setAttribute("data-modal-width", widthValue);
-        }
-        if (heightValue) {
-            modalEl.setAttribute("data-modal-height", heightValue);
-        }
-        const widthModeAttr = modalEl.getAttribute("data-modal-width-mode") || "";
-        const heightModeAttr = modalEl.getAttribute("data-modal-height-mode") || "";
-        if (dialogEl) {
-            if (widthModeAttr === "custom") {
-                if (widthValue) {
-                    dialogEl.style.setProperty(CUSTOM_MODAL_WIDTH_CSS_VAR, widthValue);
-                } else {
-                    dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
-                }
-            } else {
-                dialogEl.style.removeProperty(CUSTOM_MODAL_WIDTH_CSS_VAR);
-            }
-        }
-        if (contentEl) {
-            if (heightModeAttr === "custom") {
-                if (heightValue) {
-                    contentEl.style.setProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR, heightValue);
-                } else {
-                    contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
-                }
-            } else {
-                contentEl.style.removeProperty(CUSTOM_MODAL_HEIGHT_CSS_VAR);
-            }
-        }
+        applyModalSizing(this.$target[0]);
     },
 
     // Toggle trigger rendering mode and keep classes consistent.
     triggerMode(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        const mode = widgetValue === "link" ? "link" : "button";
-        rootEl.dataset.triggerMode = mode;
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerMode", widgetValue);
     },
 
     // Update Bootstrap button variant.
     triggerVariant(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerVariant = widgetValue || "btn-primary";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerVariant", widgetValue);
     },
 
     // Update trigger size (button mode only).
     triggerSize(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerSize = widgetValue || "default";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerSize", widgetValue);
     },
 
     // Update trigger shape (button mode only).
     triggerShape(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerShape = widgetValue || "default";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerShape", widgetValue);
     },
 
     // Update trigger width mode.
     triggerWidth(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerWidth = widgetValue || "auto";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerWidth", widgetValue);
     },
 
     // Update text decoration mode for link view.
     triggerUnderline(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerUnderline = widgetValue || "none";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerUnderline", widgetValue);
     },
 
     // Update weight class for link view.
     triggerWeight(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerWeight = widgetValue || "fw-normal";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerWeight", widgetValue);
     },
 
     // Update text size class for link view.
     triggerTextSize(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerTextSize = widgetValue || "default";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerTextSize", widgetValue);
     },
 
     // Update alignment class on root wrapper.
     triggerAlign(previewMode, widgetValue) {
-        const rootEl = this._getRootPopupEl();
-        if (!rootEl) {
-            return;
-        }
-        rootEl.dataset.triggerAlign = widgetValue || "left";
-        this._normalizeTriggerClasses();
+        this._setTriggerField("triggerAlign", widgetValue);
     },
 
     // Restore defaults from persisted data attributes.
     _restoreTriggerState() {
-        const rootEl = this._getRootPopupEl();
+        const rootEl = this._getRootPopup$()[0];
         if (!rootEl) {
             return;
         }
-        rootEl.dataset.triggerMode = rootEl.dataset.triggerMode || "button";
-        rootEl.dataset.triggerVariant = rootEl.dataset.triggerVariant || "btn-primary";
-        rootEl.dataset.triggerSize = rootEl.dataset.triggerSize || "default";
-        rootEl.dataset.triggerShape = rootEl.dataset.triggerShape || "default";
-        rootEl.dataset.triggerWidth = rootEl.dataset.triggerWidth || "auto";
-        rootEl.dataset.triggerUnderline = rootEl.dataset.triggerUnderline || "none";
-        rootEl.dataset.triggerWeight = rootEl.dataset.triggerWeight || "fw-normal";
-        rootEl.dataset.triggerTextSize = rootEl.dataset.triggerTextSize || "default";
-        rootEl.dataset.triggerAlign = rootEl.dataset.triggerAlign || "left";
+        this._collectNormalizedTriggerState(rootEl, {persist: true});
+        this._normalizeTriggerClasses();
+    },
+
+    _normalizeTriggerFieldValue(fieldName, value) {
+        const field = TRIGGER_FIELDS[fieldName];
+        if (!field) {
+            return value;
+        }
+        const normalized = (value || "").trim();
+        if (!normalized) {
+            return field.default;
+        }
+        if (field.allowedValues && !field.allowedValues.includes(normalized)) {
+            return field.default;
+        }
+        return normalized;
+    },
+
+    _readTriggerField(fieldName) {
+        const rootEl = this._getRootPopup$()[0];
+        if (!rootEl || !TRIGGER_FIELDS[fieldName]) {
+            return TRIGGER_FIELDS[fieldName]?.default;
+        }
+        return this._collectNormalizedTriggerState(rootEl, {persist: true})[fieldName];
+    },
+
+    _getTriggerState(rootEl) {
+        return this._collectNormalizedTriggerState(rootEl, {persist: true});
+    },
+
+    _collectNormalizedTriggerState(rootEl, {persist = false} = {}) {
+        const state = {};
+        for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
+            const field = TRIGGER_FIELDS[fieldName];
+            const value = this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
+            if (persist) {
+                rootEl.dataset[field.datasetKey] = value;
+            }
+            state[fieldName] = value;
+        }
+        return state;
+    },
+
+    _setTriggerField(fieldName, rawValue) {
+        const rootEl = this._getRootPopup$()[0];
+        const field = TRIGGER_FIELDS[fieldName];
+        if (!rootEl || !field) {
+            return;
+        }
+        rootEl.dataset[field.datasetKey] = this._normalizeTriggerFieldValue(fieldName, rawValue);
         this._normalizeTriggerClasses();
     },
 
     // Apply mode-specific class sets while removing conflicts.
     _normalizeTriggerClasses() {
-        const rootEl = this._getRootPopupEl();
+        const $rootEl = this._getRootPopup$();
+        const rootEl = $rootEl[0];
         if (!rootEl) {
             return;
         }
-        const triggerEl = rootEl.querySelector(".s_button_popup_trigger");
+        const $triggerEl = this._getTrigger$();
+        const triggerEl = $triggerEl[0];
         if (!triggerEl) {
             return;
         }
-        const mode = rootEl.dataset.triggerMode || "button";
-        const variant = rootEl.dataset.triggerVariant || "btn-primary";
-        const size = rootEl.dataset.triggerSize || "default";
-        const shape = rootEl.dataset.triggerShape || "default";
-        const width = rootEl.dataset.triggerWidth || "auto";
-        const underline = rootEl.dataset.triggerUnderline || "none";
-        const weight = rootEl.dataset.triggerWeight || "fw-normal";
-        const textSize = rootEl.dataset.triggerTextSize || "default";
-        const align = rootEl.dataset.triggerAlign || "left";
+        const state = this._getTriggerState(rootEl);
+        const mode = state.triggerMode === "link" ? "link" : "button";
+        rootEl.dataset.triggerMode = mode;
 
-        const buttonVariants = [
-            "btn-primary", "btn-secondary", "btn-success", "btn-warning", "btn-danger",
-            "btn-info", "btn-light", "btn-dark",
-        ];
-        const buttonSizes = ["btn-sm", "btn-lg"];
-        const buttonShapes = ["rounded-0", "rounded", "rounded-pill"];
-        const triggerWidths = ["w-100"];
-        const linkUnderlines = ["scm_link_underline_none", "scm_link_underline_always", "scm_link_underline_hover"];
-        const linkWeights = ["fw-normal", "fw-semibold", "fw-bold"];
-        const linkSizes = ["fs-6", "fs-5", "fs-4"];
-        const alignClasses = ["scm_trigger_align_left", "scm_trigger_align_center", "scm_trigger_align_right"];
+        // 1) Clean conflicting classes by predefined groups.
+        $triggerEl.removeClass(CLASS_GROUPS.trigger.join(" "));
+        $rootEl.removeClass(CLASS_GROUPS.rootAlign.join(" "));
 
-        triggerEl.classList.remove("btn", ...buttonVariants, ...buttonSizes, ...buttonShapes, ...triggerWidths, ...linkUnderlines, ...linkWeights, ...linkSizes);
-        rootEl.classList.remove(...alignClasses);
-
-        if (mode === "button") {
-            triggerEl.classList.add("btn", variant);
-            if (size !== "default") {
-                triggerEl.classList.add(size);
-            }
-            if (shape !== "default") {
-                triggerEl.classList.add(shape);
-            }
-            if (width === "w-100") {
-                triggerEl.classList.add("w-100");
-            }
-        } else {
-            triggerEl.classList.add("scm_link_underline_" + underline);
-            if (weight !== "default") {
-                triggerEl.classList.add(weight);
-            }
-            if (textSize !== "default") {
-                triggerEl.classList.add(textSize);
-            }
+        // 2) Apply the current mode classes and root alignment.
+        const modeClasses = MODE_RULES[mode](state);
+        if (modeClasses.length) {
+            $triggerEl.addClass(modeClasses.join(" "));
         }
-        rootEl.classList.add("scm_trigger_align_" + align);
+        $rootEl.addClass(`scm_trigger_align_${state.triggerAlign}`);
     },
 });
