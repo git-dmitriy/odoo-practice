@@ -1,0 +1,405 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_custom_modal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#. module: website_custom_modal
+msgid "Website Custom Modal"
+msgstr "Кастомное модальное окно сайта"
+
+#. module: website_custom_modal
+msgid "Reusable website snippet with editable modal window"
+msgstr "Переиспользуемый сниппет сайта с редактируемым модальным окном"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
+msgid "custom modal"
+msgstr "Кастомное модальное"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
+msgid "button, popup, modal, action"
+msgstr "кнопка, попап, модальное, действие"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Button + Popup (Custom Modal)"
+msgstr "Кнопка + всплывающее окно (Custom Modal)"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Open modal"
+msgstr "Открыть окно"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Button Popup"
+msgstr "Всплывающее окно кнопки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Close"
+msgstr "Закрыть"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Custom modal content"
+msgstr "Содержимое модального окна"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal
+msgid "Drop any Odoo blocks here: form, text, images, and more."
+msgstr "Перетащите сюда любые блоки Odoo: форму, текст, изображения и другое."
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Position"
+msgstr "Положение"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Top"
+msgstr "Сверху"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Middle"
+msgstr "По центру"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Bottom"
+msgstr "Снизу"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Backdrop"
+msgstr "Подложка"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Close Button Color"
+msgstr "Цвет кнопки закрытия"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Display"
+msgstr "Показ"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Delay"
+msgstr "С задержкой"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "On Exit"
+msgstr "При выходе"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "On Click (via link)"
+msgstr "По клику (через ссылку)"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "⏱ Delay"
+msgstr "⏱ Задержка"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Automatically opens the pop-up if the user stays on a page longer than the specified time."
+msgstr "Автоматически открывает всплывающее окно, если пользователь остаётся на странице дольше указанного времени."
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "days"
+msgstr "дней"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Hide For"
+msgstr "Скрыть на"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Once the user closes the popup, it won't be shown again for that period of time."
+msgstr "После закрытия пользователем окно не будет показываться в течение указанного времени."
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Show on"
+msgstr "Показывать на"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "This page"
+msgstr "Этой странице"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "All pages"
+msgstr "Всех страницах"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Modal Width"
+msgstr "Ширина окна"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Content"
+msgstr "По контенту"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Small"
+msgstr "Маленькая"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Medium"
+msgstr "Средняя"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Large"
+msgstr "Большая"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Extra Large"
+msgstr "Очень большая"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Full"
+msgstr "Во всю ширину"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Custom"
+msgstr "Своё значение"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Custom Width"
+msgstr "Своя ширина"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Examples: 640px, 75%, 48rem."
+msgstr "Примеры: 640px, 75%, 48rem."
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Modal Height"
+msgstr "Высота окна"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Auto"
+msgstr "Авто"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Compact"
+msgstr "Компактная"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Tall"
+msgstr "Высокая"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Custom Height"
+msgstr "Своя высота"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Examples: 420px, 70vh."
+msgstr "Примеры: 420px, 70vh."
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Trigger Mode"
+msgstr "Режим триггера"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Button"
+msgstr "Кнопка"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Link"
+msgstr "Ссылка"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Button Variant"
+msgstr "Вариант кнопки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Primary"
+msgstr "Основной"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Secondary"
+msgstr "Вторичный"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Success"
+msgstr "Успех"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Warning"
+msgstr "Предупреждение"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Danger"
+msgstr "Опасность"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Info"
+msgstr "Инфо"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Light"
+msgstr "Светлый"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Dark"
+msgstr "Тёмный"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Button Size"
+msgstr "Размер кнопки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Default"
+msgstr "По умолчанию"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Button Shape"
+msgstr "Форма кнопки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Square"
+msgstr "Прямоугольная"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Rounded"
+msgstr "Скруглённая"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Pill"
+msgstr "Капсула"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Button Width"
+msgstr "Ширина кнопки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Full Width"
+msgstr "На всю ширину"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Link Color"
+msgstr "Цвет ссылки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Link Underline"
+msgstr "Подчёркивание ссылки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "None"
+msgstr "Нет"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Always"
+msgstr "Всегда"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "On Hover"
+msgstr "При наведении"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Link Weight"
+msgstr "Жирность ссылки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Normal"
+msgstr "Обычный"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Semi Bold"
+msgstr "Полужирный"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Bold"
+msgstr "Жирный"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Link Size"
+msgstr "Размер ссылки"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Trigger Align"
+msgstr "Выравнивание триггера"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Left"
+msgstr "Слева"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Center"
+msgstr "По центру"
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_button_popup_custom_modal_options
+msgid "Right"
+msgstr "Справа"
