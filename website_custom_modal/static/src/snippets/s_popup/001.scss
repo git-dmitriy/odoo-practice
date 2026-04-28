@@ -1,4 +1,7 @@
-.s_button_popup_custom_modal[data-vcss="001"] {
+.s_button_popup_custom_modal {
+    $scm-close-size: $font-size-lg * 2;
+    --scm-modal-gap: 32px;
+
     .s_button_popup_trigger {
         display: inline-block;
     }
@@ -42,21 +45,21 @@
         border: 0;
         border-radius: 0;
         box-shadow: $modal-content-box-shadow-sm-up;
-        max-height: calc(100vh - 32px);
+        max-height: calc(100vh - var(--scm-modal-gap));
         overflow-y: auto;
         overflow-x: hidden;
 
         @supports (height: 100dvh) {
-            max-height: calc(100dvh - 32px);
+            max-height: calc(100dvh - var(--scm-modal-gap));
         }
     }
 
     .s_popup_close {
         z-index: $zindex-modal;
         @include o-position-absolute(0, 0);
-        width: $font-size-lg * 2;
-        height: $font-size-lg * 2;
-        line-height: $font-size-lg * 2;
+        width: $scm-close-size;
+        height: $scm-close-size;
+        line-height: $scm-close-size;
         @include o-bg-color(color-contrast(o-color("primary")), o-color("primary"), $with-extras: false);
         box-shadow: $box-shadow-sm;
         cursor: pointer;
@@ -66,16 +69,16 @@
 
     .scm_width_content {
         width: fit-content;
-        max-width: calc(100vw - 32px);
+        max-width: calc(100vw - var(--scm-modal-gap));
     }
 
     .scm_height_content {
         height: auto;
-        max-height: calc(100vh - 32px);
+        max-height: calc(100vh - var(--scm-modal-gap));
         overflow-y: auto;
 
         @supports (height: 100dvh) {
-            max-height: calc(100dvh - 32px);
+            max-height: calc(100dvh - var(--scm-modal-gap));
         }
     }
 
@@ -97,7 +100,7 @@
 
     .scm_width_full {
         max-width: none;
-        width: calc(100vw - 32px);
+        width: calc(100vw - var(--scm-modal-gap));
         margin-left: auto;
         margin-right: auto;
         padding: 0 !important;

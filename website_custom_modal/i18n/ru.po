@@ -27,7 +27,7 @@ msgstr "Переиспользуемый сниппет сайта с редак
 #. module: website_custom_modal
 #: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
 msgid "custom modal"
-msgstr "Кастомное модальное"
+msgstr "Кастомное модальное окно"
 
 #. module: website_custom_modal
 #: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
