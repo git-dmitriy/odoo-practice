@@ -2,10 +2,18 @@
 <odoo>
 
     <template id="s_custom_modal" name="Button + Popup (Custom Modal)">
-        <div class="s_custom_modal o_snippet_invisible wcm_trigger_align_left"
-             data-trigger-mode="button">
+        <div class="s_custom_modal o_snippet_invisible wcm_trigger_align_left">
             <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only"
-               href="#sButtonPopupCustomModalDefault">Open modal
+               href="#sButtonPopupCustomModalDefault"
+               data-trigger-mode="button"
+               data-trigger-variant="btn-primary"
+               data-trigger-size="default"
+               data-trigger-shape="default"
+               data-trigger-width="auto"
+               data-trigger-underline="none"
+               data-trigger-weight="fw-normal"
+               data-trigger-text-size="default"
+               data-trigger-align="left">Open modal
             </a>
             <div id="sButtonPopupCustomModalDefault" class="modal fade s_custom_popup_middle"
                  style="background-color: var(--black-50) !important;" data-display="onClick"
@@ -151,7 +159,7 @@
                     <we-button data-trigger-text-size="fs-5">Medium</we-button>
                     <we-button data-trigger-text-size="fs-4">Large</we-button>
                 </we-select>
-                <we-select string="Trigger Align">
+                <we-select string="Trigger Align" data-name="trigger_align">
                     <we-button data-trigger-align="left" data-name="trigger_align_left">Left</we-button>
                     <we-button data-trigger-align="center">Center</we-button>
                     <we-button data-trigger-align="right">Right</we-button>
@@ -164,6 +172,10 @@
                 <t t-out="button_popup_base_options_custom_modal"/>
                 <t t-out="button_popup_extra_options_custom_modal"/>
                 <t t-out="button_popup_size_options_custom_modal"/>
+            </div>
+            <div data-js="SnippetCustomModalTrigger"
+                 data-selector="a.s_button_popup_trigger"
+                 data-exclude=".s_custom_modal .modal *">
                 <t t-out="button_popup_trigger_options_custom_modal"/>
             </div>
         </xpath>

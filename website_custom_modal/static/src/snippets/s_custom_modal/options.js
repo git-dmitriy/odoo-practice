@@ -97,8 +97,69 @@ const MODE_RULES = Object.freeze({
     },
 });
 
-function getRootPopup$(instance) {
-    return instance.$target.closest(".s_custom_modal");
+// Normalize a single field value (trim, fall back to default if empty / not allowed).
+function normalizeTriggerFieldValue(fieldName, value) {
+    const field = TRIGGER_FIELDS[fieldName];
+    if (!field) {
+        return value;
+    }
+    const normalized = (value || "").trim();
+    if (!normalized) {
+        return field.default;
+    }
+    if (field.allowedValues && !field.allowedValues.includes(normalized)) {
+        return field.default;
+    }
+    return normalized;
+}
+
+// Read the full trigger state from an element's dataset (no DOM writes).
+function readTriggerStateFromDataset(el) {
+    const state = {};
+    if (!el) {
+        for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
+            state[fieldName] = TRIGGER_FIELDS[fieldName].default;
+        }
+        return state;
+    }
+    for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
+        const field = TRIGGER_FIELDS[fieldName];
+        state[fieldName] = normalizeTriggerFieldValue(fieldName, el.dataset[field.datasetKey]);
+    }
+    return state;
+}
+
+// Persist a normalized state back to an element's dataset.
+function persistTriggerStateToDataset(el, state) {
+    if (!el) {
+        return;
+    }
+    for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
+        el.dataset[TRIGGER_FIELDS[fieldName].datasetKey] = state[fieldName];
+    }
+}
+
+// Apply mode-specific class sets while removing conflicts.
+// rootEl may be null when the trigger lives outside .s_custom_modal — in that
+// case alignment classes are not written anywhere.
+function normalizeTriggerClasses(triggerEl, rootEl) {
+    if (!triggerEl) {
+        return;
+    }
+    const state = readTriggerStateFromDataset(triggerEl);
+
+    triggerEl.classList.remove(...CLASS_GROUPS.trigger);
+    if (rootEl) {
+        rootEl.classList.remove(...CLASS_GROUPS.rootAlign);
+    }
+
+    const modeClasses = MODE_RULES[state.triggerMode](state);
+    if (modeClasses.length) {
+        triggerEl.classList.add(...modeClasses);
+    }
+    if (rootEl) {
+        rootEl.classList.add(`wcm_trigger_align_${state.triggerAlign}`);
+    }
 }
 
 //noinspection JSVoidFunctionReturnValueUsed
@@ -126,7 +187,6 @@ options.registry.SnippetCustomModal = options.Class.extend({
             this.$target[0]?.querySelector(".modal-content"),
         );
         this._applySizingFromDataset();
-        this._restoreTriggerState();
         return this._super(...arguments);
     },
     // Re-apply custom sizing after editor-triggered updates.
@@ -148,14 +208,12 @@ options.registry.SnippetCustomModal = options.Class.extend({
     onBuilt() {
         this._assignUniqueID();
         this._applySizingFromDataset();
-        this._restoreTriggerState();
     },
 
     // Assign a fresh ID when the snippet is duplicated.
     onClone() {
         this._assignUniqueID();
         this._applySizingFromDataset();
-        this._restoreTriggerState();
     },
 
     // Preview the popup by opening its Bootstrap modal in editor mode.
@@ -188,10 +246,14 @@ options.registry.SnippetCustomModal = options.Class.extend({
     },
 
     // Generate a unique DOM ID used by onClick/hash popup mode.
+    // Re-points only descendant triggers (those still living inside the wrapper);
+    // standalone triggers placed elsewhere on the page keep their original href.
     _assignUniqueID() {
+        const prevId = this.$target.attr("id");
         const suffix = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
-        this.$target.attr("id", `sButtonPopupCustomModal${suffix}`);
-        this._syncTriggerHref();
+        const newId = `sButtonPopupCustomModal${suffix}`;
+        this.$target.attr("id", newId);
+        this._syncTriggerHref(prevId, newId);
     },
 
     // Return current option state for controls that require it.
@@ -202,9 +264,6 @@ options.registry.SnippetCustomModal = options.Class.extend({
             case "setModalHeightMode":
                 return this.$target[0].getAttribute("data-modal-height-mode") || "content";
         }
-        if (Object.prototype.hasOwnProperty.call(TRIGGER_FIELDS, methodName)) {
-            return this._readTriggerField(methodName);
-        }
         return this._super(...arguments);
     },
 
@@ -213,21 +272,23 @@ options.registry.SnippetCustomModal = options.Class.extend({
         clearEmbeddedIframes(this.$target[0]);
     },
 
-    _getRootPopup$() {
-        return getRootPopup$(this);
-    },
-
-    _getTrigger$() {
-        return this._getRootPopup$().find(".s_button_popup_trigger").first();
-    },
-
-    // Keep the trigger button hash target in sync with modal ID.
-    _syncTriggerHref() {
-        const triggerEl = this._getTrigger$()[0];
-        const modalId = this.$target.attr("id");
-        if (triggerEl && modalId) {
-            triggerEl.setAttribute("href", `#${modalId}`);
+    // Re-target descendant triggers to the (possibly updated) modal id.
+    // $target is the .modal (via data-target=".modal"), so we climb to the
+    // .s_custom_modal wrapper first, then look for triggers inside it.
+    // When prevId is provided, only triggers pointing at it are updated; this
+    // preserves the contract that external triggers stay on their original modal.
+    _syncTriggerHref(prevId, explicitNewId) {
+        const newId = explicitNewId || this.$target.attr("id");
+        if (!newId) {
+            return;
         }
+        const $descendants = this.$target
+            .closest(".s_custom_modal")
+            .find(".s_button_popup_trigger");
+        const $toRetarget = prevId
+            ? $descendants.filter(`[href="#${prevId}"]`)
+            : $descendants;
+        $toRetarget.attr("href", `#${newId}`);
     },
 
     // Store and apply custom modal width when "Custom" width is selected.
@@ -267,6 +328,50 @@ options.registry.SnippetCustomModal = options.Class.extend({
     // Apply custom width/height through CSS variables while mode stays in data attributes.
     _applySizingFromDataset() {
         applyModalSizing(this.$target[0]);
+    },
+});
+
+//noinspection JSVoidFunctionReturnValueUsed
+options.registry.SnippetCustomModalTrigger = options.Class.extend({
+    // Re-persist normalized state, then refresh trigger classes.
+    start() {
+        const triggerEl = this.$target[0];
+        const rootEl = this._getRootPopup$()[0] || null;
+        persistTriggerStateToDataset(triggerEl, readTriggerStateFromDataset(triggerEl));
+        normalizeTriggerClasses(triggerEl, rootEl);
+        return this._super(...arguments);
+    },
+
+    // Resolve the .s_custom_modal that owns this trigger, either by DOM ancestry
+    // (trigger inside its wrapper) or by following the href to the modal id.
+    _getRootPopup$() {
+        const direct = this.$target.closest(".s_custom_modal");
+        if (direct.length) {
+            return direct;
+        }
+        const href = this.$target.attr("href") || "";
+        if (!href.startsWith("#")) {
+            return $();
+        }
+        const modalEl = this.$target[0].ownerDocument.getElementById(href.slice(1));
+        return modalEl ? $(modalEl).closest(".s_custom_modal") : $();
+    },
+
+    // Hide alignment widget when no .s_custom_modal wrapper hosts the trigger:
+    // alignment is applied to the wrapper, so it has no effect when detached.
+    async _computeWidgetVisibility(widgetName, params) {
+        if (widgetName === "trigger_align") {
+            return Boolean(this._getRootPopup$().length);
+        }
+        return this._super(...arguments);
+    },
+
+    // Return current value for trigger field controls.
+    _computeWidgetState(methodName) {
+        if (Object.prototype.hasOwnProperty.call(TRIGGER_FIELDS, methodName)) {
+            return normalizeTriggerFieldValue(methodName, this.$target[0].dataset[TRIGGER_FIELDS[methodName].datasetKey]);
+        }
+        return this._super(...arguments);
     },
 
     // Toggle trigger rendering mode and keep classes consistent.
@@ -309,99 +414,19 @@ options.registry.SnippetCustomModal = options.Class.extend({
         this._setTriggerField("triggerTextSize", widgetValue);
     },
 
-    // Update alignment class on root wrapper.
+    // Update alignment (only effective when trigger lives inside a wrapper).
     triggerAlign(previewMode, widgetValue) {
         this._setTriggerField("triggerAlign", widgetValue);
     },
 
-    // Restore defaults from persisted data attributes.
-    _restoreTriggerState() {
-        const rootEl = this._getRootPopup$()[0];
-        if (!rootEl) {
-            return;
-        }
-        const state = this._readTriggerState(rootEl);
-        this._persistTriggerState(rootEl, state);
-        this._normalizeTriggerClasses();
-    },
-
-    _normalizeTriggerFieldValue(fieldName, value) {
-        const field = TRIGGER_FIELDS[fieldName];
-        if (!field) {
-            return value;
-        }
-        const normalized = (value || "").trim();
-        if (!normalized) {
-            return field.default;
-        }
-        if (field.allowedValues && !field.allowedValues.includes(normalized)) {
-            return field.default;
-        }
-        return normalized;
-    },
-
-    // Pure read of the trigger state from dataset (no DOM writes).
-    _readTriggerState(rootEl) {
-        const state = {};
-        for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
-            const field = TRIGGER_FIELDS[fieldName];
-            state[fieldName] = this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
-        }
-        return state;
-    },
-
-    // Persist a fully-normalized state back to the dataset.
-    _persistTriggerState(rootEl, state) {
-        for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
-            rootEl.dataset[TRIGGER_FIELDS[fieldName].datasetKey] = state[fieldName];
-        }
-    },
-
-    _readTriggerField(fieldName) {
-        const field = TRIGGER_FIELDS[fieldName];
-        if (!field) {
-            return undefined;
-        }
-        const rootEl = this._getRootPopup$()[0];
-        if (!rootEl) {
-            return field.default;
-        }
-        return this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
-    },
-
     _setTriggerField(fieldName, rawValue) {
-        const rootEl = this._getRootPopup$()[0];
         const field = TRIGGER_FIELDS[fieldName];
-        if (!rootEl || !field) {
+        if (!field) {
             return;
         }
-        rootEl.dataset[field.datasetKey] = this._normalizeTriggerFieldValue(fieldName, rawValue);
-        this._normalizeTriggerClasses();
-    },
-
-    // Apply mode-specific class sets while removing conflicts.
-    _normalizeTriggerClasses() {
-        const $rootEl = this._getRootPopup$();
-        const rootEl = $rootEl[0];
-        if (!rootEl) {
-            return;
-        }
-        const $triggerEl = this._getTrigger$();
-        const triggerEl = $triggerEl[0];
-        if (!triggerEl) {
-            return;
-        }
-        const state = this._readTriggerState(rootEl);
-
-        // 1) Clean conflicting classes by predefined groups.
-        $triggerEl.removeClass(CLASS_GROUPS.trigger.join(" "));
-        $rootEl.removeClass(CLASS_GROUPS.rootAlign.join(" "));
-
-        // 2) Apply the current mode classes and root alignment.
-        const modeClasses = MODE_RULES[state.triggerMode](state);
-        if (modeClasses.length) {
-            $triggerEl.addClass(modeClasses.join(" "));
-        }
-        $rootEl.addClass(`wcm_trigger_align_${state.triggerAlign}`);
+        const triggerEl = this.$target[0];
+        const rootEl = this._getRootPopup$()[0] || null;
+        triggerEl.dataset[field.datasetKey] = normalizeTriggerFieldValue(fieldName, rawValue);
+        normalizeTriggerClasses(triggerEl, rootEl);
     },
 });
