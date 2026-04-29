@@ -13,13 +13,13 @@
     ],
     "assets": {
         "web.assets_frontend": [
-            "website_custom_modal/static/src/snippets/s_button_popup_custom_modal/sizing_mode_sync.js",
-            "website_custom_modal/static/src/snippets/s_button_popup_custom_modal/s_button_popup_custom_modal.js",
-            "website_custom_modal/static/src/snippets/s_button_popup_custom_modal/s_button_popup_custom_modal.scss",
+            "website_custom_modal/static/src/snippets/s_custom_modal/sizing_mode_sync.js",
+            "website_custom_modal/static/src/snippets/s_custom_modal/s_custom_modal.js",
+            "website_custom_modal/static/src/snippets/s_custom_modal/s_custom_modal.scss",
         ],
         "website.assets_wysiwyg": [
-            "website_custom_modal/static/src/snippets/s_button_popup_custom_modal/sizing_mode_sync.js",
-            "website_custom_modal/static/src/snippets/s_button_popup_custom_modal/options.js",
+            "website_custom_modal/static/src/snippets/s_custom_modal/sizing_mode_sync.js",
+            "website_custom_modal/static/src/snippets/s_custom_modal/options.js",
         ],
     },
     "installable": True,

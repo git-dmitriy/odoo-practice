@@ -98,23 +98,23 @@ const MODE_RULES = Object.freeze({
 });
 
 function getRootPopup$(instance) {
-    return instance.$target.closest(".s_button_popup_custom_modal");
+    return instance.$target.closest(".s_custom_modal");
 }
 
 //noinspection JSVoidFunctionReturnValueUsed
-options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
+options.registry.SnippetCustomModal = options.Class.extend({
     // Initialize editor bindings and sync popup option panel state.
     start() {
-        this.$bsTarget.on("click.SnippetButtonPopupCustomModal", ".js_close_popup:not(a, .btn)", (ev) => {
+        this.$bsTarget.on("click.SnippetCustomModal", ".js_close_popup:not(a, .btn)", (ev) => {
             ev.stopPropagation();
             this.onTargetHide();
             this.trigger_up("snippet_option_visibility_update", {show: false});
         });
-        this.$bsTarget.on("shown.bs.modal.SnippetButtonPopupCustomModal", () => {
+        this.$bsTarget.on("shown.bs.modal.SnippetCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: true});
             restoreEmbeddedIframes(this.$target[0]);
         });
-        this.$bsTarget.on("hide.bs.modal.SnippetButtonPopupCustomModal", () => {
+        this.$bsTarget.on("hide.bs.modal.SnippetCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: false});
             this._removeIframeSrc();
         });
@@ -141,7 +141,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     destroy() {
         this._super(...arguments);
         this._removeIframeSrc();
-        this.$bsTarget.off(".SnippetButtonPopupCustomModal");
+        this.$bsTarget.off(".SnippetCustomModal");
     },
 
     // Assign a fresh ID when the snippet is first inserted.

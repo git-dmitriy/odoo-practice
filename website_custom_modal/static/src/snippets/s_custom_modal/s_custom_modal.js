@@ -10,7 +10,7 @@ import {
 
 //noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
-    selector: ".s_button_popup_custom_modal",
+    selector: ".s_custom_modal",
     events: {
         "click .js_close_popup": "_onCloseClick",
         "keydown .js_close_popup": "_onCloseKeydown",
@@ -122,7 +122,7 @@ publicWidget.registry.PopupCustomModal = PopupWidget;
 
 //noinspection JSVoidFunctionReturnValueUsed
 const noBackdropPopupWidget = publicWidget.Widget.extend({
-    selector: ".s_button_popup_custom_modal .s_custom_popup_no_backdrop",
+    selector: ".s_custom_modal .s_custom_popup_no_backdrop",
     disabledInEditableMode: false,
     events: {
         "shown.bs.modal": "_onModalNoBackdropShown",
