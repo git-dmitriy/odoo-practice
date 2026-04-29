@@ -62,11 +62,11 @@ const CLASS_GROUPS = Object.freeze({
         "btn-sm", "btn-lg",
         "rounded-0", "rounded", "rounded-pill",
         "w-100",
-        "scm_link_underline_none", "scm_link_underline_always", "scm_link_underline_hover",
+        "wcm_link_underline_none", "wcm_link_underline_always", "wcm_link_underline_hover",
         "fw-normal", "fw-semibold", "fw-bold",
         "fs-6", "fs-5", "fs-4",
     ],
-    rootAlign: ["scm_trigger_align_left", "scm_trigger_align_center", "scm_trigger_align_right"],
+    rootAlign: ["wcm_trigger_align_left", "wcm_trigger_align_center", "wcm_trigger_align_right"],
 });
 
 const MODE_RULES = Object.freeze({
@@ -84,7 +84,7 @@ const MODE_RULES = Object.freeze({
         return classes;
     },
     link: (state) => {
-        const classes = [`scm_link_underline_${state.triggerUnderline}`];
+        const classes = [`wcm_link_underline_${state.triggerUnderline}`];
         if (state.triggerWeight !== "default") {
             classes.push(state.triggerWeight);
         }
@@ -434,6 +434,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         if (modeClasses.length) {
             $triggerEl.addClass(modeClasses.join(" "));
         }
-        $rootEl.addClass(`scm_trigger_align_${state.triggerAlign}`);
+        $rootEl.addClass(`wcm_trigger_align_${state.triggerAlign}`);
     },
 });

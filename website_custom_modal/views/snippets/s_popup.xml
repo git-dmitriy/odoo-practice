@@ -2,7 +2,7 @@
 <odoo>
 
     <template id="s_button_popup_custom_modal" name="Button + Popup (Custom Modal)">
-        <div class="s_button_popup_custom_modal o_snippet_invisible scm_trigger_align_left"
+        <div class="s_button_popup_custom_modal o_snippet_invisible wcm_trigger_align_left"
              data-trigger-mode="button">
             <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only"
                href="#sButtonPopupCustomModalDefault">Open modal
@@ -12,8 +12,8 @@
                  data-consents-duration="7" data-modal-width="" data-modal-height="" data-modal-width-mode="content"
                  data-modal-height-mode="content"
                  data-bs-focus="false" tabindex="-1" role="dialog" aria-label="Button Popup">
-                <div class="modal-dialog d-flex scm_width_content">
-                    <div class="modal-content oe_structure scm_height_content">
+                <div class="modal-dialog d-flex wcm_width_content">
+                    <div class="modal-content oe_structure wcm_height_content">
                         <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">
                             &#215;
                         </div>
@@ -75,49 +75,49 @@
                 </we-select>
             </t>
             <t t-set="button_popup_size_options_custom_modal">
-                <we-select string="Modal Width" data-apply-to=".modal-dialog" data-name="scm_width_opt">
-                    <we-button data-select-class="scm_width_content" data-set-modal-width-mode="content"
-                               data-name="scm_width_content">Content</we-button>
-                    <we-button data-select-class="scm_width_sm" data-set-modal-width-mode="preset_w_sm"
-                               data-name="scm_width_sm">Small</we-button>
-                    <we-button data-select-class="scm_width_md" data-set-modal-width-mode="preset_w_md"
-                               data-name="scm_width_md">Medium
+                <we-select string="Modal Width" data-apply-to=".modal-dialog" data-name="wcm_width_opt">
+                    <we-button data-select-class="wcm_width_content" data-set-modal-width-mode="content"
+                               data-name="wcm_width_content">Content</we-button>
+                    <we-button data-select-class="wcm_width_sm" data-set-modal-width-mode="preset_w_sm"
+                               data-name="wcm_width_sm">Small</we-button>
+                    <we-button data-select-class="wcm_width_md" data-set-modal-width-mode="preset_w_md"
+                               data-name="wcm_width_md">Medium
                     </we-button>
-                    <we-button data-select-class="scm_width_lg" data-set-modal-width-mode="preset_w_lg"
-                               data-name="scm_width_lg">Large</we-button>
-                    <we-button data-select-class="scm_width_xl" data-set-modal-width-mode="preset_w_xl"
-                               data-name="scm_width_xl">Extra Large
+                    <we-button data-select-class="wcm_width_lg" data-set-modal-width-mode="preset_w_lg"
+                               data-name="wcm_width_lg">Large</we-button>
+                    <we-button data-select-class="wcm_width_xl" data-set-modal-width-mode="preset_w_xl"
+                               data-name="wcm_width_xl">Extra Large
                     </we-button>
-                    <we-button data-select-class="scm_width_full" data-set-modal-width-mode="preset_w_full"
-                               data-name="scm_width_full">Full</we-button>
-                    <we-button data-select-class="scm_width_custom" data-set-modal-width-mode="custom"
-                               data-name="scm_width_custom">Custom
+                    <we-button data-select-class="wcm_width_full" data-set-modal-width-mode="preset_w_full"
+                               data-name="wcm_width_full">Full</we-button>
+                    <we-button data-select-class="wcm_width_custom" data-set-modal-width-mode="custom"
+                               data-name="wcm_width_custom">Custom
                     </we-button>
                 </we-select>
                 <we-input string="Custom Width" title="Examples: 640px, 75%, 48rem." data-set-modal-width="true"
                           data-select-data-attribute="" data-attribute-name="modalWidth"
-                          data-dependencies="scm_width_custom"/>
-                <we-select string="Modal Height" data-apply-to=".modal-content" data-name="scm_height_opt">
-                    <we-button data-select-class="scm_height_content" data-set-modal-height-mode="content"
-                               data-name="scm_height_content">Content</we-button>
-                    <we-button data-select-class="scm_height_auto" data-set-modal-height-mode="preset_h_auto"
-                               data-name="scm_height_auto">Auto
+                          data-dependencies="wcm_width_custom"/>
+                <we-select string="Modal Height" data-apply-to=".modal-content" data-name="wcm_height_opt">
+                    <we-button data-select-class="wcm_height_content" data-set-modal-height-mode="content"
+                               data-name="wcm_height_content">Content</we-button>
+                    <we-button data-select-class="wcm_height_auto" data-set-modal-height-mode="preset_h_auto"
+                               data-name="wcm_height_auto">Auto
                     </we-button>
-                    <we-button data-select-class="scm_height_compact" data-set-modal-height-mode="preset_h_compact"
-                               data-name="scm_height_compact">Compact
+                    <we-button data-select-class="wcm_height_compact" data-set-modal-height-mode="preset_h_compact"
+                               data-name="wcm_height_compact">Compact
                     </we-button>
-                    <we-button data-select-class="scm_height_medium" data-set-modal-height-mode="preset_h_medium"
-                               data-name="scm_height_medium">Medium
+                    <we-button data-select-class="wcm_height_medium" data-set-modal-height-mode="preset_h_medium"
+                               data-name="wcm_height_medium">Medium
                     </we-button>
-                    <we-button data-select-class="scm_height_tall" data-set-modal-height-mode="preset_h_tall"
-                               data-name="scm_height_tall">Tall</we-button>
-                    <we-button data-select-class="scm_height_custom" data-set-modal-height-mode="custom"
-                               data-name="scm_height_custom">Custom
+                    <we-button data-select-class="wcm_height_tall" data-set-modal-height-mode="preset_h_tall"
+                               data-name="wcm_height_tall">Tall</we-button>
+                    <we-button data-select-class="wcm_height_custom" data-set-modal-height-mode="custom"
+                               data-name="wcm_height_custom">Custom
                     </we-button>
                 </we-select>
                 <we-input string="Custom Height" title="Examples: 420px, 70vh." data-set-modal-height="true"
                           data-select-data-attribute="" data-attribute-name="modalHeight"
-                          data-dependencies="scm_height_custom"/>
+                          data-dependencies="wcm_height_custom"/>
             </t>
             <t t-set="button_popup_trigger_options_custom_modal">
                 <we-select string="Trigger Mode">

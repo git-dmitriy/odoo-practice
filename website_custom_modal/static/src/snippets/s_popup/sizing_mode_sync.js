@@ -4,26 +4,26 @@
 // Width classes live on .modal-dialog, height classes — on .modal-content.
 // Order matters: custom > preset_* > content (more specific wins on conflicts).
 
-const CUSTOM_MODAL_WIDTH_CSS_VAR = "--scm-modal-w";
-const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--scm-modal-h";
+const CUSTOM_MODAL_WIDTH_CSS_VAR = "--wcm-modal-w";
+const CUSTOM_MODAL_HEIGHT_CSS_VAR = "--wcm-modal-h";
 
 const WIDTH_CLASS_TO_MODE = [
-    ["scm_width_custom", "custom"],
-    ["scm_width_sm", "preset_w_sm"],
-    ["scm_width_md", "preset_w_md"],
-    ["scm_width_lg", "preset_w_lg"],
-    ["scm_width_xl", "preset_w_xl"],
-    ["scm_width_full", "preset_w_full"],
-    ["scm_width_content", "content"],
+    ["wcm_width_custom", "custom"],
+    ["wcm_width_sm", "preset_w_sm"],
+    ["wcm_width_md", "preset_w_md"],
+    ["wcm_width_lg", "preset_w_lg"],
+    ["wcm_width_xl", "preset_w_xl"],
+    ["wcm_width_full", "preset_w_full"],
+    ["wcm_width_content", "content"],
 ];
 
 const HEIGHT_CLASS_TO_MODE = [
-    ["scm_height_custom", "custom"],
-    ["scm_height_auto", "preset_h_auto"],
-    ["scm_height_compact", "preset_h_compact"],
-    ["scm_height_medium", "preset_h_medium"],
-    ["scm_height_tall", "preset_h_tall"],
-    ["scm_height_content", "content"],
+    ["wcm_height_custom", "custom"],
+    ["wcm_height_auto", "preset_h_auto"],
+    ["wcm_height_compact", "preset_h_compact"],
+    ["wcm_height_medium", "preset_h_medium"],
+    ["wcm_height_tall", "preset_h_tall"],
+    ["wcm_height_content", "content"],
 ];
 
 /** Normalize bare numbers to px for valid CSS width/height. */
@@ -123,14 +123,14 @@ export function syncModalSizingModesForApply(modalEl, dialogEl, contentEl) {
 
     if (
         widthValue &&
-        dialogEl?.classList.contains("scm_width_custom") &&
+        dialogEl?.classList.contains("wcm_width_custom") &&
         modalEl.getAttribute("data-modal-width-mode") !== "custom"
     ) {
         modalEl.setAttribute("data-modal-width-mode", "custom");
     }
     if (
         heightValue &&
-        contentEl?.classList.contains("scm_height_custom") &&
+        contentEl?.classList.contains("wcm_height_custom") &&
         modalEl.getAttribute("data-modal-height-mode") !== "custom"
     ) {
         modalEl.setAttribute("data-modal-height-mode", "custom");
