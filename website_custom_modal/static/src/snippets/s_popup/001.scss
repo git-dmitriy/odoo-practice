@@ -54,6 +54,18 @@
         }
     }
 
+    .modal.s_popup_top .modal-content {
+        margin-block: 0 auto;
+    }
+
+    .modal.s_popup_middle .modal-content {
+        margin-block: auto;
+    }
+
+    .modal.s_popup_bottom .modal-content {
+        margin-block: auto 0;
+    }
+
     .s_popup_close {
         z-index: $zindex-modal;
         @include o-position-absolute(0, 0);
