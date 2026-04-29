@@ -1,7 +1,7 @@
 {
     "name": "Website Custom Modal",
     "summary": "Reusable website snippet with editable modal window",
-    "version": "17.0.1.0.0",
+    "version": "1.0.0",
     "category": "Website/Website",
     "author": "Dmitriy Shalberkin",
     "license": "LGPL-3",

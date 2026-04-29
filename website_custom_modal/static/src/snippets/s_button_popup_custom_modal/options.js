@@ -119,16 +119,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
             this._removeIframeSrc();
         });
         this._removeIframeSrc();
-        const anchorWidget = this._requestUserValueWidgets("onclick_opt")[0];
-        if (anchorWidget) {
-            this.trigger_up("option_update", {
-                optionName: "anchor",
-                name: "modalAnchor",
-                data: {
-                    buttonEl: anchorWidget.el,
-                },
-            });
-        }
         this._syncTriggerHref();
         syncModalSizingModesForApply(
             this.$target[0],
@@ -189,16 +179,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         });
     },
 
-    // Move popup between current-page and all-pages containers.
-    moveBlock(previewMode, widgetValue) {
-        const selector = widgetValue === "allPages" ? "#o_shared_blocks" : "main .oe_structure:o_editable";
-        const whereEl = $(this.$target[0].ownerDocument).find(selector)[0];
-        const popupEl = this._getRootPopupEl();
-        if (whereEl && popupEl) {
-            whereEl.prepend(popupEl);
-        }
-    },
-
     // Keep visual backdrop and Bootstrap close-on-backdrop behavior in sync.
     setBackdrop(previewMode, widgetValue) {
         const isBackdropEnabled = Boolean(widgetValue);
@@ -217,8 +197,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     // Return current option state for controls that require it.
     _computeWidgetState(methodName) {
         switch (methodName) {
-            case "moveBlock":
-                return this.$target[0].closest("#o_shared_blocks") ? "allPages" : "currentPage";
             case "setModalWidthMode":
                 return this.$target[0].getAttribute("data-modal-width-mode") || "content";
             case "setModalHeightMode":
@@ -233,11 +211,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
     // Stop embedded videos by clearing iframe sources.
     _removeIframeSrc() {
         clearEmbeddedIframes(this.$target[0]);
-    },
-
-    // Resolve the root popup wrapper for both popup snippet variants.
-    _getRootPopupEl() {
-        return getRootPopup$(this)[0];
     },
 
     _getRootPopup$() {

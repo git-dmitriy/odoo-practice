@@ -9,7 +9,7 @@
             </a>
             <div id="sButtonPopupCustomModalDefault" class="modal fade s_custom_popup_middle"
                  style="background-color: var(--black-50) !important;" data-display="onClick"
-                 data-consents-duration="7" data-modal-width="" data-modal-height="" data-modal-width-mode="content"
+                 data-modal-width="" data-modal-height="" data-modal-width-mode="content"
                  data-modal-height-mode="content"
                  data-bs-focus="false" tabindex="-1" role="dialog" aria-modal="true" aria-label="Button Popup">
                 <div class="modal-dialog d-flex wcm_width_content">
@@ -54,26 +54,6 @@
             <t t-set="button_popup_extra_options_custom_modal">
                 <we-colorpicker string="Close Button Color" data-select-style="true" data-css-property="color"
                                 data-color-prefix="text-" data-apply-to=".s_custom_popup_close"/>
-                <we-select string="Display" data-attribute-name="display" data-attribute-default-value="always">
-                    <we-button data-select-data-attribute="afterDelay" data-name="show_delay">Delay</we-button>
-                    <we-button data-select-data-attribute="mouseExit">On Exit</we-button>
-                    <we-button data-select-data-attribute="onClick" data-name="onclick_opt">On Click (via link)
-                    </we-button>
-                </we-select>
-                <we-input string="&#8985; Delay"
-                          title="Automatically opens the pop-up if the user stays on a page longer than the specified time."
-                          data-select-data-attribute="" data-attribute-name="showAfter" data-unit="s"
-                          data-save-unit="ms" data-dependencies="show_delay"/>
-                <t t-set="unit_popup_duration">days</t>
-                <we-input string="Hide For"
-                          title="Once the user closes the popup, it won't be shown again for that period of time."
-                          t-attf-data-select-data-attribute="7#{unit_popup_duration}"
-                          data-attribute-name="consentsDuration" t-att-data-unit="unit_popup_duration"
-                          data-dependencies="!onclick_opt"/>
-                <we-select string="Show on" data-no-preview="true">
-                    <we-button data-move-block="currentPage">This page</we-button>
-                    <we-button data-move-block="allPages">All pages</we-button>
-                </we-select>
             </t>
             <t t-set="button_popup_size_options_custom_modal">
                 <we-select string="Modal Width" data-apply-to=".modal-dialog" data-name="wcm_width_opt">

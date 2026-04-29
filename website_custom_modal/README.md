@@ -6,9 +6,7 @@
 
 - Сниппет "Button + Popup (Custom Modal)" для Website Builder.
 - Настройки отображения popup:
-  - `onClick` (по ссылке/hash);
-  - `afterDelay`;
-  - `mouseExit`.
+  - `onClick` (по ссылке/hash).
 - Гибкие настройки триггера:
   - режим `button`/`link`;
   - variant/size/shape/width;
@@ -48,14 +46,14 @@
 - В Website Builder открыть панель сниппетов.
 - Добавить сниппет `custom modal`.
 - Сниппет создает кнопку-триггер и модальное окно с редактируемым контентом.
+- Модалка работает только на странице, где размещен этот сниппет.
 
 ### Настройки popup
 
 - В snippet options доступны:
   - позиция popup (`Top`/`Middle`/`Bottom`);
   - backdrop и цвет;
-  - режим показа (`Delay`, `On Exit`, `On Click`);
-  - время задержки и период повторного показа (`Hide For`).
+  - режим показа: `On Click`.
 
 ### Настройки триггера и размеров
 
