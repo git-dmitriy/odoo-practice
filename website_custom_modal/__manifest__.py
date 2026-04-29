@@ -1,6 +1,6 @@
 {
     "name": "Website Custom Modal",
-    "summary": "Reusable website snippet with editable modal window",
+    "summary": "Reusable popup snippet with a detachable trigger and rich modal layout options",
     "version": "1.0.0",
     "category": "Website/Website",
     "author": "Dmitriy Shalberkin",
