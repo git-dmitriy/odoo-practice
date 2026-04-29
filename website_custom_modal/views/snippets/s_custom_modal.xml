@@ -7,18 +7,18 @@
             <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only"
                href="#sButtonPopupCustomModalDefault">Open modal
             </a>
-            <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle"
+            <div id="sButtonPopupCustomModalDefault" class="modal fade s_custom_popup_middle"
                  style="background-color: var(--black-50) !important;" data-display="onClick"
                  data-consents-duration="7" data-modal-width="" data-modal-height="" data-modal-width-mode="content"
                  data-modal-height-mode="content"
                  data-bs-focus="false" tabindex="-1" role="dialog" aria-label="Button Popup">
                 <div class="modal-dialog d-flex wcm_width_content">
                     <div class="modal-content oe_structure wcm_height_content">
-                        <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">
+                        <div class="s_custom_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">
                             &#215;
                         </div>
                         <section class="s_banner oe_img_bg o_bg_img_center pt48 pb48" data-snippet="s_banner"
-                                 style="background-image: url('/web/image/website_custom_modal.s_popup_default_image');">
+                                 style="background-image: url('/web/image/website_custom_modal.s_custom_popup_default_image');">
                             <div class="container">
                                 <div class="row s_nb_column_fixed">
                                     <div class="col-lg-10 offset-lg-1 text-center o_cc o_cc1 jumbotron pt32 pb32">
@@ -38,12 +38,12 @@
         <xpath expr="." position="inside">
             <t t-set="button_popup_base_options_custom_modal">
                 <we-select string="Position" data-dependencies="layout_popup_opt">
-                    <we-button data-select-class="s_popup_top" data-name="position_top">Top</we-button>
-                    <we-button data-select-class="s_popup_middle" data-name="position_middle">Middle</we-button>
-                    <we-button data-select-class="s_popup_bottom" data-name="position_bottom">Bottom</we-button>
+                    <we-button data-select-class="s_custom_popup_top" data-name="position_top">Top</we-button>
+                    <we-button data-select-class="s_custom_popup_middle" data-name="position_middle">Middle</we-button>
+                    <we-button data-select-class="s_custom_popup_bottom" data-name="position_bottom">Bottom</we-button>
                 </we-select>
                 <we-row string="Backdrop">
-                    <we-checkbox data-name="popup_backdrop_opt" data-select-class="s_popup_no_backdrop|"
+                    <we-checkbox data-name="popup_backdrop_opt" data-select-class="s_custom_popup_no_backdrop|"
                                  data-set-backdrop="true" data-no-preview="true"/>
                     <we-colorpicker data-dependencies="popup_backdrop_opt" data-select-style="true"
                                     data-css-property="background-color" data-color-prefix="bg-"
@@ -52,7 +52,7 @@
             </t>
             <t t-set="button_popup_extra_options_custom_modal">
                 <we-colorpicker string="Close Button Color" data-select-style="true" data-css-property="color"
-                                data-color-prefix="text-" data-apply-to=".s_popup_close"/>
+                                data-color-prefix="text-" data-apply-to=".s_custom_popup_close"/>
                 <we-select string="Display" data-attribute-name="display" data-attribute-default-value="always">
                     <we-button data-select-data-attribute="afterDelay" data-name="show_delay">Delay</we-button>
                     <we-button data-select-data-attribute="mouseExit">On Exit</we-button>

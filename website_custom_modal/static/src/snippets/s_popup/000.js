@@ -56,7 +56,7 @@ const PopupWidget = publicWidget.Widget.extend({
     },
 
     _isPopupContentEmpty(isMobile) {
-        return [...this.$el[0].querySelectorAll(".oe_structure > *:not(.s_popup_close)")].every((el) => {
+        return [...this.$el[0].querySelectorAll(".oe_structure > *:not(.s_custom_popup_close)")].every((el) => {
             const visibilitySelectors = el.dataset.visibilitySelectors;
             const hiddenByDevice = isMobile
                 ? el.classList.contains("o_snippet_mobile_invisible")
@@ -168,7 +168,7 @@ publicWidget.registry.PopupCustomModal = PopupWidget;
 
 //noinspection JSVoidFunctionReturnValueUsed
 const noBackdropPopupWidget = publicWidget.Widget.extend({
-    selector: ".s_button_popup_custom_modal .s_popup_no_backdrop",
+    selector: ".s_button_popup_custom_modal .s_custom_popup_no_backdrop",
     disabledInEditableMode: false,
     events: {
         "shown.bs.modal": "_onModalNoBackdropShown",

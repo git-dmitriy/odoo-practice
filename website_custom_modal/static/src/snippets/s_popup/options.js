@@ -160,7 +160,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         this._assignUniqueID();
         this._applySizingFromDataset();
         this._restoreTriggerState();
-        const popup = this.$target.closest(".s_popup_middle");
+        const popup = this.$target.closest(".s_custom_popup_middle");
         if (popup && popup.attr("data-focus")) {
             popup.attr("data-bs-focus", popup.attr("data-focus"));
             popup[0].removeAttribute("data-focus");
