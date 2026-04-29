@@ -26,6 +26,29 @@ const HEIGHT_CLASS_TO_MODE = [
     ["wcm_height_content", "content"],
 ];
 
+/** Stop embedded iframe videos by clearing their src. */
+export function clearEmbeddedIframes(rootEl) {
+    if (!rootEl) {
+        return;
+    }
+    rootEl.querySelectorAll(".media_iframe_video iframe").forEach((iframe) => {
+        iframe.src = "";
+    });
+}
+
+/** Restore embedded iframe videos from their data-oe-expression / data-src. */
+export function restoreEmbeddedIframes(rootEl) {
+    if (!rootEl) {
+        return;
+    }
+    rootEl.querySelectorAll(".media_iframe_video").forEach((media) => {
+        const iframe = media.querySelector("iframe");
+        if (iframe) {
+            iframe.src = media.dataset.oeExpression || media.dataset.src || "";
+        }
+    });
+}
+
 /** Normalize bare numbers to px for valid CSS width/height. */
 export function normalizeCssDimension(value) {
     const v = (value || "").trim();

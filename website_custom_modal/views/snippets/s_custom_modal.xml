@@ -11,10 +11,11 @@
                  style="background-color: var(--black-50) !important;" data-display="onClick"
                  data-consents-duration="7" data-modal-width="" data-modal-height="" data-modal-width-mode="content"
                  data-modal-height-mode="content"
-                 data-bs-focus="false" tabindex="-1" role="dialog" aria-label="Button Popup">
+                 data-bs-focus="false" tabindex="-1" role="dialog" aria-modal="true" aria-label="Button Popup">
                 <div class="modal-dialog d-flex wcm_width_content">
                     <div class="modal-content oe_structure wcm_height_content">
-                        <div class="s_custom_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">
+                        <div class="s_custom_popup_close js_close_popup o_we_no_overlay o_not_editable"
+                             role="button" tabindex="0" aria-label="Close">
                             &#215;
                         </div>
                         <section class="s_banner oe_img_bg o_bg_img_center pt48 pb48" data-snippet="s_banner"

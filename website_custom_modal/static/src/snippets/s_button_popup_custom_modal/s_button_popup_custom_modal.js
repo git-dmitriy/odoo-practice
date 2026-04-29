@@ -4,13 +4,18 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 import { cookie } from "@web/core/browser/cookie";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { utils as uiUtils, SIZES } from "@web/core/ui/ui_service";
-import { applyModalSizing } from "./sizing_mode_sync";
+import {
+    applyModalSizing,
+    clearEmbeddedIframes,
+    restoreEmbeddedIframes,
+} from "./sizing_mode_sync";
 
 //noinspection JSVoidFunctionReturnValueUsed
 const PopupWidget = publicWidget.Widget.extend({
     selector: ".s_button_popup_custom_modal",
     events: {
         "click .js_close_popup": "_onCloseClick",
+        "keydown .js_close_popup": "_onCloseKeydown",
         "click .modal .btn-primary": "_onBtnPrimaryClick",
         "hide.bs.modal": "_onHideModal",
         "show.bs.modal": "_onShowModal",
@@ -66,16 +71,11 @@ const PopupWidget = publicWidget.Widget.extend({
     },
 
     _resetEmbeddedIframes() {
-        this.$el.find(".media_iframe_video iframe").each((i, iframe) => {
-            iframe.src = "";
-        });
+        clearEmbeddedIframes(this.el);
     },
 
     _restoreEmbeddedIframes() {
-        this.el.querySelectorAll(".media_iframe_video").forEach((media) => {
-            const iframe = media.querySelector("iframe");
-            iframe.src = media.dataset.oeExpression || media.dataset.src;
-        });
+        restoreEmbeddedIframes(this.el);
     },
 
     _getHashModalId() {
@@ -140,6 +140,13 @@ const PopupWidget = publicWidget.Widget.extend({
     _onCloseClick() {
         this._hidePopup();
     },
+    // Close popup via keyboard (Enter / Space) on the close icon for a11y.
+    _onCloseKeydown(ev) {
+        if (ev.key === "Enter" || ev.key === " " || ev.key === "Spacebar") {
+            ev.preventDefault();
+            this._hidePopup();
+        }
+    },
     // Close popup from primary button click when permitted.
     _onBtnPrimaryClick(ev) {
         if (this._canBtnPrimaryClosePopup(ev.target)) {
@@ -148,7 +155,8 @@ const PopupWidget = publicWidget.Widget.extend({
     },
     // Persist consent cookie and stop embedded videos on hide.
     _onHideModal() {
-        const nbDays = this.$el.find(".modal").data("consentsDuration");
+        const rawDays = this.$el.find(".modal").data("consentsDuration");
+        const nbDays = Number(rawDays) > 0 ? Number(rawDays) : 7;
         cookie.set(this._getWidgetCookieKey(), this.cookieValue, nbDays * 24 * 60 * 60, "required");
         this._popupAlreadyShown = !this.modalShownOnClickEl;
         this._resetEmbeddedIframes();

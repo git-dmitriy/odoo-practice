@@ -3,7 +3,9 @@
 import options from "@web_editor/js/editor/snippets.options";
 import {
     applyModalSizing,
+    clearEmbeddedIframes,
     normalizeCssDimension,
+    restoreEmbeddedIframes,
     syncModalSizingModesForApply,
 } from "./sizing_mode_sync";
 
@@ -85,11 +87,11 @@ const MODE_RULES = Object.freeze({
     },
     link: (state) => {
         const classes = [`wcm_link_underline_${state.triggerUnderline}`];
-        if (state.triggerWeight !== "default") {
-            classes.push(state.triggerWeight);
-        }
-        if (state.triggerTextSize !== "default") {
-            classes.push(state.triggerTextSize);
+        for (const fieldName of ["triggerWeight", "triggerTextSize"]) {
+            const value = state[fieldName];
+            if (value && value !== TRIGGER_FIELDS[fieldName].default) {
+                classes.push(value);
+            }
         }
         return classes;
     },
@@ -110,10 +112,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         });
         this.$bsTarget.on("shown.bs.modal.SnippetButtonPopupCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: true});
-            this.$target[0].querySelectorAll(".media_iframe_video").forEach((media) => {
-                const iframe = media.querySelector("iframe");
-                iframe.src = media.dataset.oeExpression || media.dataset.src;
-            });
+            restoreEmbeddedIframes(this.$target[0]);
         });
         this.$bsTarget.on("hide.bs.modal.SnippetButtonPopupCustomModal", () => {
             this.trigger_up("snippet_option_visibility_update", {show: false});
@@ -160,11 +159,6 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         this._assignUniqueID();
         this._applySizingFromDataset();
         this._restoreTriggerState();
-        const popup = this.$target.closest(".s_custom_popup_middle");
-        if (popup && popup.attr("data-focus")) {
-            popup.attr("data-bs-focus", popup.attr("data-focus"));
-            popup[0].removeAttribute("data-focus");
-        }
     },
 
     // Assign a fresh ID when the snippet is duplicated.
@@ -215,8 +209,8 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Generate a unique DOM ID used by onClick/hash popup mode.
     _assignUniqueID() {
-        const modalId = "sButtonPopupCustomModal" + Date.now();
-        this.$target.attr("id", modalId);
+        const suffix = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+        this.$target.attr("id", `sButtonPopupCustomModal${suffix}`);
         this._syncTriggerHref();
     },
 
@@ -238,9 +232,7 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
 
     // Stop embedded videos by clearing iframe sources.
     _removeIframeSrc() {
-        this.$target.find(".media_iframe_video iframe").each((i, iframe) => {
-            iframe.src = "";
-        });
+        clearEmbeddedIframes(this.$target[0]);
     },
 
     // Resolve the root popup wrapper for both popup snippet variants.
@@ -355,7 +347,8 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         if (!rootEl) {
             return;
         }
-        this._collectNormalizedTriggerState(rootEl, {persist: true});
+        const state = this._readTriggerState(rootEl);
+        this._persistTriggerState(rootEl, state);
         this._normalizeTriggerClasses();
     },
 
@@ -374,29 +367,33 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         return normalized;
     },
 
-    _readTriggerField(fieldName) {
-        const rootEl = this._getRootPopup$()[0];
-        if (!rootEl || !TRIGGER_FIELDS[fieldName]) {
-            return TRIGGER_FIELDS[fieldName]?.default;
-        }
-        return this._collectNormalizedTriggerState(rootEl, {persist: true})[fieldName];
-    },
-
-    _getTriggerState(rootEl) {
-        return this._collectNormalizedTriggerState(rootEl, {persist: true});
-    },
-
-    _collectNormalizedTriggerState(rootEl, {persist = false} = {}) {
+    // Pure read of the trigger state from dataset (no DOM writes).
+    _readTriggerState(rootEl) {
         const state = {};
         for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
             const field = TRIGGER_FIELDS[fieldName];
-            const value = this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
-            if (persist) {
-                rootEl.dataset[field.datasetKey] = value;
-            }
-            state[fieldName] = value;
+            state[fieldName] = this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
         }
         return state;
+    },
+
+    // Persist a fully-normalized state back to the dataset.
+    _persistTriggerState(rootEl, state) {
+        for (const fieldName of Object.keys(TRIGGER_FIELDS)) {
+            rootEl.dataset[TRIGGER_FIELDS[fieldName].datasetKey] = state[fieldName];
+        }
+    },
+
+    _readTriggerField(fieldName) {
+        const field = TRIGGER_FIELDS[fieldName];
+        if (!field) {
+            return undefined;
+        }
+        const rootEl = this._getRootPopup$()[0];
+        if (!rootEl) {
+            return field.default;
+        }
+        return this._normalizeTriggerFieldValue(fieldName, rootEl.dataset[field.datasetKey]);
     },
 
     _setTriggerField(fieldName, rawValue) {
@@ -421,16 +418,14 @@ options.registry.SnippetButtonPopupCustomModal = options.Class.extend({
         if (!triggerEl) {
             return;
         }
-        const state = this._getTriggerState(rootEl);
-        const mode = state.triggerMode === "link" ? "link" : "button";
-        rootEl.dataset.triggerMode = mode;
+        const state = this._readTriggerState(rootEl);
 
         // 1) Clean conflicting classes by predefined groups.
         $triggerEl.removeClass(CLASS_GROUPS.trigger.join(" "));
         $rootEl.removeClass(CLASS_GROUPS.rootAlign.join(" "));
 
         // 2) Apply the current mode classes and root alignment.
-        const modeClasses = MODE_RULES[mode](state);
+        const modeClasses = MODE_RULES[state.triggerMode](state);
         if (modeClasses.length) {
             $triggerEl.addClass(modeClasses.join(" "));
         }

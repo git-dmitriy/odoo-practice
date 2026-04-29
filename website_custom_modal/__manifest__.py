@@ -1,11 +1,11 @@
 {
     "name": "Website Custom Modal",
     "summary": "Reusable website snippet with editable modal window",
-    "version": "1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Website/Website",
     "author": "Dmitriy Shalberkin",
     "license": "LGPL-3",
-    "depends": ["website"],
+    "depends": ["website", "web_editor"],
     "data": [
         "data/image_library.xml",
         "views/snippets/s_custom_modal.xml",
