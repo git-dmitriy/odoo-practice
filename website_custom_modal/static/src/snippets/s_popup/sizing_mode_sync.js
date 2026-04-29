@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-// Mirrors data-set-modal-width-mode / data-set-modal-height-mode on snippet we-buttons (s_popup.xml).
+// Mirrors data-set-modal-width-mode / data-set-modal-height-mode on snippet we-buttons (s_custom_modal.xml).
 // Width classes live on .modal-dialog, height classes — on .modal-content.
 // Order matters: custom > preset_* > content (more specific wins on conflicts).
 

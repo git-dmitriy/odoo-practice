@@ -8,7 +8,7 @@
     "depends": ["website"],
     "data": [
         "data/image_library.xml",
-        "views/snippets/s_popup.xml",
+        "views/snippets/s_custom_modal.xml",
         "views/snippets/snippets.xml",
     ],
     "assets": {

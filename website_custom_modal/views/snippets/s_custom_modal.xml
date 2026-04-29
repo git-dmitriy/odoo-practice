@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="s_button_popup_custom_modal" name="Button + Popup (Custom Modal)">
+        <div class="s_button_popup_custom_modal o_snippet_invisible wcm_trigger_align_left"
+             data-trigger-mode="button">
+            <a class="btn btn-primary s_button_popup_trigger o_snippet_drop_in_only"
+               href="#sButtonPopupCustomModalDefault">Open modal
+            </a>
+            <div id="sButtonPopupCustomModalDefault" class="modal fade s_popup_middle"
+                 style="background-color: var(--black-50) !important;" data-display="onClick"
+                 data-consents-duration="7" data-modal-width="" data-modal-height="" data-modal-width-mode="content"
+                 data-modal-height-mode="content"
+                 data-bs-focus="false" tabindex="-1" role="dialog" aria-label="Button Popup">
+                <div class="modal-dialog d-flex wcm_width_content">
+                    <div class="modal-content oe_structure wcm_height_content">
+                        <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" aria-label="Close">
+                            &#215;
+                        </div>
+                        <section class="s_banner oe_img_bg o_bg_img_center pt48 pb48" data-snippet="s_banner"
+                                 style="background-image: url('/web/image/website_custom_modal.s_popup_default_image');">
+                            <div class="container">
+                                <div class="row s_nb_column_fixed">
+                                    <div class="col-lg-10 offset-lg-1 text-center o_cc o_cc1 jumbotron pt32 pb32">
+                                        <h3 class="h2-fs">Custom modal content</h3>
+                                        <p class="lead">Drop any Odoo blocks here: form, text, images, and more.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="s_button_popup_custom_modal_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <t t-set="button_popup_base_options_custom_modal">
+                <we-select string="Position" data-dependencies="layout_popup_opt">
+                    <we-button data-select-class="s_popup_top" data-name="position_top">Top</we-button>
+                    <we-button data-select-class="s_popup_middle" data-name="position_middle">Middle</we-button>
+                    <we-button data-select-class="s_popup_bottom" data-name="position_bottom">Bottom</we-button>
+                </we-select>
+                <we-row string="Backdrop">
+                    <we-checkbox data-name="popup_backdrop_opt" data-select-class="s_popup_no_backdrop|"
+                                 data-set-backdrop="true" data-no-preview="true"/>
+                    <we-colorpicker data-dependencies="popup_backdrop_opt" data-select-style="true"
+                                    data-css-property="background-color" data-color-prefix="bg-"
+                                    data-css-compatible="true"/>
+                </we-row>
+            </t>
+            <t t-set="button_popup_extra_options_custom_modal">
+                <we-colorpicker string="Close Button Color" data-select-style="true" data-css-property="color"
+                                data-color-prefix="text-" data-apply-to=".s_popup_close"/>
+                <we-select string="Display" data-attribute-name="display" data-attribute-default-value="always">
+                    <we-button data-select-data-attribute="afterDelay" data-name="show_delay">Delay</we-button>
+                    <we-button data-select-data-attribute="mouseExit">On Exit</we-button>
+                    <we-button data-select-data-attribute="onClick" data-name="onclick_opt">On Click (via link)
+                    </we-button>
+                </we-select>
+                <we-input string="&#8985; Delay"
+                          title="Automatically opens the pop-up if the user stays on a page longer than the specified time."
+                          data-select-data-attribute="" data-attribute-name="showAfter" data-unit="s"
+                          data-save-unit="ms" data-dependencies="show_delay"/>
+                <t t-set="unit_popup_duration">days</t>
+                <we-input string="Hide For"
+                          title="Once the user closes the popup, it won't be shown again for that period of time."
+                          t-attf-data-select-data-attribute="7#{unit_popup_duration}"
+                          data-attribute-name="consentsDuration" t-att-data-unit="unit_popup_duration"
+                          data-dependencies="!onclick_opt"/>
+                <we-select string="Show on" data-no-preview="true">
+                    <we-button data-move-block="currentPage">This page</we-button>
+                    <we-button data-move-block="allPages">All pages</we-button>
+                </we-select>
+            </t>
+            <t t-set="button_popup_size_options_custom_modal">
+                <we-select string="Modal Width" data-apply-to=".modal-dialog" data-name="wcm_width_opt">
+                    <we-button data-select-class="wcm_width_content" data-set-modal-width-mode="content"
+                               data-name="wcm_width_content">Content</we-button>
+                    <we-button data-select-class="wcm_width_sm" data-set-modal-width-mode="preset_w_sm"
+                               data-name="wcm_width_sm">Small</we-button>
+                    <we-button data-select-class="wcm_width_md" data-set-modal-width-mode="preset_w_md"
+                               data-name="wcm_width_md">Medium
+                    </we-button>
+                    <we-button data-select-class="wcm_width_lg" data-set-modal-width-mode="preset_w_lg"
+                               data-name="wcm_width_lg">Large</we-button>
+                    <we-button data-select-class="wcm_width_xl" data-set-modal-width-mode="preset_w_xl"
+                               data-name="wcm_width_xl">Extra Large
+                    </we-button>
+                    <we-button data-select-class="wcm_width_full" data-set-modal-width-mode="preset_w_full"
+                               data-name="wcm_width_full">Full</we-button>
+                    <we-button data-select-class="wcm_width_custom" data-set-modal-width-mode="custom"
+                               data-name="wcm_width_custom">Custom
+                    </we-button>
+                </we-select>
+                <we-input string="Custom Width" title="Examples: 640px, 75%, 48rem." data-set-modal-width="true"
+                          data-select-data-attribute="" data-attribute-name="modalWidth"
+                          data-dependencies="wcm_width_custom"/>
+                <we-select string="Modal Height" data-apply-to=".modal-content" data-name="wcm_height_opt">
+                    <we-button data-select-class="wcm_height_content" data-set-modal-height-mode="content"
+                               data-name="wcm_height_content">Content</we-button>
+                    <we-button data-select-class="wcm_height_auto" data-set-modal-height-mode="preset_h_auto"
+                               data-name="wcm_height_auto">Auto
+                    </we-button>
+                    <we-button data-select-class="wcm_height_compact" data-set-modal-height-mode="preset_h_compact"
+                               data-name="wcm_height_compact">Compact
+                    </we-button>
+                    <we-button data-select-class="wcm_height_medium" data-set-modal-height-mode="preset_h_medium"
+                               data-name="wcm_height_medium">Medium
+                    </we-button>
+                    <we-button data-select-class="wcm_height_tall" data-set-modal-height-mode="preset_h_tall"
+                               data-name="wcm_height_tall">Tall</we-button>
+                    <we-button data-select-class="wcm_height_custom" data-set-modal-height-mode="custom"
+                               data-name="wcm_height_custom">Custom
+                    </we-button>
+                </we-select>
+                <we-input string="Custom Height" title="Examples: 420px, 70vh." data-set-modal-height="true"
+                          data-select-data-attribute="" data-attribute-name="modalHeight"
+                          data-dependencies="wcm_height_custom"/>
+            </t>
+            <t t-set="button_popup_trigger_options_custom_modal">
+                <we-select string="Trigger Mode">
+                    <we-button data-trigger-mode="button" data-name="trigger_mode_button">Button</we-button>
+                    <we-button data-trigger-mode="link" data-name="trigger_mode_link">Link</we-button>
+                </we-select>
+                <we-select string="Button Variant" data-dependencies="trigger_mode_button">
+                    <we-button data-trigger-variant="btn-primary" data-name="trigger_variant_primary">Primary
+                    </we-button>
+                    <we-button data-trigger-variant="btn-secondary">Secondary</we-button>
+                    <we-button data-trigger-variant="btn-success">Success</we-button>
+                    <we-button data-trigger-variant="btn-warning">Warning</we-button>
+                    <we-button data-trigger-variant="btn-danger">Danger</we-button>
+                    <we-button data-trigger-variant="btn-info">Info</we-button>
+                    <we-button data-trigger-variant="btn-light">Light</we-button>
+                    <we-button data-trigger-variant="btn-dark">Dark</we-button>
+                </we-select>
+                <we-select string="Button Size" data-dependencies="trigger_mode_button">
+                    <we-button data-trigger-size="default" data-name="trigger_size_default">Default</we-button>
+                    <we-button data-trigger-size="btn-sm">Small</we-button>
+                    <we-button data-trigger-size="btn-lg">Large</we-button>
+                </we-select>
+                <we-select string="Button Shape" data-dependencies="trigger_mode_button">
+                    <we-button data-trigger-shape="default" data-name="trigger_shape_default">Default</we-button>
+                    <we-button data-trigger-shape="rounded-0">Square</we-button>
+                    <we-button data-trigger-shape="rounded">Rounded</we-button>
+                    <we-button data-trigger-shape="rounded-pill">Pill</we-button>
+                </we-select>
+                <we-select string="Button Width" data-dependencies="trigger_mode_button">
+                    <we-button data-trigger-width="auto" data-name="trigger_width_auto">Auto</we-button>
+                    <we-button data-trigger-width="w-100">Full Width</we-button>
+                </we-select>
+                <we-colorpicker string="Link Color" data-select-style="true" data-css-property="color"
+                                data-color-prefix="text-" data-apply-to=".s_button_popup_trigger"
+                                data-dependencies="trigger_mode_link"/>
+                <we-select string="Link Underline" data-dependencies="trigger_mode_link">
+                    <we-button data-trigger-underline="none" data-name="trigger_underline_none">None</we-button>
+                    <we-button data-trigger-underline="always">Always</we-button>
+                    <we-button data-trigger-underline="hover">On Hover</we-button>
+                </we-select>
+                <we-select string="Link Weight" data-dependencies="trigger_mode_link">
+                    <we-button data-trigger-weight="fw-normal" data-name="trigger_weight_normal">Normal</we-button>
+                    <we-button data-trigger-weight="fw-semibold">Semi Bold</we-button>
+                    <we-button data-trigger-weight="fw-bold">Bold</we-button>
+                </we-select>
+                <we-select string="Link Size" data-dependencies="trigger_mode_link">
+                    <we-button data-trigger-text-size="default" data-name="trigger_text_size_default">Default
+                    </we-button>
+                    <we-button data-trigger-text-size="fs-6">Small</we-button>
+                    <we-button data-trigger-text-size="fs-5">Medium</we-button>
+                    <we-button data-trigger-text-size="fs-4">Large</we-button>
+                </we-select>
+                <we-select string="Trigger Align">
+                    <we-button data-trigger-align="left" data-name="trigger_align_left">Left</we-button>
+                    <we-button data-trigger-align="center">Center</we-button>
+                    <we-button data-trigger-align="right">Right</we-button>
+                </we-select>
+            </t>
+            <div data-js="SnippetButtonPopupCustomModal"
+                 data-selector=".s_button_popup_custom_modal"
+                 data-target=".modal"
+                 data-drop-in=":not(p).oe_structure:not(.oe_structure_solo):not([data-snippet] *), :not(.o_mega_menu):not(p)[data-oe-type=html]:not([data-snippet] *)">
+                <t t-out="button_popup_base_options_custom_modal"/>
+                <t t-out="button_popup_extra_options_custom_modal"/>
+                <t t-out="button_popup_size_options_custom_modal"/>
+                <t t-out="button_popup_trigger_options_custom_modal"/>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
