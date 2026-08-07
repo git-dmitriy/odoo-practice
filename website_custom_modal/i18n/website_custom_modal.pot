@@ -1,0 +1,343 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* website_custom_modal
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+
+#. module: website_custom_modal
+msgid "Website Custom Modal"
+msgstr ""
+
+#. module: website_custom_modal
+msgid "Reusable popup snippet with a detachable trigger and rich modal layout options"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
+msgid "custom modal"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.snippets_custom_modal
+msgid "button, popup, modal, action"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Button + Popup (Custom Modal)"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Open modal"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Button Popup"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Close"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Custom modal content"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal
+msgid "Drop any Odoo blocks here: form, text, images, and more."
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Position"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Top"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Middle"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Bottom"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Backdrop"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Close Button Color"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Modal Width"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Content"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Small"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Medium"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Large"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Extra Large"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Full"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Custom"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Custom Width"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Examples: 640px, 75%, 48rem."
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Modal Height"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Auto"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Compact"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Tall"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Custom Height"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Examples: 420px, 70vh."
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Trigger Mode"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Button"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Link"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Button Variant"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Primary"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Secondary"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Success"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Warning"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Danger"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Info"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Light"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Dark"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Button Size"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Default"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Button Shape"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Square"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Rounded"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Pill"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Button Width"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Full Width"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Link Color"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Link Underline"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "None"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Always"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "On Hover"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Link Weight"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Normal"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Semi Bold"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Bold"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Link Size"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Trigger Align"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Left"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Center"
+msgstr ""
+
+#. module: website_custom_modal
+#: model_terms:ir.ui.view,arch_db:website_custom_modal.s_custom_modal_options
+msgid "Right"
+msgstr ""

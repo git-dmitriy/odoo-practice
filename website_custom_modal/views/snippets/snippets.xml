@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="snippets_custom_modal" inherit_id="website.snippets" priority="90">
+    <xpath expr="//div[@id='snippet_content']/div[hasclass('o_panel_body')]" position="inside">
+        <t t-snippet="website_custom_modal.s_custom_modal" string="custom modal" t-thumbnail="/website/static/src/img/snippets_thumbs/s_popup.svg">
+            <keywords>button, popup, modal, action</keywords>
+        </t>
+    </xpath>
+</template>
+
+</odoo>

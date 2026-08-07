@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="s_custom_popup_default_image" model="ir.attachment">
+            <field name="public" eval="True"/>
+            <field name="name">s_custom_popup_default_image.jpg</field>
+            <field name="type">url</field>
+            <field name="url">/website/static/src/img/snippets_demo/s_popup.jpg</field>
+        </record>
+    </data>
+</odoo>
